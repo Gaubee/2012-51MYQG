@@ -23,3 +23,8 @@ EG:要修改的什么东西直接在后面加上去就好，注明修改人的�
 
 * 第九届的干部通讯录在[github.com/Gaubee/Gaubee/downloads](https://github.com/Gaubee/Gaubee/downloads)中可以找到各种格式的通讯录
 * 注重培养学习效率与技巧
+
+# 网络资源
+* [前端开发网(W3Cfuns.com)](http://www.w3cfuns.com)
+* [PS联盟--Photoshop专业教程网](http://www.68ps.com/)
+* [知识库_博客园](http://kb.cnblogs.com/)
