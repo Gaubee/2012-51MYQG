@@ -1,0 +1,229 @@
+<html>
+<head>
+  <title>【转】js里alert里的字体颜色怎么设置:字体颜色方法；fontcolor(color)_偷菜帮_百度空间</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="561"/>
+<h1>【转】js里alert里的字体颜色怎么设置:字体颜色方法；fontcolor(color)_偷菜帮_百度空间</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><div style="background-image:initial;background-repeat: initial initial;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-right-color:rgb(222, 222, 222);border-bottom-color:rgb(222, 222, 222);border-left-color:rgb(222, 222, 222);border-image:initial;border-top-width:2px;border-top-style:solid;border-top-color:rgb(254, 121, 161);padding-top:25px;padding-right:20px;padding-bottom:25px;padding-left:20px;background-attachment:initial;background-position-x:initial;background-position-y:initial;background-origin:initial;background-clip:initial;background-color:rgb(255, 255, 255);position:relative;margin-top:-20px;font-size:12px;font-family:'Microsoft Yahei', 微软雅黑, Tahoma, Arial, Helvetica, STHeiti;margin:0px;opacity:1;filter:none;background-size:auto;background-position:-232px -203px;color:rgb(69, 69, 69);line-height:normal;width:758px;"><div style="background-repeat: initial initial;zoom:1;font-size:12px;"><h2 style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:10px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-size:20px;color:rgb(58, 58, 58);font-weight:normal;float:left;">【转】js里alert里的字体颜色怎么设置:字体颜色方法；fontcolor(color)</h2></div><div style="background-repeat: initial initial;zoom:1;width:758px;overflow-x:hidden;overflow-y:hidden;font-size:14px;line-height:25px;margin-top:7px;margin-right:0px;margin-bottom:10px;margin-left:0px;"><p style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-size:14px;">我的总结:  alert应该是没办法改变的  只有自己写个弹出窗口才可以改变字体颜色</p><p style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-size:14px;">===========================================================================================================</p><p style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-size:14px;"> </p><p style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-size:14px;">alert(&quot;投票总数不大于&lt;%=maximum%&gt;&quot;);不知道怎么改变字体所以查了下</p>
+找到下面的信息,好东西.用法:
+<p style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-size:14px;">&lt;SCRIPT LANGUAGE=&quot;JavaScript&quot;&gt;<br clear="none">
+&lt;!--<br clear="none">
+a=&quot;abc&quot;<br clear="none">
+a=a.fontcolor(&quot;#FF0033&quot;)<br clear="none">
+document.write(a)<br clear="none">
+//--&gt;<br clear="none">
+&lt;/SCRIPT&gt;</p><p style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-size:14px;">来源于<a href="http://www.mmmca.com/blog_bruceyag/p/101659.html" shape="rect" style="background-repeat: initial initial;text-decoration:underline;color:rgb(240, 109, 153);font-size:14px;">http://www.mmmca.com/blog_bruceyag/p/101659.html</a></p><p style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-size:14px;">主要内容如下:</p>
+Javascript 要点<br clear="none">
+1. 变量用Var来声明<br clear="none">
+var 某某变量名;<br clear="none"><br clear="none">
+2.控制流语法和C++/Java一样：if-else if-else, for, while, break, continue<br clear="none"><br clear="none">
+3.函数就是前面写个 function 某函数名(变量1，变量2。。。)<br clear="none">
+这里的变量1，变量2 和C++/Java不太一样，不用给变量类型象int x, int y什么的，直接写x,y就行了。<br clear="none">
+返回值类型也不用声明了，高兴了给个return 某某值；就足够了。<br clear="none"><br clear="none">
+4.Object-based 语法<br clear="none">
+这个语法有些很神奇的东西，在这里列一列<br clear="none">
+A。 For（对象属性名 in 已知对象名）<br clear="none">
+该语句的功能是用于对已知对象的所有属性进行操作的控制循环<br clear="none">
+例如：<br clear="none">
+for( var attr in object){<br clear="none">
+document.write(object[attr]);<br clear="none">
+}<br clear="none"><br clear="none">
+B。with语句<br clear="none">
+with object{<br clear="none"><br clear="none"><br clear="none">
+}<br clear="none">
+在with中的如果使用object的函数，属性，就不用再重复写object.xxx了。直接写xxx就可以了，减少了一定的Code量。<br clear="none"><br clear="none">
+C。 this, new 和其他语言一样，没啥好说的。<br clear="none"><br clear="none">
+D。 有三种办法引用对象的属性<br clear="none">
+使用点(.)运算符,object.某某属性<br clear="none">
+也可以通过下标实现， 如 object[0]<br clear="none">
+在for-in 中，利用object[某某属性]<br clear="none">
+直接用object[某某属性的字符串]<br clear="none"><br clear="none">
+E。创建新的对象<br clear="none">
+定义新对象和定义函数是一样的，都是用Function关键词，内容也都一样，这个函数叫Constructor。也不需要声明什么变量，写上去就是了。定义函数也很单纯，在外面定义好函数，比如说叫method1，在构造函数中写上this.firstMethod=method1 就可以了。<br clear="none">
+没有数组，要自己定义一个构造函数来虚拟一个数组，也很简单。<br clear="none"><br clear="none"><br clear="none">
+5.常用内部对象<br clear="none">
+A。 字符串<br clear="none">
+只有一个属性，即length<br clear="none">
+string对象的方法共有１９个<br clear="none">
+锚点anchor()：该方法创建如用Html文档中一样的anchor标记。使用anchor如用Html中(A Name=&quot;&quot; )一样。通过下列格式访问:string.anchor(anchorName)。<br clear="none">
+o 有关字符显示的控制方法<br clear="none">
+big字体显示, Italics()斜体字显示，bold()粗体字显示，blink()字符闪烁显示，small（）字符用小体字显示，fixed()固定高亮字显示、fontsize(size)控制字体大小等。<br clear="none">
+o 字体颜色方法；fontcolor(color)<br clear="none">
+o 字符串大小写转换<br clear="none">
+toLowerCase()－小写转换，toUpperCase()大写转换。下列把一个给定的串分别转换成大写和小写格式:<br clear="none">
+string=stringValue.toUpperCase和string=stringValue.toLowerCase。<br clear="none">
+o 字符搜索：indexOf[charactor,fromIndex]<br clear="none">
+从指定formIndtx位置开始搜索charactor第一次出现的位置。<br clear="none">
+返回字串的一部分字串：substring(start,end)<br clear="none">
+从start开始到end的字符全部返回。<br clear="none"><br clear="none">
+B。math对象<br clear="none">
+绝对值：abs()<br clear="none">
+正弦余弦值：sin(),cos()<br clear="none">
+反正弦反余弦 :asin(), acos()<br clear="none">
+正切反正切：tan(),atan()<br clear="none">
+四舍五入：round()<br clear="none">
+平方根：sqrt()<br clear="none">
+基于几方次的值：Pow(base,exponent)<br clear="none"><br clear="none">
+C。日期及时间对象<br clear="none"><br clear="none">
+获取日期的时间方法<br clear="none">
+getYear(): 返回年数<br clear="none">
+getMonth():返回当月号数<br clear="none">
+getDate(): 返回当日号数<br clear="none">
+getDay():返回星期几<br clear="none">
+getHours():返回小时数<br clear="none">
+getMintes(:返回分钟数<br clear="none">
+getSeconds():返回秒数<br clear="none">
+getTime() : 返回毫秒数<br clear="none">
+（２）设置日期和时间：<br clear="none">
+setYear();设置年<br clear="none">
+setDate():设置当月号数<br clear="none">
+setMonth():设置当月份数<br clear="none">
+setHours():设置小时数<br clear="none">
+setMintes():设置分钟数<br clear="none">
+setSeconds():设置秒数<br clear="none">
+setTime ():设置毫秒数<br clear="none"><br clear="none">
+D。系统函数<br clear="none">
+1．返回字符串表达式中的值：<br clear="none">
+方法名：eval（字串表达式），例：<br clear="none">
+test=eval(&quot;8+9+5/2&quot; ) ;<br clear="none">
+2. 返回字符串ASCI码：<br clear="none">
+方法名：unEscape (string)<br clear="none">
+3．返回字符的编码：<br clear="none">
+方法名：escape(character)<br clear="none">
+4．返回实数：<br clear="none">
+parseFloat(floustring);<br clear="none">
+5．返回不同进制的数：<br clear="none">
+parseInt(numbestring ,rad.X)<br clear="none">
+其中radix是数的进制，numbs字符串数<br clear="none"><br clear="none"><br clear="none"><br clear="none">
+6。其他对象<br clear="none">
+Javascript 还有文档document对象，窗口（Window）对象，历史（History）和位置（Location）对象。<br clear="none"><br clear="none">
+A。 document中三个主要的对象<br clear="none"><br clear="none">
+links：包括所有的链接<br clear="none">
+anchors：所有的内部链接，就是连到自己网页的某某段的那种叫锚的东西。<br clear="none">
+forms：表单<br clear="none"><br clear="none">
+B.document中的attribute属性<br clear="none">
+document对象中的attribute属性，主要用于在引用Href标识时，控制着有关颜色的格式和有关文档标题、文档原文件的URL以及文档最后更新的日期。<br clear="none">
+（１）链接颜色：alinkcolor<br clear="none">
+这个元素主要用于，当选取一个链接时，链接对象本身的颜色就按alinkcolo r指定改变。<br clear="none">
+（２）链接颜色：linkcolor<br clear="none">
+当用户使用&lt;A Href=...&gt; Text string &lt;/A&gt;链接后，Textstring的颜色就会按Linkcolor所指定的颜色更新。<br clear="none">
+（３）浏览过后的颜色：VlinkColor<br clear="none">
+该属性表示的是已被浏览存储为已浏览过的链接颜色。<br clear="none">
+（４）背景颜色：bgcolor<br clear="none">
+该元素包含文档背景的颜色。<br clear="none">
+（５）前景颜色：Fgcolor<br clear="none">
+该元素包含HTML文档中文本的前景颜色。<br clear="none"><br clear="none"><br clear="none"><br clear="none">
+C. Windows 对象的方法<br clear="none">
+创建一个新窗口open()<br clear="none">
+使用window.open（参数表）方法可以创建一个新的窗口。其中参数表提供有窗口的主要特性和文档及窗口的命名。<br clear="none">
+具有OK按钮的对话框<br clear="none">
+alert()方法能创建一个具有OK按钮的对话框。<br clear="none">
+具有OK和Cancel按钮的对话框<br clear="none">
+confirm()方法为编程人员提供一个具有两个按钮的对话框。<br clear="none">
+具有输入信息的对话框<br clear="none">
+prompt()方法允许用户在对话框中输入信息，并可使用默认值，其基本格式如下prompt（“提示信息”，默认值）。<br clear="none"><br clear="none"><br clear="none">
+D。窗口对象中的属性主要用来对浏览器中存在的各种窗口和框架的引用，其主要属性有以下几个：<br clear="none">
+（１）frames 确文档中帧的数目<br clear="none">
+frames（帧）作为实现一个窗口的分隔操作，起到非常有用的作用，在使用注意以下几点：<br clear="none">
+frames属性是通过HTML标识&lt;Frames&gt;的顺序来引用的，它包含了一个窗口中的全部帧数。<br clear="none">
+帧本身已是一类窗口，继承了窗口对象所有的全部属性和方法。<br clear="none">
+（２）Parent 指明当前窗口或帧的父窗口。<br clear="none">
+（３）defaultstatus:默认状态，它的值显示在窗口的状态栏中。<br clear="none">
+（４）status:包含文档窗口中帧中的当前信息。<br clear="none">
+（５）top:包括的是用以实现所有的下级窗口的窗口。<br clear="none">
+（６）window.指的是当前窗口<br clear="none">
+（７）self:引用当前窗口。<br clear="none"><br clear="none">
+E。 Form对象的方法<br clear="none">
+窗口只有一个方法，Submit()<br clear="none"><br clear="none">
+7 控件对象<br clear="none">
+A、Text单行单列输入元素<br clear="none">
+Name：名称。对应于HTML文档中的Name。<br clear="none">
+Value：Value的信息。<br clear="none">
+defaultvalue：默认值<br clear="none">
+方法：<br clear="none">
+blur()：将当前焦点移到后台。<br clear="none">
+select()：加亮文字。<br clear="none">
+事件：<br clear="none">
+onFocus：获得焦点<br clear="none">
+OnBlur：失去焦点。<br clear="none">
+Onselect：文字被加亮显示<br clear="none">
+onchange：Text元素值改变<br clear="none"><br clear="none">
+B、textarea多行多列输入元素<br clear="none">
+name：名称，对应HTML文档Textarea的Name。<br clear="none">
+Value：Value的信息。<br clear="none">
+Default value：默认值。<br clear="none">
+方法：<br clear="none">
+blur()：失去焦点<br clear="none">
+select()：文字加亮<br clear="none">
+事件：<br clear="none">
+onBlur:失去输入焦点<br clear="none">
+onFocus:获得焦点<br clear="none">
+Onchange:文字值改变<br clear="none">
+Onselect:文字加亮<br clear="none"><br clear="none">
+C、Select<br clear="none">
+name:名称，对应文档select中的name。<br clear="none">
+Length:对应文档select中的length<br clear="none">
+options:组成多个选项的数组<br clear="none">
+selectIndex;该下标指明一个选项<br clear="none">
+select在中每一选项都含有以下属性：<br clear="none">
+Text:选项对应的文字<br clear="none">
+selected:指明当前选项是否被选中<br clear="none">
+Index:指明当前选项的位置<br clear="none">
+defaultselected:默认选项<br clear="none"><br clear="none">
+事件：<br clear="none">
+OnBlur：失去焦点<br clear="none">
+onFocas:获得焦点<br clear="none">
+Onchange:选项状态改变<br clear="none"><br clear="none">
+D、Button<br clear="none">
+Name:名称，对应文档中button的Name。<br clear="none">
+Value:对应HTML文档中Value的信息。<br clear="none">
+方法：<br clear="none">
+click() 按下<br clear="none">
+事件：<br clear="none">
+onclick 单击按钮<br clear="none"><br clear="none">
+E、checkbox<br clear="none">
+name:名称。<br clear="none">
+Value:HTML文档中Value的信息。<br clear="none">
+Checked:检查框的状态true/false.<br clear="none">
+defauitchecked:默认状态<br clear="none">
+方法：click()某一个项被选中。<br clear="none">
+事件：onclick:某一个项被选中事件。 　<br clear="none"><br clear="none">
+F、radio　<br clear="none">
+name:名称，对应HTML文档中的radio的name相同<br clear="none">
+value:对应HTML文档中Value的信息，对应HTML文档中的radio的name。<br clear="none">
+length:单选按钮中的按钮数目。<br clear="none">
+defalechecked:默认按钮。<br clear="none">
+checked:指明选中还是没有选中。<br clear="none">
+index:选中的按钮的位置。<br clear="none">
+方法：chick():选定一个按钮。<br clear="none">
+事件：onclick:单击按钮事件。<br clear="none"><br clear="none">
+G、hidden<br clear="none">
+name:名称，对应HTML文档的hidden中的Name。<br clear="none">
+Value:对应HTML文档中Value的信息，对应HTML文档hidden中的value。<br clear="none">
+defaleitvalue:默认值<br clear="none"><br clear="none">
+H、Password<br clear="none">
+Name:名称，对应HTML文档中password中的name。<br clear="none">
+Value:对应HTML文档中Value的信息，对应HTML文档中password中的Value。<br clear="none">
+defaultvalu:默认值<br clear="none">
+方法<br clear="none">
+select():加亮输入口令域。<br clear="none">
+blur():丢失输入焦点。<br clear="none">
+focus():获得输入焦点。<br clear="none"><br clear="none">
+I、submit<br clear="none">
+name:名称，对应HTML文档中submit。<br clear="none">
+Value:对应HTML文档中Value的信息，对应HTML文档中value。<br clear="none">
+方法click()相当于按下submit按钮。<br clear="none">
+事件：onclick()当按下该按钮时，产生该事件。</div></div></div>
+</div></body></html> 

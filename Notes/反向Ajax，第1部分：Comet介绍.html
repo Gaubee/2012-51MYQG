@@ -1,0 +1,230 @@
+<html>
+<head>
+  <title>反向Ajax，第1部分：Comet介绍</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1203"/>
+<h1>反向Ajax，第1部分：Comet介绍</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+原文:<a href="http://kb.cnblogs.com/page/112185/">http://kb.cnblogs.com/page/112185/</a><div><br><br><br>
+  英文原文：Reverse Ajax, Part 1: Introduction to Comet<br>
+在过去的几年中，web开发已经发生了很大的变化。现如今，我们期望的是能够通过web快速、动态地访问应用。在这一新的文章系列中，我们学习如何使用反向Ajax（Reverse Ajax）技术来开发事件驱动的web应用，以此来实现更好的用户体验。客户端的例子使用的是JQuery JavaScript库，在这首篇文章中，我们探索不同的反向Ajax技术，使用可下载的例子来学习使用了流（streaming）方法和长轮询（long polling）方法的Comet。<br><br>
+  前言<br><br>
+  web开发在过去的几年中有了很大的进展，我们已经远超了把静态网页链接在一起的做法，这种做法会引起浏览器的刷新，并且要等待页面的加载。现在需要的是能够通过web来访问的完全动态的应用，这些应用通常需要尽可能的快，提供近乎实时的组件。在这一新的由五部分组成的文章系列中，我们学习如何使用反向Ajax（Reverse Ajax）技术来开发事件驱动的web应用。<br><br>
+  在这第一篇文章中，我们要了解反向Ajax、轮询（polling）、流（streaming）、Comet和长轮询（long polling），学习如何实现不同的反向Ajax通信技术，并探讨每种方法的优点和缺点。你可以下载本文中例子的相应源代码。<br><br>
+  Ajax、反向Ajax和WebSocket<br><br>
+  异步的JavaScript和XML（Asynchronous JavaScript and XML，Ajax），一种可通过JavaScript来访问的浏览器功能特性，其允许脚本向幕后的网站发送一个HTTP请求而又无需重新加载页面。Ajax的出现已经超过了十年，尽管其名字中包含了XML，但你几乎可以在Ajax请求中传送任何的东西，最常用的数据是JSON，其与JavaScript语法很接近，且消耗更少带宽。清单1给出了这样的一个例子，Ajax请求通过某个地方的邮政编码来检索该地的名称。<br><br>
+  清单1. Ajax请求举例<br>
+var url ='http://www.geonames.org/postalCodeLookupJSON?postalcode='<br>
+  + $('#postalCode').val() +'&amp;country='<br>
+  + $('#country').val() +'&amp;callback=?';<br>
+  $.getJSON(url, function(data) {<br>
+  $('#placeName').val(data.postalcodes[0].placeName);<br>
+});<br><br>
+  在本文可下载的源代码中，你可在listing1.html中看到这一例子的作用。<br><br>
+  反向Ajax（Reverse Ajax）本质上则是这样的一种概念：能够从服务器端向客户端发送数据。在一个标准的HTTP Ajax请求中，数据是发送给服务器端的，反向Ajax可以某些特定的方式来模拟发出一个Ajax请求，这些方式本文都会论及，这样的话，服务器就可以尽可能快地向客户端发送事件（低延迟通信）。<br><br>
+  WebSocket技术来自HTML5，是一种最近才出现的技术，许多浏览器已经支持它（Firefox、Google Chrome、Safari等等）。WebSocket启用双向的、全双工的通信信道，其通过某种被称为WebSocket握手的HTTP请求来打开连接，并用到了一些特殊的报头。连接保持在活动状态，你可以用JavaScript来写和接收数据，就像是正在用一个原始的TCP套接口一样。WebSocket会在这一文章系列的第二部分中谈及。<br><br>
+  反向Ajax技术<br><br>
+  反向Ajax的目的是允许服务器端向客户端推送信息。Ajax请求在缺省情况下是无状态的，且只能从客户端向服务器端发出请求。你可以通过使用技术模拟服务器端和客户端之间的响应式通信来绕过这一限制。<br><br>
+  HTTP轮询和JSONP轮询<br><br>
+  轮询（polling）涉及了从客户端向服务器端发出请求以获取一些数据，这显然就是一个纯粹的Ajax HTTP请求。为了尽快地获得服务器端事件，轮询的间隔（两次请求相隔的时间）必须尽可能地小。但有这样的一个缺点存在：如果间隔减小的话，客户端浏览器就会发出更多的请求，这些请求中的许多都不会返回任何有用的数据，而这将会白白地浪费掉带宽和处理资源。<br><br>
+  图1中的时间线说明了客户端发出了某些轮询请求，但没有信息返回这种情况，客户端必须要等到下一个轮询来获取两个服务器端接收到的事件。<br><br>
+  图1. 使用HTTP轮询的反向Ajax<br><br><br>
+  JSONP轮询基本上与HTTP轮询一样，不同之处则是JSONP可以发出跨域请求（不是在你的域内的请求）。清单1使用JSONP来通过邮政编码获取地名，JSONP请求通常可通过它的回调参数和返回内容识别出来，这些内容是可执行的JavaScript代码。<br><br>
+  要在JavaScript中实现轮询的话，你可以使用setInterval来定期地发出Ajax请求，如清单2所示：<br><br>
+  清单2. JavaScript轮询<br>
+setInterval(function() {<br>
+  $.getJSON('events', function(events) {<br>
+    console.log(events);<br>
+  });<br>
+}, 2000);<br><br>
+  文章源代码中的轮询演示给出了轮询方法所消耗的带宽，间隔很小，但可以看到有些请求并未返回事件，清单3给出了这一轮询示例的输出。<br><br>
+  清单3. 轮询演示例子的输出<br>
+[client] checking for events...<br>
+[client] no event<br>
+[client] checking for events...<br>
+[client]2 events<br>
+[event] At Sun Jun 0515:17:14 EDT 2011<br>
+[event] At Sun Jun 0515:17:14 EDT 2011<br>
+[client] checking for events...<br>
+[client]1 events<br>
+[event] At Sun Jun 0515:17:16 EDT 2011<br><br>
+  用JavaScript实现的轮询的优点和缺点：<br><br>
+  1. 优点：很容易实现，不需要任何服务器端的特定功能，且在所有的浏览器上都能工作。<br><br>
+  2. 缺点：这种方法很少被用到，因为它是完全不具伸缩性的。试想一下，在100个客户端每个都发出2秒钟的轮询请求的情况下，所损失的带宽和资源数量，在这种情况下30%的请求没有返回数据。<br><br>
+  Piggyback<br><br>
+  捎带轮询（piggyback polling）是一种比轮询更加聪明的做法，因为它会删除掉所有非必需的请求（没有返回数据的那些）。不存在时间间隔，客户端在需要的时候向服务器端发送请求。不同之处在于响应的那部分上，响应被分成两个部分：对请求数据的响应和对服务器事件的响应，如果任何一部分有发生的话。图2给出了一个例子。<br><br>
+  图2. 使用了piggyback轮询的反向Ajax<br><br><br>
+  在实现piggyback技术时，通常针对服务器端的所有Ajax请求可能会返回一个混合的响应，文章的下载中有一个实现示例，如下面的清单4所示。<br><br>
+  清单4. piggyback代码示例<br>
+$('#submit').click(function() {<br>
+  $.post('ajax', function(data) {<br>
+    var valid = data.formValid;<br>
+    // 处理验证结果<br>
+    // 然后处理响应的其他部分（事件）<br>
+    processEvents(data.events);<br>
+  });<br>
+});<br><br>
+  清单5给出了一些piggyback输出。<br><br>
+  清单5. piggyback输出示例<br>
+[client] checking for events...<br>
+[server] form valid ? true<br>
+[client]4 events<br>
+[event] At Sun Jun 0516:08:32 EDT 2011<br>
+[event] At Sun Jun 0516:08:34 EDT 2011<br>
+[event] At Sun Jun 0516:08:34 EDT 2011<br>
+[event] At Sun Jun 0516:08:37 EDT 2011<br><br>
+  你可以看到表单验证的结果和附加到响应上的事件，同样，这种方法也有着一些优点和缺点：<br><br>
+  1. 优点：没有不返回数据的请求，因为客户端对何时发送请求做了控制，对资源的消耗较少。该方法也是可用在所有的浏览器上，不需要服务器端的特殊功能。<br><br>
+  2. 缺点：当累积在服务器端的事件需要传送给客户端时，你却一点都不知道，因为这需要一个客户端行为来请求它们。<br><br>
+  Comet<br><br>
+  使用了轮询或是捎带的反向Ajax非常受限：其不具伸缩性，不提供低延迟通信（只要事件一到达服务器端，它们就以尽可能快的速度到达浏览器端）。Comet是一个web应用模型，在该模型中，请求被发送到服务器端并保持一个很长的存活期，直到超时或是有服务器端事件发生。在该请求完成后，另一个长生存期的Ajax请求就被送去等待另一个服务器端事件。使用Comet的话，web服务器就可以在无需显式请求的情况下向客户端发送数据。<br><br>
+  Comet的一大优点是，每个客户端始终都有一个向服务器端打开的通信链路。服务器端可以通过在事件到来时立即提交（完成）响应来把事件推给客户端，或者它甚至可以累积再连续发送。因为请求长时间保持打开的状态，故服务器端需要特别的功能来处理所有的这些长生存期请求。图3给出了一个例子。（这一文章系列的第2部分会更加详细地解释服务器端的约束条件）。<br><br>
+  图3. 使用Comet的反向Ajax<br><br><br>
+  Comet的实现可以分成两类：使用流（streaming）的那些和使用长轮询（long polling）的那些。<br><br>
+  使用HTTP流的Comet<br><br>
+  在流（streaming）模式中，有一个持久连接会被打开。只会存在一个长生存期请求（图3中的#1），因为每个到达服务器端的事件都会通过这同一连接来发送。因此，客户端需要有一种方法来把通过这同一连接发送过来的不同响应分隔开来。从技术上来讲，两种常见的流技术包括Forever Iframe（隐藏的IFrame），或是被用来在JavaScript中创建Ajax请求的XMLHttpRequest对象的多部分（multi-part）特性。<br><br>
+  Forever Iframe<br><br>
+  Forever Iframe（永存的Iframe）技术涉及了一个置于页面中的隐藏Iframe标签，该标签的src属性指向返回服务器端事件的servlet路径。每次在事件到达时，servlet写入并刷新一个新的script标签，该标签内部带有JavaScript代码，iframe的内容被附加上这一script标签，标签中的内容就会得到执行。<br><br>
+  1. 优点：实现简单，在所有支持iframe的浏览器上都可用。<br><br>
+  2. 缺点： 没有方法可用来实现可靠的错误处理或是跟踪连接的状态，因为所有的连接和数据都是由浏览器通过HTML标签来处理的，因此你没有办法知道连接何时在哪一端已被断开了。<br><br>
+  Multi-part XMLHttpRequest<br><br>
+  第二种技术，更可靠一些，是XMLHttpRequest对象上使用某些浏览器（比如说Firefox）支持的multi-part标志。Ajax请求被发送给服务器端并保持打开状态，每次有事件到来时，一个多部分的响应就会通过这同一连接来写入，清单6给出了一个例子。<br><br>
+  清单6. 设置Multi-part XMLHttpRequest的JavaScript代码示例<br>
+var xhr = $.ajaxSettings.xhr();<br>
+xhr.multipart =true;<br>
+xhr.open('GET', 'ajax', true);<br>
+xhr.onreadystatechange = function() {<br>
+  if (xhr.readyState == 4) {<br>
+    processEvents($.parseJSON(xhr.responseText));<br>
+  }<br>
+};<br>
+xhr.send(null);<br><br>
+  在服务器端，事情要稍加复杂一些。首先你必须要设置多部分请求，然后挂起连接。清单7展示了如何挂起一个HTTP流请求。（这一系列的第3部分会更加详细地谈及这些API。）<br><br>
+  清单7. 使用Servlet 3 API来在servlet中挂起一个HTTP流请求<br>
+protected void doGet(HttpServletRequest req, HttpServletResponse resp)<br>
+throws ServletException, IOException {<br>
+  // 开始请求的挂起<br>
+  AsyncContext asyncContext = req.startAsync();<br>
+  asyncContext.setTimeout(0);<br><br>
+  // 给客户端发回多部分的分隔符<br>
+  resp.setContentType(&quot;multipart/x-mixed-replace;boundary=\&quot;&quot;<br>
+  + boundary +&quot;\&quot;&quot;);<br>
+  resp.setHeader(&quot;Connection&quot;, &quot;keep-alive&quot;);<br>
+  resp.getOutputStream().print(&quot;--&quot;+ boundary);<br>
+  resp.flushBuffer();<br><br>
+  // 把异步上下文放在列表中以被将来只用<br>
+  asyncContexts.offer(asyncContext);<br>
+}<br><br>
+  现在，每次有事件发生时你都可以遍历所有的挂起连接并向它们写入数据，如清单8所示：<br><br>
+  清单8. 使用Servlet 3 API来向挂起的多部分请求发送事件<br>
+for (AsyncContext asyncContext : asyncContexts) {<br>
+  HttpServletResponse peer = (HttpServletResponse)<br>
+  asyncContext.getResponse();<br>
+  peer.getOutputStream().println(&quot;Content-Type: application/json&quot;);<br>
+  peer.getOutputStream().println();<br>
+  peer.getOutputStream().println(new JSONArray()<br>
+  .put(&quot;At &quot;+new Date()).toString());<br>
+  peer.getOutputStream().println(&quot;--&quot;+ boundary);<br>
+  peer.flushBuffer();<br>
+}<br><br>
+  本文可下载文件的Comet-straming文件夹中的部分说明了HTTP流，在运行例子并打开主页时，你会看到只要事件一到达服务器端，虽然不同步但它们几乎立刻会出现在页面上。而且，如果打开Firebug控制台的话，你就能看到只有一个Ajax请求是打开的。如果再往下看一些，你会看到JSON响应被附在Response选项卡中，如图4所示：<br><br>
+  图4. HTTP流请求的FireBug视图<br><br><br>
+  照例，做法存在着一些优点和缺点：<br><br>
+  1. 优点：只打开了一个持久连接，这就是节省了大部分带宽使用率的Comet技术。<br><br>
+  2. 缺点：并非所有的浏览器都支持multi-part标志。某些被广泛使用的库，比如说用Java实现的CometD，被报告在缓冲方面有问题。例如，一些数据块（多个部分）可能被缓冲，然后只有在连接完成或是缓冲区已满时才被发送，而这有可能会带来比预期要高的延迟。<br><br>
+  使用HTTP长轮询的Comet<br><br>
+  长轮询（long polling）模式涉及了打开连接的技术。连接由服务器端保持着打开的状态，只要一有事件发生，响应就会被提交，然后连接关闭。接下来。一个新的长轮询连接就会被正在等待新事件到达的客户端重新打开。<br><br>
+  你可以使用script标签或是单纯的XMLHttpRequest对象来实现HTTP长轮询。<br><br>
+  script标签<br><br>
+  正如iframe一样，其目标是把script标签附加到页面上以让脚本执行。服务器端则会：挂起连接直到有事件发生，接着把脚本内容发送回浏览器，然后重新打开另一个script标签来获取下一个事件。<br><br>
+  1. 优点：因为是基于HTML标签的，所有这一技术非常容易实现，且可跨域工作（缺省情况下，XMLHttpRequest不允许向其他域或是子域发送请求）。<br><br>
+  2. 缺点：类似于iframe技术，错误处理缺失，你不能获得连接的状态或是有干涉连接的能力。<br><br>
+  XMLHttpRequest长轮询<br><br>
+  第二种，也是一种推荐的实现Comet的做法是打开一个到服务器端的Ajax请求然后等待响应。服务器端需要一些特定的功能来允许请求被挂起，只要一有事件发生，服务器端就会在挂起的请求中送回响应并关闭该请求，完全就像是你关闭了servlet响应的输出流。然后客户端就会使用这一响应并打开一个新的到服务器端的长生存期的Ajax请求，如清单9所示：<br><br>
+  清单9. 设置长轮询请求的JavaScript代码示例<br>
+function long_polling() {<br>
+  $.getJSON('ajax', function(events) {<br>
+    processEvents(events);<br>
+    long_polling();<br>
+  });<br>
+}<br>
+long_polling();<br><br>
+  在后端，代码也是使用Servlet 3 API来挂起请求，正如HTTP流的做法一样，但你不需要所有的多部分处理代码，清单10给出了一个例子。<br><br>
+  清单10. 挂起一个长轮询Ajax请求<br>
+protected void doGet(HttpServletRequest req, HttpServletResponse resp)<br>
+throws ServletException, IOException {<br>
+  AsyncContext asyncContext = req.startAsync();<br>
+  asyncContext.setTimeout(0);<br>
+  asyncContexts.offer(asyncContext);<br>
+}<br><br>
+  在接收到事件时，只是取出所有的挂起请求并完成它们，如清单11所示：<br><br>
+  清单11. 在有事件发生时完成长轮询Ajax请求<br>
+while (!asyncContexts.isEmpty()) {<br>
+  AsyncContext asyncContext = asyncContexts.poll();<br>
+  HttpServletResponse peer = (HttpServletResponse)<br>
+  asyncContext.getResponse();<br>
+  peer.getWriter().write(<br>
+    new JSONArray().put(&quot;At &quot; + new Date()).toString());<br>
+  peer.setStatus(HttpServletResponse.SC_OK);<br>
+  peer.setContentType(&quot;application/json&quot;);<br>
+  asyncContext.complete();<br>
+}<br><br>
+  在附带的下载源文件中，comet-long-polling文件夹包含了一个长轮询示例web应用，你可以使用 mvn jetty:run 命令来运行它。<br><br>
+  1. 优点：客户端很容易实现良好的错误处理系统和超时管理。这一可靠的技术还允许在与服务器端的连接之间有一个往返，即使连接是非持久的（当你的应用有许多的客户端时，这是一件好事）。它可用在所有的浏览器上；你只需要确保所用的XMLHttpRequest对象发送到的简单的Ajax请求就可以了。<br><br>
+  2. 缺点：相比于其他技术来说，不存在什么重要的缺点，像所有我们已经讨论过的技术一样，该方法依然依赖于无状态的HTTP连接，其要求服务器端有特殊的功能来临时挂起连接。<br><br>
+  建议<br><br>
+  因为所有现代的浏览器都支持跨域资源共享（Cross-Origin Resource Share，CORS）规范，该规范允许XHR执行跨域请求，因此基于脚本的和基于iframe的技术已成为了一种过时的需要。<br><br>
+  把Comet做为反向Ajax的实现和使用的最好方式是通过XMLHttpRequest对象，该做法提供了一个真正的连接句柄和错误处理。考虑到不是所有的浏览器都支持multi-part标志，且多部分流可能会遇到缓冲问题，因此建议你选择经由HTTP长轮询使用XMLHttpRequest对象（在服务器端挂起的一个简单的Ajax请求）的Comet模式，所有支持Ajax的浏览器也都支持该种做法。<br><br>
+  结论<br><br>
+  本文提供的是反向Ajax技术的一个入门级介绍，文章探索了实现反向Ajax通信的不同方法，并说明了每种实现的优势和弊端。你的具体情况和应用需求将会影响到你对最合适方法的选择。不过一般来说，如果你想要在低延迟通信、超时和错误检测、简易性，以及所有浏览器和平台的良好支持这几方面有一个最好的折中的话，那就选择使用了Ajax长轮询请求的Comet。<br><br>
+  请继续阅读这一系列的第2部分：该部分将会探讨第三种反向Ajax技术：WebSocket。尽管还不是所有的浏览器都支持该技术，但WebSocket肯定是一种非常好的反向Ajax通信媒介，WebSocket消除了所有与HTTP连接的无状态特性相关的限制。第2部分还会谈及由Comet和WebSocket技术带来的服务器端约束。<br><br>
+  代码下载<br><br>
+  reverse_ajaxpt1_source.zip<br><br>
+  参考资料<br><br>
+  学习资料<br><br>
+  1. 在维基百科上了解这些内容：<br><br>
+  1.1 Ajax<br>
+   1.2 Reverse Ajax<br>
+   1.3 Comet<br>
+   1.4 WebSockets<br><br>
+  2. “Exploring Reverse AJAX”（Google Maps .Net Control博客，2006年8月）：获得一些关于反向Ajax技术的介绍说明。<br><br>
+  3. “Cross-domain communications with JSONP, Part 1: Combine JSONP and jQuery to quickly build powerful mashups”（developerWorks, February 2009）：了解如何把不起眼的跨域调用技术（JSONP）和一个灵活的JavaScript库（JQuery）结合在一起，以令人惊讶的速度构建出一些功能强大的聚合应用。<br><br>
+  4. “Cross-Origin Resource Sharing (CORS)”规范（W3C, July 2010）：了解更多关于这一机制的内容，该机制允许XHR执行跨域请求。<br><br>
+  5. “Build Ajax applications with Ext JS”（developerWorks, July 2008）：对大大增强了JavaScript开发的这一框架有一个大概的了解。<br><br>
+  6. “Mastering Ajax, Part 2: Make asynchronous requests with JavaScript and Ajax”（developerWorks, January 2006）：学习如何使用Ajax和XMLHttpRequest对象来创建一种永不会让用户等待服务器响应的请求/响应模型。<br><br>
+  7. “Create Ajax applications for the mobile Web”（developerWorks, March 2010）：了解如何使用Ajax构建跨浏览器的智能手机Web应用。<br><br>
+  8. “Improve the performance of Web 2.0 applications“（developerWorks, December 2009）：探讨不同的浏览器端缓存机制。<br><br>
+  9. “Introducing JSON”（JSON.org）：获得对JSON语法的一个入门介绍。<br><br>
+  10. developerWorks Web development zone：获得各种谈论基于Web的解决方案的文章。<br><br>
+  11. developerWorks podcasts：收听各种与软件开发者进行的有趣的访谈和讨论。<br><br>
+  12. developerWorks technical events and webcasts：随时关注developerWorks的技术事件和webcast的进展。<br><br>
+  获取产品和技术<br><br>
+  1. 获取ExtJS，这是一个用来构建富互联网应用的跨浏览器JavaScript库。<br><br>
+  2. XAMPP为Apache、PHP、MySQL和其他产品提供了一种简易的安装。<br><br>
+  3. 免费试用IBM软件，下载使用版，登录在线试用，在沙箱环境中使用产品，或是通过云来访问，有超过100种IBM产品试用版选择。<br><br>
+  讨论<br><br>
+  1. 现在就创建你的developerWorks个人资料，并设置一个关于Reverse Ajax的观看列表。与developerWorks社区建立联系并保持联系。<br><br>
+  2. 找到其他在web开发方面感兴趣的developerWorks成员。<br><br>
+  3. 分享你的知识：加入一个关注web专题的developerWorks组。<br><br>
+  4. Roland Barcia在他的博客中谈论Web 2.0和中间件。<br><br>
+  5. 关注developerWork成员的shared bookmarks on web topics。<br><br>
+  6. 快速获得答案：访问Web 2.0 Apps论坛。<br><br>
+  7. 快速获得答案：访问Ajax论坛。<br><br>
+  关于作者<br><br>
+  Mathieu Carbou是Ovea的一位提供服务和开发解决方案的Java web架构师和顾问。他是几个开源项目的提交者和领导者，也是Montreal的Java User Group的一位演讲者和领导者。Mathieu有着很强的代码设计和最佳实践背景，他是一个从客户端到后端的事件驱动的web开发方面的专家。他的工作重点是在高度可伸缩的web应用中提供事件驱动的和消息式的解决方案。你可以看一看他的博客。<br><br>
+  相关博文<br><br>
+  用 ASP.NET MVC 实现基于 Multipart XMLHttpRequest 的 Comet<br><br>
+  用 ASP.NET MVC 实现基于 XMLHttpRequest long polling（长轮询） 的 Comet</div></div>
+</div></body></html> 

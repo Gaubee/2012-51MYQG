@@ -1,0 +1,420 @@
+<html>
+<head>
+  <title>问个数据库字段nchar和nvarchar的区别_百度知道</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="911"/>
+<h1>问个数据库字段nchar和nvarchar的区别_百度知道</h1>
+
+<div>
+<div><div style="background-image:initial;background-repeat: initial initial;margin-bottom:10px;border-top-color:rgb(214, 214, 214);border-right-color:rgb(214, 214, 214);border-bottom-color:rgb(214, 214, 214);border-left-color:rgb(214, 214, 214);border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-image:initial;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;background-attachment:initial;background-position-x:initial;background-position-y:initial;background-origin:initial;background-clip:initial;background-color:rgb(255, 255, 255);font-size:14px;font-family:arial, 宋体, sans-serif;margin:0px;position:relative;">
+        <div style="background-repeat: initial initial;zoom:1;clear:both;padding-top:0px;padding-right:15px;padding-bottom:0px;padding-left:15px;">
+            <span style="background-image:url(http://img.baidu.com/img/iknow/ui/icons/global.png);background-repeat: no-repeat no-repeat;font-family:tahoma;display:inline-block;padding-left:25px;line-height:24px;background-attachment:initial;background-position-x:0%;background-position-y:-94px;background-origin:initial;background-clip:initial;background-color:initial;vertical-align:middle;height:24px;"><strong style="background-repeat: initial initial;font-size:15px;font-family:微软雅黑;">其他回答</strong></span>
+            <span style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;">共4条</span>
+        </div>
+        
+
+<div style="background-repeat: initial initial;zoom:1;clear:both;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;border-bottom-style:dashed;border-bottom-color:rgb(187, 187, 187);border-bottom-width:1px;">
+    <div>
+    
+    <div style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;zoom:1;clear:both;">
+        <span style="background-repeat: initial initial;float:right;">
+            
+                <span style="background-repeat: initial initial;visibility:hidden;"></span>
+                <span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;visibility:hidden;"></span>
+            
+            2008-3-6 22:09
+        </span>
+        
+        
+    
+        
+
+   <a href="http://www.baidu.com/p/doif?from=zhidao" shape="rect" style="background-repeat: initial initial;text-decoration:none;vertical-align:baseline;color:rgb(19, 61, 182);" target="_blank">doif</a>
+
+
+
+        
+    
+    
+
+
+
+
+
+
+
+<span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;">|</span>
+三级
+
+    <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+    <div style="background-repeat: initial initial;margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">
+    	
+	        <pre style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:10px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-family:Arial;white-space:pre-wrap;word-wrap:break-word;zoom:1;">NCHAR、NVARCHAR、NTEXT。这三种从名字上看比前面三种多了个“N”。它表示存储的是Unicode数据类型的字符。我们知道字符中，英文字符只需要一个字节存储就足够了，但汉字众多，需要两个字节存储，英文与汉字同时存在时容易造成混乱，Unicode字符集就是为了解决字符集这种不兼容的问题而产生的，它所有的字符都用两个字节表示，即英文字符也是用两个字节表示。nchar、nvarchar的长度是在1到4000之间。和char、varchar比较起来，nchar、nvarchar则最多存储4000个字符，不论是英文还是汉字；而char、varchar最多能存储8000个英文，4000个汉字。可以看出使用nchar、nvarchar数据类型时不用担心输入的字符是英文还是汉字，较为方便，但在存储英文时数量上有些损失。
+     所以一般来说，如果含有中文字符，用nchar/nvarchar，如果纯英文和数字，用char/varchar。 </pre>
+	        
+	        
+
+
+    	
+        
+        
+        <div style="background-repeat: initial initial;margin-top:10px;word-wrap:break-word;color:rgb(102, 102, 102);">
+           <span style="background-repeat: initial initial;white-space:nowrap;">参考资料：</span><a href="http://hi.baidu.com/cystian/blog/item/5a98cbf4fab954ddf2d3859a.html" shape="rect" style="background-repeat: initial initial;text-decoration:none;vertical-align:baseline;color:rgb(19, 61, 182);" target="_blank">http://hi.baidu.com/cystian/blog/item/5a98cbf4fab954ddf2d3859a.html</a>
+        </div>
+        
+        
+            <div style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;float:right;">
+<div style="background-image:url(http://img.baidu.com/img/iknow/qb/qb-bg-value.png);background-repeat: no-repeat no-repeat;float:left;background-attachment:initial;background-position-x:0%;background-position-y:0%;background-origin:initial;background-clip:initial;background-color:initial;height:24px;cursor:pointer;overflow-x:hidden;overflow-y:hidden;position:relative;margin-right:5px;zoom:1;">
+    <div style="background-image:url(http://img.baidu.com/img/iknow/qb/qb-bg-value.png);background-repeat: no-repeat no-repeat;height:24px;margin-left:18px;background-attachment:initial;background-position-x:100%;background-position-y:-26px;background-origin:initial;background-clip:initial;background-color:initial;zoom:1;">
+        
+        <div style="background-repeat: initial initial;color:rgb(223, 72, 67);font-weight:bold;font-size:12px;line-height:22px;padding-top:0px;padding-right:7px;padding-bottom:0px;padding-left:0px;font-family:Tahoma;text-align:center;white-space:nowrap;width:33px;overflow-x:hidden;overflow-y:hidden;">0</div>
+    </div>
+</div>
+<span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;vertical-align:-1px;">|</span>
+<span style="background-repeat: initial initial;font-family:Arial;color:rgb(19, 61, 182);cursor:pointer;vertical-align:-1px;">评论</span>
+            <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+        
+        
+        
+        
+        
+        
+            
+                
+                
+            
+    <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+    <div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</div>
+    </div> 
+</div>
+
+
+
+<div style="background-repeat: initial initial;zoom:1;clear:both;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;border-bottom-style:dashed;border-bottom-color:rgb(187, 187, 187);border-bottom-width:1px;">
+    <div>
+    
+    <div style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;zoom:1;clear:both;">
+        <span style="background-repeat: initial initial;float:right;">
+            
+                <span style="background-repeat: initial initial;visibility:hidden;"></span>
+                <span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;visibility:hidden;"></span>
+            
+            2008-3-6 22:39
+        </span>
+        
+        
+    
+        
+
+   <a href="http://www.baidu.com/p/%E9%80%90%E6%9C%88%E8%BF%BD%E5%BF%83?from=zhidao" shape="rect" style="background-repeat: initial initial;text-decoration:none;vertical-align:baseline;color:rgb(19, 61, 182);" target="_blank">逐月追心</a>
+
+
+
+        
+    
+    
+
+
+
+
+
+
+
+<span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;">|</span>
+一级
+
+    <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+    <div style="background-repeat: initial initial;margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">
+    	
+	        <pre style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:10px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-family:Arial;white-space:pre-wrap;word-wrap:break-word;zoom:1;">1.什么时候用nchar:字符长度固定,可以定为CHAR的字段,但是你考虑到字段里要用汉字,并且将来要把它移植的其他数据库上,用CHAR的话可能会出现兼容于是可以选择NCHAR.
+2.什么时候用nvarchar:字符长度不固定,可以定为varCHAR的字段,但是你考虑到字段里要用汉字,并且将来要把它移植的其他数据库上,用CHAR的话可能会出现兼容于是可以选择NCHAR.
+NCHAR 和NVARCHAR是标准的Unicode汉字编码,可移植性强.
+3.nchar(10)代表10个字符但是他的长度却是20个字符的长度.也就是说它要用20个字符的空间存储10个字符. </pre>
+	        
+	        
+
+
+    	
+        
+        
+        
+            <div style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;float:right;">
+<div style="background-image:url(http://img.baidu.com/img/iknow/qb/qb-bg-value.png);background-repeat: no-repeat no-repeat;float:left;background-attachment:initial;background-position-x:0%;background-position-y:0%;background-origin:initial;background-clip:initial;background-color:initial;height:24px;cursor:pointer;overflow-x:hidden;overflow-y:hidden;position:relative;margin-right:5px;zoom:1;">
+    <div style="background-image:url(http://img.baidu.com/img/iknow/qb/qb-bg-value.png);background-repeat: no-repeat no-repeat;height:24px;margin-left:18px;background-attachment:initial;background-position-x:100%;background-position-y:-26px;background-origin:initial;background-clip:initial;background-color:initial;zoom:1;">
+        
+        <div style="background-repeat: initial initial;color:rgb(223, 72, 67);font-weight:bold;font-size:12px;line-height:22px;padding-top:0px;padding-right:7px;padding-bottom:0px;padding-left:0px;font-family:Tahoma;text-align:center;white-space:nowrap;width:33px;overflow-x:hidden;overflow-y:hidden;">0</div>
+    </div>
+</div>
+<span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;vertical-align:-1px;">|</span>
+<span style="background-repeat: initial initial;font-family:Arial;color:rgb(19, 61, 182);cursor:pointer;vertical-align:-1px;">评论</span>
+            <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+        
+        
+        
+        
+        
+        
+            
+                
+                
+            
+    <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+    <div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</div>
+    </div> 
+</div>
+
+
+
+<div style="background-repeat: initial initial;zoom:1;clear:both;padding-top:10px;padding-right:15px;padding-bottom:10px;padding-left:15px;border-bottom-style:dashed;border-bottom-color:rgb(187, 187, 187);border-bottom-width:1px;">
+    <div>
+    
+    <div style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;zoom:1;clear:both;">
+        <span style="background-repeat: initial initial;float:right;">
+            
+                <span style="background-repeat: initial initial;visibility:hidden;"></span>
+                <span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;visibility:hidden;"></span>
+            
+            2008-3-7 15:00
+        </span>
+        
+        
+    
+        
+
+   <a href="http://www.baidu.com/p/cn_cnb?from=zhidao" shape="rect" style="background-repeat: initial initial;text-decoration:none;vertical-align:baseline;color:rgb(19, 61, 182);" target="_blank">cn_cnb</a>
+
+
+
+        
+    
+    
+
+
+
+
+
+
+
+<span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;">|</span>
+一级
+
+    <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+    <div style="background-repeat: initial initial;margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">
+    	
+	        <pre style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:10px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-family:Arial;white-space:pre-wrap;word-wrap:break-word;zoom:1;">nchar(10) 代表10个Unicode字符数据，将占据20位字节空间。
+
+nchar 和 nvarchar (Transact-SQL) 
+
+字符数据类型（nchar 长度固定，nvarchar 长度可变）
+
+nchar [ ( n ) ]
+
+n 个字符的固定长度的 Unicode 字符数据。n 值必须在 1 到 4,000 之间（含）。存储大小为两倍 n 字节。nchar 的 SQL-2003 同义词为 national char 和 national character。
+
+nvarchar [ ( n | max ) ] 
+
+可变长度 Unicode 字符数据。n 值在 1 到 4,000 之间（含）。max 指示最大存储大小为 2^31-1 字节。存储大小是所输入字符个数的两倍 + 2 个字节。所输入数据的长度可以为 0 个字符。nvarchar 的 SQL-2003 同义词为 national char varying 和 national character varying。
+
+如果没有在数据定义或变量声明语句中指定 n，则默认长度为 1。如果没有使用 CAST 函数指定 n，则默认长度为 30。
+
+如果列数据项的大小可能相同，请使用 nchar。
+
+如果列数据项的大小可能差异很大，请使用 nvarchar。
+
+sysname 是系统提供的用户定义数据类型，除了不以为零外，在功能上与 nvarchar(128) 相同。sysname 用于引用数据库对象名。 
+
+为使用 nchar 或 nvarchar 的对象分配的是默认的数据库排序规则，但可使用 COLLATE 子句分配特定的排序规则。
+
+SET ANSI_PADDING ON 永远适用于 nchar 和 nvarchar。SET ANSI_PADDING OFF 不适用于 nchar 或 nvarchar 数据类型。 </pre>
+	        
+	        
+
+
+    	
+        
+        
+        <div style="background-repeat: initial initial;margin-top:10px;word-wrap:break-word;color:rgb(102, 102, 102);">
+           <span style="background-repeat: initial initial;white-space:nowrap;">参考资料：</span>SQL Server 2005 联机丛书（2007 年 9 月）
+        </div>
+        
+        
+            <div style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;float:right;">
+<div style="background-image:url(http://img.baidu.com/img/iknow/qb/qb-bg-value.png);background-repeat: no-repeat no-repeat;float:left;background-attachment:initial;background-position-x:0%;background-position-y:0%;background-origin:initial;background-clip:initial;background-color:initial;height:24px;cursor:pointer;overflow-x:hidden;overflow-y:hidden;position:relative;margin-right:5px;zoom:1;">
+    <div style="background-image:url(http://img.baidu.com/img/iknow/qb/qb-bg-value.png);background-repeat: no-repeat no-repeat;height:24px;margin-left:18px;background-attachment:initial;background-position-x:100%;background-position-y:-26px;background-origin:initial;background-clip:initial;background-color:initial;zoom:1;">
+        
+        <div style="background-repeat: initial initial;color:rgb(223, 72, 67);font-weight:bold;font-size:12px;line-height:22px;padding-top:0px;padding-right:7px;padding-bottom:0px;padding-left:0px;font-family:Tahoma;text-align:center;white-space:nowrap;width:33px;overflow-x:hidden;overflow-y:hidden;">0</div>
+    </div>
+</div>
+<span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;vertical-align:-1px;">|</span>
+<span style="background-repeat: initial initial;font-family:Arial;color:rgb(19, 61, 182);cursor:pointer;vertical-align:-1px;">评论</span>
+            <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+        
+        
+        
+        
+        
+        
+            
+                
+                
+            
+    <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+    <div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</div>
+    </div> 
+</div>
+
+
+
+<div style="background-repeat: initial initial;zoom:1;clear:both;padding-top:10px;padding-right:15px;padding-bottom:0px;padding-left:15px;border-bottom-style:none;border-bottom-color:initial;border-bottom-width:initial;border-top-style:none;border-right-style:none;border-left-style:none;border-top-width:initial;border-right-width:initial;border-left-width:initial;border-top-color:initial;border-right-color:initial;border-left-color:initial;border-image:initial;">
+    <div>
+    
+    <div style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;zoom:1;clear:both;">
+        <span style="background-repeat: initial initial;float:right;">
+            
+                <span style="background-repeat: initial initial;visibility:hidden;"></span>
+                <span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;visibility:hidden;"></span>
+            
+            2008-3-7 17:15
+        </span>
+        
+        
+    
+        
+
+   <a href="http://www.baidu.com/p/aaagxsun?from=zhidao" shape="rect" style="background-repeat: initial initial;text-decoration:none;vertical-align:baseline;color:rgb(19, 61, 182);" target="_blank">aaagxsun</a>
+
+
+
+        
+    
+    
+
+
+
+
+
+
+
+<span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;">|</span>
+二级
+
+    <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+    <div style="background-repeat: initial initial;margin-top:5px;margin-right:0px;margin-bottom:5px;margin-left:0px;">
+    	
+	        <pre style="background-repeat: initial initial;margin-top:0px;margin-right:0px;margin-bottom:10px;margin-left:0px;padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;font-family:Arial;white-space:pre-wrap;word-wrap:break-word;zoom:1;">nchar是定长的，
+nvarchar是不定长的。
+如果有个字段id 你只用3位
+id nchar(10) 它占10位的，3位以后的全都用空补上
+id nvarchar(10)  它只占用3位
+
+这二种类型底层的存储结构不一样的
+如果列数据项长度差异不大，用 nchar效率高点。 
+
+如果列数据项长度差异很大，用 nvarchar效率高点。 </pre>
+	        
+	        
+
+
+    	
+        
+        
+        
+            <div style="background-repeat: initial initial;font-size:12px;line-height:22px;color:rgb(102, 102, 102);font-family:tahoma;vertical-align:middle;float:right;">
+<div style="background-image:url(http://img.baidu.com/img/iknow/qb/qb-bg-value.png);background-repeat: no-repeat no-repeat;float:left;background-attachment:initial;background-position-x:0%;background-position-y:0%;background-origin:initial;background-clip:initial;background-color:initial;height:24px;cursor:pointer;overflow-x:hidden;overflow-y:hidden;position:relative;margin-right:5px;zoom:1;">
+    <div style="background-image:url(http://img.baidu.com/img/iknow/qb/qb-bg-value.png);background-repeat: no-repeat no-repeat;height:24px;margin-left:18px;background-attachment:initial;background-position-x:100%;background-position-y:-26px;background-origin:initial;background-clip:initial;background-color:initial;zoom:1;">
+        
+        <div style="background-repeat: initial initial;color:rgb(223, 72, 67);font-weight:bold;font-size:12px;line-height:22px;padding-top:0px;padding-right:7px;padding-bottom:0px;padding-left:0px;font-family:Tahoma;text-align:center;white-space:nowrap;width:33px;overflow-x:hidden;overflow-y:hidden;">0</div>
+    </div>
+</div>
+<span style="background-repeat: initial initial;color:rgb(193, 193, 193);margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:5px;vertical-align:-1px;">|</span>
+<span style="background-repeat: initial initial;font-family:Arial;color:rgb(19, 61, 182);cursor:pointer;vertical-align:-1px;">评论</span>
+            <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+        
+        
+        
+        
+        
+        
+            
+                
+                
+            
+    <div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+    <div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</div>
+    </div> 
+</div>
+
+
+        
+    <div style="clear: both"></div></div></div>
+</div></body></html> 

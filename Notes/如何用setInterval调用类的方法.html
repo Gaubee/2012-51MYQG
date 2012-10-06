@@ -1,0 +1,94 @@
+<html>
+<head>
+  <title>如何用setInterval调用类的方法</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1929"/>
+<h1>如何用setInterval调用类的方法</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+ 由于JS灵活的this指针重绑定导致的 
+<div><br><br>
+setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。setInterval() 方法会不停地调用函数，直到 clearInterval() 被调用或窗口被关闭。由 setInterval() 返回的 ID 值可用作 clearInterval() 方法的参数。<br><br>
+近日在编写程序时发现调用setInterval传入的方法时，在程序间隔调用时无法获取正确的类方法，究其原因是由于JS灵活的this指针重绑定导致的。那么this指针为什么会重绑定，又重绑定到哪里去了呢？setInterval又做了些什么 工作呢？<br><br>
+大家都知道JS的类是通过function模拟出来的，并不是真正面向对象的类，那么就要从这里说起了。JS模拟类的方式大致分为3中形式：第一种是HW开发人员惯用的，原型扩展方式模拟类；第二种是匿名对象扩展模拟类；第三种就是通过Function动态方式创建类，这种方式可mapping到面向对象语言中的反射机制，有异曲同工之处，当然今天要讲的重点不是这个，回到我们的主题。要了解this指针，首先我们来看个例子：01     function getName(){<br>
+02         return this.name;<br>
+03     }<br>
+04     function Person(){<br>
+05          this.name = &quot;sparon&quot;;<br>
+06     }<br>
+07     Person.prototype.sayName = getName;<br>
+08     var people = new Person();<br>
+09     people.sayName();<br>
+10     result:<br>
+11     sparon<br><br><br>
+这个例子说明this指针是晚绑定的，而并不是程序初始化时绑定的。在《JAVASCRIPT高级程序设计》一书中&quot;7.2.2关于this对象&quot; 一节中指出：&quot;this对象是在运行时给予函数的执行环境绑定的&quot;。this作为全局唯一特殊指针存在，this作为类内部调用标志，当我们处于类外部调用this指针访问类内部成员时是无效的。<br><br>
+好了，在明确这点后我们在回过头来讲讲setInterval这个函数，其实准确的说setInterval是widnow对象的一个方法，window对象也是一个特殊的对象，以后有机会再慢慢讲来。<br><br>
+语法：setInterval(code,millisec[,&quot;lang&quot;])<br>
+code : 必需。要调用的函数或要执行的代码串。<br>
+millisec: 必须。周期性执行或调用 code 之间的时间间隔，以毫秒计。<br><br>
+后面的参数基本用不到，这里就不作解释了。<br><br>
+在这里code可以是一个函数名，可以是函数名字符串，同时也可以是一段代码，或一个匿名函数，这就是JS语言的灵活之处。milisec当然就是调用间隔时间了，下面就来说说这个code参数。<br><br>
+先来看看我早起的调用，大家看看问题出在哪里，并想一下在gameStart 和gameLoop中的this指针分别是指向那个对象，是不是同一个对象，如果不是为什么。01     function SPARONGame(){<br>
+02         this.name = &quot;DotaAllStar&quot;;<br>
+03         this.player_Num = 10;<br>
+04         this.game_init = false;<br>
+05         this.game_start = false;<br>
+06         this.game_speed = 100;<br>
+07     }<br>
+08     SPARONGame.prototype.init = function() {<br>
+09         // Todo init game...<br>
+10         $(&quot;#start&quot;).click(this.gameStart);<br>
+11         this.game_init = true;<br>
+12     }<br>
+13     SPARONGame.prototype.gameStart = function() {<br>
+14         if (!this.game_init) { // 这里调用this.game_init会存在问题，大家想想问题出在哪里？这里this又指向何处？<br>
+15             return;<br>
+16         }<br>
+17         this.game_start = true;<br>
+18         setInterval(this.gameLoop, this.game_speed);<br>
+19     }<br>
+20     SPARONGame.prototype.gameLoop = function() {<br>
+21         if (!this.game_start){ // 这里调用this.game_start会存在问题，大家想想问题出在哪里？这里this又指向何处？<br>
+22             return;<br>
+23         }<br>
+24     }<br><br><br>
+在这段代码中最关键的问题在于作用域问题，要解决这个问题首先要了解this指针是指向何处？首先gameStart中的this是指向document对象的，因为当执行$(&quot;#start&quot;).click(this.gameStart);时其实click是将gameStart作为函数来处理了，所以当用户点击页面的start标签时，JS将gameStart函数绑定到了document对象下。而gameLoop中的this是指向window的，原理相同，至于为什么，这就要回顾到我前面的示例了，在之前讲过this指针是动态晚绑定的。<br><br>
+那么在知道这点后，我怎么来修正呢？这里就要用到JS的命名空间了，正是由于this是晚绑定的，而在gameStart和gameLoop中将对象方法传递给事件处理函数时，JS无法动态的去解析或者说变更this为指向的对象，从而导致了在后期调用该参数是，this被重绑定。这里有很多解决方案，之前在网上看到一篇文章是将this对象通过eval函数设置到window对象下，这样全局可访问，到调用方法内部再将其取回即可正常使用，还有一种方法很简单，就是利用变量存储指针引用，然后在匿名函数中通过变量调用方法，第三种就是我所讲到的解决方案，通过命名空间定位。<br><br>
+在JS中点(.)通常表示类.方法/字段/…,但可以从另一方面来理解，点操作符时间上是通过命名空间的方式模拟除了面向对象的功能，我们其实可以将点操作符作为命名空间的路径标志，这样，当我们传送一个具体实例类的时候JS解释器就能够方便的找到我们所要的方法，并且知道该方法在具体那个实例下，好了，下面我们来体会一下，我将上面的例子稍作变动即可成功。01     var SPARONGame = {<br>
+02         name : &quot;DotaAllStar&quot;,<br>
+03         player_Num : 10,<br>
+04         game_init : false,<br>
+05         game_start : false,<br>
+06         game_speed : 100,<br>
+07         init : function() {<br>
+08             // Todo init game...<br>
+09             $(&quot;#start&quot;).click(this.gameStart);<br>
+10             this.game_init = true;<br>
+11         },<br>
+12         gameStart : function(){<br>
+13             if (!SPARONGame.game_init) {<br>
+14                 return;<br>
+15             }<br>
+16             SPARONGame.game_start = true;<br>
+17             setInterval(&quot;SPARONGame.gameLoop()&quot;, SPARONGame.game_speed);<br>
+18         },<br>
+19         gameLoop : function() {<br>
+20             if (!this.game_start){<br>
+21                 return;<br>
+22             }<br>
+23         }<br>
+24     }<br><br><br>
+在这段代码中需要注意的是setInterval的第一个参数是字符串，而不是类名.方法名，否则最后达到的效果仍然是将其作为函数传入。<br><br>
+在解决以上问题后，最后再简单的提下setInterval中的两个小BUG，虽然很微妙，但是一定要知道，否则在编写程序处理边界问题时就会出现大问题了。1.某些间隔会被跳过；2.多个定时器的代码执行之间的间隔可能会比预期的小，关于这两个问题的详细解答可参考《JavaScript高级程序设计》的&quot;18.2.1 重复的定时器&quot;一节。</div></div>
+</div></body></html> 

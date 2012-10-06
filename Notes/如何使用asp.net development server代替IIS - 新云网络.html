@@ -1,0 +1,99 @@
+<html>
+<head>
+  <title>如何使用asp.net development server代替IIS - 新云网络</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1002"/>
+<h1>如何使用asp.net development server代替IIS - 新云网络</h1>
+
+<div>
+<div><div style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(101, 109, 119);line-height:16px;margin-top:auto;margin-right:5px;margin-bottom:auto;margin-left:auto;clear:both;width:718px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-right-color:rgb(182, 230, 251);border-bottom-color:rgb(182, 230, 251);border-left-color:rgb(182, 230, 251);border-image:initial;border-top-style:none;border-top-width:initial;border-top-color:initial;overflow-x:hidden;overflow-y:hidden;margin:0px;position:relative;">
+			<h1 style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:inherit;font-size:18px;font-style:normal;font-variant:normal;line-height:28px;font-weight:bold;text-align:center;color:rgb(255, 51, 0);margin-top:3px;margin-right:0px;margin-bottom:3px;margin-left:0px;">如何使用asp.net development server代替IIS</h1>
+			<div style="background-image:url(http://www.newasp.cn/skins/newasp/dot.gif);background-repeat: repeat no-repeat;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(101, 109, 119);line-height:26px;margin-top:auto;margin-right:auto;margin-bottom:3px;margin-left:auto;text-align:center;height:26px;background-attachment:initial;background-position-x:50%;background-position-y:100%;background-origin:initial;background-clip:initial;background-color:initial;"><span style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;clear:right;display:block;float:right;"><a shape="rect" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(73, 118, 173);line-height:16px;margin-top:auto;margin-right:auto;margin-bottom:auto;margin-left:auto;text-decoration:none;position:relative;" title="减小字体"><img src="如何使用asp.net development server代替IIS - 新云网络_files/Image.gif" type="image/gif" border="0" height="15" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;border-top-width:initial;border-right-width:initial;border-bottom-width:initial;border-left-width:initial;border-top-color:initial;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;" width="15"/><font color="#FF6600" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">减小字体</font></a> 
+                    			<a shape="rect" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(73, 118, 173);line-height:16px;margin-top:auto;margin-right:auto;margin-bottom:auto;margin-left:auto;text-decoration:none;position:relative;" title="增大字体"><img src="如何使用asp.net development server代替IIS - 新云网络_files/Image [1].gif" type="image/gif" border="0" height="15" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;border-top-width:initial;border-right-width:initial;border-bottom-width:initial;border-left-width:initial;border-top-color:initial;border-right-color:initial;border-bottom-color:initial;border-left-color:initial;border-image:initial;" width="15"/><font color="#FF6600" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">增大字体</font></a>
+			</span><div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+			<div style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:宋体;font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(101, 109, 119);line-height:180%;margin-top:2px;margin-right:5px;margin-bottom:2px;margin-left:5px;"><span style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;float:left;margin-top:2px;margin-right:2px;margin-bottom:2px;margin-left:2px;">
+
+
+</span><p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">个人不太喜欢计算机里面启动太多服务。而做ASP.NET的开发又需要装IIS，于是常常不停地启动w3svc,iisadmin等服务，相当的麻烦。</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">   于是考虑完全不装IIS，使用VS2005自带的asp.net development server来代替IIS。</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">   asp.net development server的进程名称是：WebDev.WebServer.EXE，搜索一下这个文件，保存在：%systemroot%&quot;Microsoft.NET&quot;Framework&quot;v2.0.50727&quot;WebDev.WebServer.EXE。</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">  在命令行下执行：WebDev.WebServer.EXE/?可以看见关于此命令的帮助，非常简单，就三个参数：</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">  /port:端口</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">  /path:&quot;物理路径&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">  /vpath:&quot;虚拟路径&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">  需要临时开一个WEB站点的时候，在开始&gt;运行中输入以下命令：%systemroot%&quot;Microsoft.NET&quot;Framework&quot;v2.0.50727&quot;WebDev.WebServer.EXE /port:80 /path:&quot;c:&quot;mysite&quot; /vpath:&quot;/&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">来个P处理：</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">@echo off</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">color 27</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">mode con cols=60 lines=10</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">title 运行网站</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">:ks</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">tasklist | find /i &quot;WebDev.WebServer.EXE&quot;&gt;process.txt</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">for /f &quot;tokens=1&quot; %%i in (process.txt) do (</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">   if &quot;%%i&quot;==&quot;&quot; goto run</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">   if &quot;%%i&quot;==&quot;WebDev.WebServer.EXE&quot; taskkill /f /im &quot;%%i&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">)</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">del process.txt /q</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">cls</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">echo 运行此程序时，请确认你已经安装.Net Framework2.0!</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">echo 已经安装IIS的，请确认你的IIS已经停止工作！</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">set /p dk=请输入网站的运行端口[默认为80]:</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">:slj</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">set /p lj=请输入网站的物理路径：</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">if &quot;%lj%&quot;==&quot;&quot; (</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">goto ljwk)else (</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">goto vlj</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">)</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">:ljwk</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">cls</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">echo 你没有输入网站路径，请重新输入！</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">goto slj</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">:vlj</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">set /p vlj=请输入网站的虚拟路径[可选]：</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">goto run</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">:run</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">start  &quot;运行网站&quot; /min /b %windir%\Microsoft.NET\Framework\v2.0.50727\WebDev.WebServer.EXE /port:%dk% /path:&quot;%lj%&quot; /vpath:&quot;/%vlj%&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">cls</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">echo 网站已经开始运行,正在打开</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">if &quot;%dk%&quot;==&quot;&quot; start /max <a href="http://localhost/%vlj%" shape="rect" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:宋体;font-size:100%;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(73, 118, 173);line-height:180%;margin-top:auto;margin-right:auto;margin-bottom:auto;margin-left:auto;text-decoration:none;">http://localhost/%vlj%</a></p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">if not &quot;%dk%&quot;==&quot;&quot; start /max <a href="http://localhost:%dk%/%vlj%" shape="rect" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:宋体;font-size:100%;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(73, 118, 173);line-height:180%;margin-top:auto;margin-right:auto;margin-bottom:auto;margin-left:auto;text-decoration:none;">http://localhost:%dk%/%vlj%</a></p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">:esc</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">set /p option=退出请输入q,重新运行请输入r:</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">if &quot;%option%&quot;==&quot;q&quot; goto end</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">if &quot;%option%&quot;==&quot;r&quot; goto ks</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">if not &quot;%option%&quot;==&quot;q&quot; goto err</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">:err</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">set /p option=你输入的不是q，请重新输入q:</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">goto esc</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">:end</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">taskkill /f /im &quot;WebDev.WebServer.EXE&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">cls</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">taskkill /f /im &quot;cmd.exe&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;"> 另类一点这个需要修改注册表，用记事本新建一个文件，输入以下字符，并保存为reg格式</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">Windows Registry Editor Version 5.00</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Folder\shell\VS2005 WebServer]<br clear="none" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">
+@=&quot;ASP.NET 2.0 Web Server Here&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Folder\shell\VS2005 WebServer\command]<br clear="none" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">
+@=&quot;C:\\Windows\\Microsoft.NET\\Framework\\v2.0.50727\\Webdev.WebServer.exe /port:8099 /path:\&quot;%1\&quot;&quot;</p>
+<p style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">不过这样做有一些不好的地方，一个是端口不能自己定义，另外一个是只能使用一个端口，等等一些小问题，但个人觉得这个是非常方便的，不用每次自己都去IIS里设一个，烦的说。呵呵。</p><div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+			<div style="background-image:initial;background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(101, 109, 119);line-height:16px;margin-top:10px;margin-right:auto;margin-bottom:10px;margin-left:auto;clear:left;background-attachment:initial;background-position-x:initial;background-position-y:initial;background-origin:initial;background-clip:initial;background-color:rgb(242, 249, 253);border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:dotted;border-right-style:dotted;border-bottom-style:dotted;border-left-style:dotted;border-top-color:rgb(202, 229, 255);border-right-color:rgb(202, 229, 255);border-bottom-color:rgb(202, 229, 255);border-left-color:rgb(202, 229, 255);border-image:initial;height:24px;padding-left:10px;padding-right:10px;width:658px;">
+				<h3 style="background-image:none;background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Tahoma;font-size:12px;font-style:normal;font-variant:normal;line-height:24px;font-weight:normal;clear:both;margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;color:rgb(0, 0, 0);letter-spacing:2px;height:28px;background-attachment:initial;background-position-x:initial;background-position-y:initial;background-origin:initial;background-clip:initial;background-color:initial;border-bottom-color:rgb(170, 204, 238);border-bottom-width:0px;border-bottom-style:solid;display:block;float:left;padding-top:0px;">Tags：</h3><span style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;float:right;font-family:Tahoma;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;line-height:24px;">作者：佚名</span> 
+			<div style="background-repeat: initial initial;clear:both;width:0px;height:0px;"></div></div>
+			<div style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(101, 109, 119);line-height:16px;margin-top:auto;margin-right:auto;margin-bottom:auto;margin-left:auto;clear:both;"></div>
+			<div style="background-image:initial;background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(101, 109, 119);line-height:23px;margin-top:3px;margin-right:auto;margin-bottom:auto;margin-left:auto;height:23px;border-top-width:1px;border-top-style:dotted;border-top-color:rgb(204, 204, 204);background-attachment:initial;background-position-x:initial;background-position-y:initial;background-origin:initial;background-clip:initial;background-color:rgb(254, 254, 254);text-align:right;">
+				[<span style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;">本日：8 本周：14 本月：34 总数：3181 </span>]
+				[<a shape="rect" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(73, 118, 173);line-height:16px;margin-top:auto;margin-right:auto;margin-bottom:auto;margin-left:auto;text-decoration:none;">返回上一页</a>]
+				[<a shape="rect" style="background-repeat: initial initial;word-wrap:break-word;word-break:break-all;font-family:Verdana, Arial, 宋体, sans-serif;font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;color:rgb(73, 118, 173);line-height:16px;margin-top:auto;margin-right:auto;margin-bottom:auto;margin-left:auto;text-decoration:none;">打 印</a>]
+			</div>
+		<div style="clear: both"></div></div></div>
+</div></body></html> 

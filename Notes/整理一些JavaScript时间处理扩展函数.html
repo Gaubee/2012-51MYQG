@@ -1,0 +1,194 @@
+<html>
+<head>
+  <title>整理一些JavaScript时间处理扩展函数</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1933"/>
+<h1>整理一些JavaScript时间处理扩展函数</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+整理一些JavaScript时间处理扩展函数<br><br>
+在JavaScript中，时间处理是经常需要用到的。最近想要慢慢建立自己的代码库，整理了几个之前用到的js处理时间的函数，发出来跟大家分享一下，以后的使用中会不断增加和修改代码库。<br>
+把字符串转换为日期对象<br><br>
+有时需要把字符串转换为日期对象，但是IE下不支持new Date(&quot;2011-04-07&quot;)这样实例化日期对象，ff下支持，所以写了一个扩展函数，用来把形如yyyy-mm-dd或者dd/mm/yyyy的字符串转换为日期对象。代码如下：01     /*<br>
+02     函数：把字符串转换为日期对象<br>
+03     参数：yyyy-mm-dd或dd/mm/yyyy形式的字符串<br>
+04     返回：Date对象<br>
+05     注：IE下不支持直接实例化日期对象，如new Date(&quot;2011-04-06&quot;)<br>
+06     */<br>
+07     Date.prototype.convertDate = function (date)<br>
+08     {<br>
+09         var flag = true;<br>
+10         var dateArray = date.split(&quot;-&quot;);<br>
+11         if (dateArray.length != 3)<br>
+12         {<br>
+13             dateArray = date.split(&quot;/&quot;);<br>
+14             if (dateArray.length != 3)<br>
+15             {<br>
+16                 return null;<br>
+17             }<br>
+18             flag = false;<br>
+19         }<br>
+20         var newDate = new Date();<br>
+21         if (flag)<br>
+22         {<br>
+23             // month从0开始<br>
+24             newDate.setFullYear(dateArray[0], dateArray[1] - 1, dateArray[2]);<br>
+25         }<br>
+26         else<br>
+27         {<br>
+28             newDate.setFullYear(dateArray[2], dateArray[1] - 1, dateArray[0]);<br>
+29         }<br>
+30         newDate.setHours(0, 0, 0);<br>
+31         return newDate;<br>
+32     };<br><br><br>
+测试：1     &lt;script type=&quot;text/javascript&quot;&gt;<br>
+2       document.writeln(new Date().convertDate(&quot;7/12/2011&quot;));<br>
+3     &lt;/script&gt;<br><br><br>
+输出：Wed Dec 07 2011 17:30:58 GMT+0800<br>
+计算两个日期之间的差值<br><br>
+这个函数可以计算两个日期之前的差值（毫秒/秒/分/小时/天），主要用到了getTime()函数和Math.floor()函数，代码如下：01     /*<br>
+02     函数：计算两个日期之间的差值<br>
+03     参数：date是日期对象<br>
+04         flag：ms-毫秒，s-秒，m-分，h-小时，d-天，M-月，y-年<br>
+05     返回：当前日期和date两个日期相差的毫秒/秒/分/小时/天<br>
+06     */<br>
+07     Date.prototype.dateDiff = function (date, flag)<br>
+08     {<br>
+09         var msCount;<br>
+10         var diff = this.getTime() - date.getTime();<br>
+11         switch (flag)<br>
+12         {<br>
+13             case &quot;ms&quot;:<br>
+14                 msCount = 1;<br>
+15                 break;<br>
+16             case &quot;s&quot;:<br>
+17                 msCount = 1000;<br>
+18                 break;<br>
+19             case &quot;m&quot;:<br>
+20                 msCount = 60 * 1000;<br>
+21                 break;<br>
+22             case &quot;h&quot;:<br>
+23                 msCount = 60 * 60 * 1000;<br>
+24                 break;<br>
+25             case &quot;d&quot;:<br>
+26                 msCount = 24 * 60 * 60 * 1000;<br>
+27                 break;<br>
+28         }<br>
+29         return Math.floor(diff / msCount);<br>
+30     };<br><br><br>
+测试：1     &lt;script type=&quot;text/javascript&quot;&gt;<br>
+2       var d1 = new Date().convertDate(&quot;2011-04-08&quot;);<br>
+3       var d2 = new Date().convertDate(&quot;2011-04-07&quot;);<br>
+4       document.writeln(d1.dateDiff(d2, 'd'));<br>
+5     &lt;/script&gt;<br><br>
+判断一个年份是否为闰年1     /*<br>
+2     函数：判断一个年份是否为闰年<br>
+3     返回：是否为闰年<br>
+4     */<br>
+5     Date.prototype.isLeapYear = function ()<br>
+6     {<br>
+7         var year = this.getFullYear();<br>
+8         return (year % 4 == 0) &amp;&amp; (year % 100 != 0 || year % 400 == 0);<br>
+9     }<br><br><br>
+测试：1     &lt;script type=&quot;text/javascript&quot;&gt;<br>
+2       document.writeln(new Date().convertDate(&quot;2000-04-08&quot;).isLeapYear() + &quot;&lt;br&gt;&quot;);<br>
+3       document.writeln(new Date().convertDate(&quot;2011-04-08&quot;).isLeapYear() + &quot;&lt;br&gt;&quot;);<br>
+4     &lt;/script&gt;<br>
+5     // 结果：<br>
+6     // true<br>
+7     // false<br><br>
+格式化日期<br><br>
+这个函数是从网上搜来的，稍微修改了一下，它类似.net中Format函数，传入格式化字符串如&quot;yyyy-MM-dd&quot;，返回格式化后的日期。01     /*<br>
+02     函数：格式化日期<br>
+03     参数：formatStr-格式化字符串<br>
+04         d：将日显示为不带前导零的数字，如1<br>
+05         dd：将日显示为带前导零的数字，如01<br>
+06         ddd：将日显示为缩写形式，如Sun<br>
+07         dddd：将日显示为全名，如Sunday<br>
+08         M：将月份显示为不带前导零的数字，如一月显示为1<br>
+09         MM：将月份显示为带前导零的数字，如01<br>
+10         MMM：将月份显示为缩写形式，如Jan<br>
+11         MMMM：将月份显示为完整月份名，如January<br>
+12         yy：以两位数字格式显示年份<br>
+13         yyyy：以四位数字格式显示年份<br>
+14         h：使用12小时制将小时显示为不带前导零的数字，注意||的用法<br>
+15         hh：使用12小时制将小时显示为带前导零的数字<br>
+16         H：使用24小时制将小时显示为不带前导零的数字<br>
+17         HH：使用24小时制将小时显示为带前导零的数字<br>
+18         m：将分钟显示为不带前导零的数字<br>
+19         mm：将分钟显示为带前导零的数字<br>
+20         s：将秒显示为不带前导零的数字<br>
+21         ss：将秒显示为带前导零的数字<br>
+22         l：将毫秒显示为不带前导零的数字<br>
+23         ll：将毫秒显示为带前导零的数字<br>
+24         tt：显示am/pm<br>
+25         TT：显示AM/PM<br>
+26         返回：格式化后的日期<br>
+27     */<br>
+28     Date.prototype.format = function (formatStr)<br>
+29     {<br>
+30         var date = this;<br>
+31         /*<br>
+32         函数：填充0字符<br>
+33         参数：value-需要填充的字符串, length-总长度<br>
+34         返回：填充后的字符串<br>
+35         */<br>
+36         var zeroize = function (value, length)<br>
+37         {<br>
+38             if (!length)<br>
+39             {<br>
+40                 length = 2;<br>
+41             }<br>
+42             value = new String(value);<br>
+43             for (var i = 0, zeros = ''; i &lt; (length - value.length); i++)<br>
+44             {<br>
+45                 zeros += '0';<br>
+46             }<br>
+47             return zeros + value;<br>
+48         };<br>
+49         return formatStr.replace(/&quot;[^&quot;]*&quot;|'[^']*'|\b(?:d{1,4}|M{1,4}|yy(?:yy)?|([hHmstT])\1?|[lLZ])\b/g, function($0)<br>
+50         {<br>
+51             switch ($0)<br>
+52             {<br>
+53                 case 'd': return date.getDate();<br>
+54                 case 'dd': return zeroize(date.getDate());<br>
+55                 case 'ddd': return ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'][date.getDay()];<br>
+56                 case 'dddd': return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];<br>
+57                 case 'M': return date.getMonth() + 1;<br>
+58                 case 'MM': return zeroize(date.getMonth() + 1);<br>
+59                 case 'MMM': return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];<br>
+60                 case 'MMMM': return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][date.getMonth()];<br>
+61                 case 'yy': return new String(date.getFullYear()).substr(2);<br>
+62                 case 'yyyy': return date.getFullYear();<br>
+63                 case 'h': return date.getHours() % 12 || 12;<br>
+64                 case 'hh': return zeroize(date.getHours() % 12 || 12);<br>
+65                 case 'H': return date.getHours();<br>
+66                 case 'HH': return zeroize(date.getHours());<br>
+67                 case 'm': return date.getMinutes();<br>
+68                 case 'mm': return zeroize(date.getMinutes());<br>
+69                 case 's': return date.getSeconds();<br>
+70                 case 'ss': return zeroize(date.getSeconds());<br>
+71                 case 'l': return date.getMilliseconds();<br>
+72                 case 'll': return zeroize(date.getMilliseconds());<br>
+73                 case 'tt': return date.getHours() &lt; 12 ? 'am' : 'pm';<br>
+74                 case 'TT': return date.getHours() &lt; 12 ? 'AM' : 'PM';<br>
+75             }<br>
+76         });<br>
+77     }<br><br><br>
+测试：1     &lt;script type=&quot;text/javascript&quot;&gt;<br>
+2       document.writeln(new Date().format(&quot;yyyy-MM-dd hh:mm:ss&quot;));<br>
+3     &lt;/script&gt;<br>
+4     // 结果：<br>
+5     // 2011-04-08 10:13:37<br><br></div>
+</div></body></html> 

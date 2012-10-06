@@ -1,0 +1,124 @@
+<html>
+<head>
+  <title>File.AppendText 方法</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1836"/>
+<h1>File.AppendText 方法</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;"><h1>File.AppendText 方法</h1><div><strong>.NET Framework 2.0</strong></div><div style="visibility: visible;"><div><a>其他版本</a></div><div><img src="File.AppendText 方法_files/Image.png" type="image/png" style="cursor: default;"/></div></div><div style="margin: 0px 0px 0px 13px;">1（共 1）对本文的评价是有帮助 - <a href="http://msdn.microsoft.com/zh-cn/library/system.io.file.appendtext%28v=vs.80%29.aspx#feedback" title="评价此主题">评价此主题</a></div><div><p>创建一个 <a href="http://msdn.microsoft.com/zh-cn/library/system.io.streamwriter%28v=vs.80%29.aspx">StreamWriter</a>，它将 UTF-8 编码文本追加到现有文件。</p><p><b>命名空间:</b>System.IO<br><b>程序集:</b>mscorlib（在 mscorlib.dll 中）</p><div><a title="折叠">语法</a><div><hr></div></div><div><a name="syntaxToggle"></a><div dir="ltr"><a>C#</a></div><div dir="ltr"><a>C++</a></div><div dir="ltr"><a>VB</a></div><div dir="ltr"><div><pre><span style="color:Blue;">public</span> <span style="color:Blue;">static</span> StreamWriter AppendText (
+        <span style="color:Blue;">string</span> path
+)
+</pre></div></div><div dir="ltr"><a>J#</a></div><div dir="ltr"><div><pre>
+public static StreamWriter AppendText (
+        String path
+)
+</pre></div></div><div dir="ltr"><a>JScript</a></div><div dir="ltr"><div><pre><span style="color:Blue;">public</span> <span style="color:Blue;">static</span> <span style="color:Blue;">function</span> AppendText (
+        path : String
+) : StreamWriter
+</pre></div></div><h4>参数</h4><dl><dt>path</dt><dd><p>要向其中追加内容的文件的路径。</p></dd></dl><h4>返回值</h4>
+一个 <b>StreamWriter</b>，它将 UTF-8 编码文本追加到现有文件。</div><div><a title="折叠">异常</a><div><hr></div></div><div><a name="exceptionsToggle"></a><div><table width="100%"><tbody><tr><th align="left">异常类型</th><th align="left">条件</th></tr><tr valign="top"><td><p><a href="http://msdn.microsoft.com/zh-cn/library/system.unauthorizedaccessexception%28v=vs.80%29.aspx">UnauthorizedAccessException</a></p></td><td><p>调用方没有所要求的权限。</p></td></tr><tr valign="top"><td><p><a href="http://msdn.microsoft.com/zh-cn/library/system.argumentexception%28v=vs.80%29.aspx">ArgumentException</a></p></td><td><p>path 是一个零长度字符串，仅包含空白或者包含一个或多个由 <a href="http://msdn.microsoft.com/zh-cn/library/system.io.path.invalidpathchars%28v=vs.80%29.aspx">InvalidPathChars</a> 定义的无效字符。</p></td></tr><tr valign="top"><td><p><a href="http://msdn.microsoft.com/zh-cn/library/system.argumentnullexception%28v=vs.80%29.aspx">ArgumentNullException</a></p></td><td><p>path 为 空引用（在 Visual Basic 中为 Nothing）。</p></td></tr><tr valign="top"><td><p><a href="http://msdn.microsoft.com/zh-cn/library/system.io.pathtoolongexception%28v=vs.80%29.aspx">PathTooLongException</a></p></td><td><p>指定的路径、文件名或者两者都超出了系统定义的最大长度。例如，在基于 Windows 的平台上，路径必须小于 248 个字符，文件名必须小于 260 个字符。</p></td></tr><tr valign="top"><td><p><a href="http://msdn.microsoft.com/zh-cn/library/system.io.directorynotfoundexception%28v=vs.80%29.aspx">DirectoryNotFoundException</a></p></td><td><p>指定的路径无效（例如，它位于未映射的驱动器上）。</p></td></tr><tr valign="top"><td><p><a href="http://msdn.microsoft.com/zh-cn/library/system.notsupportedexception%28v=vs.80%29.aspx">NotSupportedException</a></p></td><td><p>path 的格式无效。</p></td></tr></tbody></table></div></div><div><a title="折叠">备注</a><div><hr></div></div><div><a name="remarksToggle"></a><p>此方法等效于 <a href="http://msdn.microsoft.com/zh-cn/library/36b035cb%28v=vs.80%29.aspx">StreamWriter(String,Boolean)</a> 构造函数重载。如果由 path 指定的文件不存在，则创建该文件。如果该文件存在，则对 <b>StreamWriter</b> 的写入操作将文本追加到该文件。允许其他线程在文件打开后读取该文件。</p><p>允许 path 参数指定相对或绝对路径信息。相对路径信息被解释为相对于当前工作目录。若要获取当前工作目录，请参见 <a href="http://msdn.microsoft.com/zh-cn/library/system.io.directory.getcurrentdirectory%28v=vs.80%29.aspx">GetCurrentDirectory</a>。</p><p>path 参数不区分大小写。</p><p>有关使用此方法的示例，请参见“示例”部分。下表列出了其他典型或相关的 I/O 任务的示例。</p><div><table width="100%"><tbody><tr><th><p>若要执行此操作...</p></th><th><p>请参见本主题中的示例...</p></th></tr><tr><td><p>创建文本文件。</p></td><td><p><a href="http://msdn.microsoft.com/zh-cn/library/6ka1wd3w%28v=vs.80%29.aspx">如何：向文件写入文本</a></p></td></tr><tr><td><p>写入文本文件。</p></td><td><p><a href="http://msdn.microsoft.com/zh-cn/library/6ka1wd3w%28v=vs.80%29.aspx">如何：向文件写入文本</a></p></td></tr><tr><td><p>读取文本文件。</p></td><td><p><a href="http://msdn.microsoft.com/zh-cn/library/db5x7c0d%28v=vs.80%29.aspx">如何：从文件读取文本</a></p></td></tr></tbody></table></div></div><div><a title="折叠">示例</a><div><hr></div></div><div><a name="codeExampleToggle"></a><p>下面的示例将文本追加到文件。</p><div dir="ltr"><a>C#</a></div><div dir="ltr"><a>C++</a></div><div dir="ltr"><a>VB</a></div><div dir="ltr"><div><pre><span style="color:Blue;">using</span> System;
+<span style="color:Blue;">using</span> System.IO;
+
+<span style="color:Blue;">class</span> Test 
+{
+    <span style="color:Blue;">public</span> <span style="color:Blue;">static</span> <span style="color:Blue;">void</span> Main() 
+    {
+        <span style="color:Blue;">string</span> path = <span style="color:#A31515;">@&quot;c:\temp\MyTest.txt&quot;</span>;
+        <span style="color:Green;">// This text is added only once to the file.</span>
+        <span style="color:Blue;">if</span> (!File.Exists(path)) 
+        {
+            <span style="color:Green;">// Create a file to write to.</span>
+            <span style="color:Blue;">using</span> (StreamWriter sw = File.CreateText(path)) 
+            {
+                sw.WriteLine(<span style="color:#A31515;">&quot;Hello&quot;</span>);
+                sw.WriteLine(<span style="color:#A31515;">&quot;And&quot;</span>);
+                sw.WriteLine(<span style="color:#A31515;">&quot;Welcome&quot;</span>);
+            }   
+        }
+
+        <span style="color:Green;">// This text is always added, making the file longer over time</span>
+        <span style="color:Green;">// if it is not deleted.</span>
+        <span style="color:Blue;">using</span> (StreamWriter sw = File.AppendText(path)) 
+        {
+            sw.WriteLine(<span style="color:#A31515;">&quot;This&quot;</span>);
+            sw.WriteLine(<span style="color:#A31515;">&quot;is Extra&quot;</span>);
+            sw.WriteLine(<span style="color:#A31515;">&quot;Text&quot;</span>);
+        }       
+
+        <span style="color:Green;">// Open the file to read from.</span>
+        <span style="color:Blue;">using</span> (StreamReader sr = File.OpenText(path)) 
+        {
+            <span style="color:Blue;">string</span> s = <span style="color:#A31515;">&quot;&quot;</span>;
+            <span style="color:Blue;">while</span> ((s = sr.ReadLine()) != <span style="color:Blue;">null</span>) 
+            {
+                Console.WriteLine(s);
+            }
+        }
+    }
+}
+
+</pre></div></div><div dir="ltr"><a>J#</a></div><div dir="ltr"><div><pre>
+import System.*;
+import System.IO.*;
+
+class Test
+{
+    public static void main(String[] args)
+    {
+        String path = &quot;c:\\temp\\MyTest.txt&quot;;
+
+        // This text is added only once to the file.
+        if (!(File.Exists(path))) {
+            // Create a file to write to.
+            StreamWriter sw = File.CreateText(path);
+            try {
+                sw.WriteLine(&quot;Hello&quot;);
+                sw.WriteLine(&quot;And&quot;);
+                sw.WriteLine(&quot;Welcome&quot;);
+            }
+            finally {
+                sw.Dispose();
+            }
+        }
+
+        // This text is always added, making the file longer over time
+        // if it is not deleted.
+        StreamWriter sw = File.AppendText(path);
+        try {
+            sw.WriteLine(&quot;This&quot;);
+            sw.WriteLine(&quot;is Extra&quot;);
+            sw.WriteLine(&quot;Text&quot;);
+        }
+        finally {
+            sw.Dispose();
+        }
+
+        // Open the file to read from.
+        StreamReader sr = File.OpenText(path);
+        try {
+            String s = &quot;&quot;;
+            while ((s = sr.ReadLine())!= null) {
+                Console.WriteLine(s);
+            }
+        }
+        finally {
+            sr.Dispose();
+        }
+    } //main
+} //Test
+
+</pre></div></div></div><div><a title="折叠">.NET Framework 安全性</a><div><hr></div></div><div><a name="permissionsToggle"></a><ul><li><a href="http://msdn.microsoft.com/zh-cn/library/system.security.permissions.fileiopermission%28v=vs.80%29.aspx">FileIOPermission</a>  用于追加到指定的文件。关联的枚举：<a href="http://msdn.microsoft.com/zh-cn/library/system.security.permissions.fileiopermissionaccess%28v=vs.80%29.aspx">FileIOPermissionAccess.Append</a></li></ul></div><div><a title="折叠">平台</a><div><hr></div></div><div><a name="platformsToggle"></a><p>Windows 98、Windows 2000 SP4、Windows CE、Windows Millennium Edition、Windows Mobile for Pocket PC、Windows Mobile for Smartphone、Windows Server 2003、Windows XP Media Center Edition、Windows XP Professional x64 Edition、Windows XP SP2、Windows XP Starter Edition</p><p>.NET Framework 并不是对每个平台的所有版本都提供支持。有关受支持版本的列表，请参见<a href="http://msdn.microsoft.com/zh-cn/library/8z6watww%28v=vs.80%29.aspx">系统要求</a>。</p></div><div><a title="折叠">版本信息</a><div><hr></div></div><div><a name="frameworksToggle"></a><h4>.NET Framework</h4>
+受以下版本支持：2.0、1.1、1.0<br><h4>.NET Compact Framework</h4>
+受以下版本支持：2.0、1.0<br></div><div><a title="折叠">请参见</a><div><hr></div></div><div><a name="seeAlsoToggle"></a><div><h4>参考</h4><a href="http://msdn.microsoft.com/zh-cn/library/system.io.file%28v=vs.80%29.aspx">File 类</a><br><a href="http://msdn.microsoft.com/zh-cn/library/system.io.file_members%28v=vs.80%29.aspx">File 成员</a><br><a href="http://msdn.microsoft.com/zh-cn/library/system.io%28v=vs.80%29.aspx">System.IO 命名空间</a><br><a href="http://msdn.microsoft.com/zh-cn/library/system.io.streamwriter%28v=vs.80%29.aspx">StreamWriter</a><br><h4>其他资源</h4><a href="http://msdn.microsoft.com/zh-cn/library/k3352a4t%28v=vs.80%29.aspx">文件和流 I/O</a><br><a href="http://msdn.microsoft.com/zh-cn/library/db5x7c0d%28v=vs.80%29.aspx">如何：从文件读取文本</a><br><a href="http://msdn.microsoft.com/zh-cn/library/6ka1wd3w%28v=vs.80%29.aspx">如何：向文件写入文本</a><br><a href="http://msdn.microsoft.com/zh-cn/library/336wast5%28v=vs.80%29.aspx">基本的文件 I/O</a><br><a href="http://msdn.microsoft.com/zh-cn/library/36b93480%28v=vs.80%29.aspx">如何：对新建的数据文件进行读取和写入</a></div></div></div></div>
+</div></body></html> 

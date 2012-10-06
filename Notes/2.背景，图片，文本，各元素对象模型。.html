@@ -1,0 +1,183 @@
+<html>
+<head>
+  <title>2.背景，图片，文本，各元素对象模型。</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1236"/>
+<h1>2.背景，图片，文本，各元素对象模型。</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+2.背景，图片，文本，各元素对象模型。<br><br>
+这里介绍如果添加这些元素和边栏图像协议。<br><br><br>
+介绍<br>
+背景图片和G:BACKGROUND元素<br>
+G:TEXT和G:IMAGE元素<br>
+图像协议<br>
+大小<br><br><br>
+介绍<br><br>
+小工具各元素通过以g为名字空间的html描点定位，表现api。通过dom对象模型查看器可以查看，并可以使用脚本。<br><br>
+注意:这样的html不是标准的html，不能在其它浏览器(如Internet Explorer)浏览。<br><br><br><br>
+背景图片和G:BACKGROUND元素<br><br>
+有许多方法可以增加背景。<br><br>
+注意:如果背景需要透明度，使用png格式图片。<br><br>
+一般的说:用这个能显示背景。<br><br>
+&lt;body&gt;<br>
+    &lt;g:background id=&quot;imgBackground&quot; src=&quot;images/background.png&quot;&gt;<br>
+        &lt;span id=&quot;gadgetContent&quot;&gt;Hello World!&lt;/span&gt;<br>
+    &lt;/g:background&gt;<br>
+&lt;/body&gt;<br><br>
+或用脚本添加<br><br>
+&lt;html&gt;<br>
+    &lt;head&gt;<br>
+        &lt;title&gt;Hello World&lt;/title&gt;<br>
+        &lt;script type=&quot;text/jscript&quot; language=&quot;jscript&quot;&gt;<br>
+            function init()<br>
+            {<br>
+            var oBackground = document.getElementById(&quot;imgBackground&quot;);<br>
+            oBackground.src = &quot;url(images/background.png)&quot;;<br>
+            }<br>
+        &lt;/script&gt;<br>
+    &lt;/head&gt;<br>
+   <br>
+    &lt;body onload=&quot;init()&quot;&gt;<br>
+        &lt;g:background id=&quot;imgBackground&quot;&gt;<br>
+            &lt;span id=&quot;gadgetContent&quot;&gt;Hello World!&lt;/span&gt;<br>
+        &lt;/g:background&gt;<br>
+    &lt;/body&gt;<br>
+&lt;/html&gt;<br><br>
+类似用System对象添加<br><br>
+&lt;html&gt;<br>
+    &lt;head&gt;<br>
+        &lt;title&gt;Hello World&lt;/title&gt;<br>
+        &lt;script type=&quot;text/jscript&quot; language=&quot;jscript&quot;&gt;<br>
+        function init()<br>
+        {<br>
+        System.Gadget.background = &quot;images\\background.png&quot;;<br>
+        }<br>
+        &lt;/script&gt;<br>
+    &lt;/head&gt;<br>
+   <br>
+    &lt;body onload=&quot;init()&quot;&gt;<br>
+        &lt;g:background id=&quot;imgBackground&quot;&gt;<br>
+            &lt;span id=&quot;gadgetContent&quot;&gt;Hello World!&lt;/span&gt;<br>
+        &lt;/g:background&gt;<br>
+    &lt;/body&gt;<br>
+&lt;/html&gt;<br><br>
+css也可以添加<br><br>
+&lt;html&gt;<br>
+    &lt;head&gt;<br>
+        &lt;style&gt;<br>
+            body{width:120;height:160;font:8 pt Arial;color:white;<br>
+            filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr=&quot;#000000&quot;,<br>
+            EndColorStr=&quot;#0000FF&quot;)}<br>
+        &lt;/style&gt;<br>
+    &lt;/head&gt;<br>
+    &lt;body bgcolor=&quot;red&quot; background=&quot;background.jpg&quot;&gt;<br>
+    ...<br>
+    &lt;/body&gt;<br>
+&lt;/html&gt;<br><br>
+G:TEXT和G:IMAGE元素<br><br>
+G:TEXT和G:IMAGE元素虽然可以达到目的，但强烈建议你使用addImageObject和addTextObject方法代替。这将确保内容是通过小工具产生的DOM元素。<br>
+在下面的例子演示了如何添加图片和文字的背景层:这些物体会按z的大小出现在背景层上方，但低于任何用户控制界面(UI)。<br><br>
+// 初始化gImage对象<br>
+// DEFAULT_IMG_PATH: 默认图片位置。<br>
+function initImage()<br>
+{<br>
+    // 检查用户有无保存文件夹路径，否则使用默认<br>
+    if (System.Gadget.Settings.read(&quot;imageFile&quot;) == &quot;&quot;)<br>
+    {<br>
+        System.Gadget.Settings.write(&quot;imageFile&quot;, DEFAULT_IMG_PATH);<br>
+    }<br>
+    imageFile = System.Gadget.Settings.read(&quot;imageFile&quot;);<br>
+   <br>
+    // 创建图片对象<br>
+    oImage = document.getElementById(&quot;background&quot;).addImageObject(&quot;&quot;, 0, 0);<br>
+}<br><br>
+// 初始化gText对象<br>
+function initText()<br>
+{<br>
+    oText = document.getElementById(&quot;background&quot;).addTextObject(&quot;&quot;, &quot;Verdana&quot;, 10, &quot;blue&quot;, 0, 0);<br>
+}<br><br>
+function showImage()<br>
+{<br>
+    oImage.src = System.Gadget.Settings.read(&quot;imageFile&quot;);<br>
+}<br><br>
+function showText(newValue)<br>
+{<br>
+    oText.value = newValue;<br>
+}<br><br><br>
+g:image和g:text对象也可直接添加<br><br>
+&lt;html&gt;<br>
+&lt;head&gt;<br>
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=Unicode&quot; /&gt;<br>
+    &lt;link href=&quot;css/Graphic.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt;<br>
+    &lt;script language=&quot;javascript&quot; src=&quot;js/graphic.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;<br>
+&lt;/head&gt;<br>
+&lt;body&gt;<br>
+&lt;g:background<br>
+id=&quot;imgBackground&quot;<br>
+src=&quot;images\background.png&quot;&gt;<br>
+&lt;g:text id=&quot;txtTest&quot; blur=&quot;20&quot;&gt;test&lt;/g:text&gt;<br>
+&lt;g:image id=&quot;imgTest&quot; src=&quot;images\aerologo.png&quot;/&gt;&lt;/div&gt;<br>
+&lt;/g:background&gt;<br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br><br>
+注意:此方法不产生g:image和g:tex对象。所以不能用document.getElementById(&quot;...&quot;) 方法获取对象。<br><br>
+图像协议<br><br>
+本议议使小工具的图像的DOM更有效率比标准HTML &lt;img&gt;标记高。以缩图处理和图像缓存（如果被请求的大小大于256像素，它将尝试使用从Windows缓存获取的缩略图）代替使用图片文件协议file:// 或 http://来提高效率。<br><br>
+注意:gimage协议规定，所需要的文件必须在本地计算机上。<br><br>
+尽管和名称gimage的协议无关，图片和图标返回一个bytestream。但你仍可以使用&lt;img&gt;对象，并使用标准javascript方法。<br><br>
+function findGIMAGE()<br>
+{<br>
+    var oGIMAGE = document.getElementById(&quot;imgGIMAGE&quot;);<br>
+   <br>
+    // 得到标准&lt;img&gt;对象.<br>
+    var srcValue = oGIMAGE.src;<br>
+   <br>
+    // 未定义G:IMAGE.<br>
+    var opacityValue = oGIMAGE.opacity;<br>
+}<br><br>
+...<br><br>
+&lt;img id=&quot;imgGIMAGE&quot;<br>
+src=&quot;gimage:///C:\Users\user\AppData\Local\Microsoft\Windows Sidebar\Gadgets\SDK_Graphic.gadget\js\graphic.js&quot; /&gt;<br><br><br>
+大小<br><br>
+如前所述，协议的其中一个好处是增强gimage议定书缩图处理和图像尺寸。通常情况下，你会提供图片的高度和宽度作为字符串附加到src属性值或作为内嵌样式。<br><br><br>
+// --------------------------------------------------------------------<br>
+// 增加图像<br>
+// --------------------------------------------------------------------<br>
+function addGIMAGE()<br>
+{<br>
+    var heightWidthLoad = &quot;?width=25&amp;height=25&quot;;<br>
+    var oImage = document.createElement(&quot;img&quot;);<br>
+    oImage.src = &quot;gimage:///&quot; + System.Gadget.path + &quot;&quot; + heightWidthLoad;<br>
+    oImage.id = &quot;imgGIMAGEx&quot;;<br>
+    document.body.appendChild(oImage);<br>
+}<br><br>
+// --------------------------------------------------------------------<br>
+// 改变图像大小<br>
+// --------------------------------------------------------------------<br>
+function switchGIMAGE(file)<br>
+{<br>
+    // 指定高度，宽度和z值.<br>
+    imgGIMAGE.style.height = 25;<br>
+    imgGIMAGE.style.width = 25;<br>
+    imgGIMAGE.style.msInterpolationMode = &quot;bicubic&quot;;<br>
+    imgGIMAGE.src = &quot;gimage:///&quot; + System.Gadget.path + &quot;&quot;;<br>
+}<br><br>
+&lt;!--<br>
+用脚本指定图像属性<br>
+--&gt;<br>
+&lt;img id=&quot;imgGIMAGE&quot; src=&quot;images/blank.png&quot; height=&quot;0&quot; width=&quot;0&quot; /&gt;<br><br><br>
+如果没有高度和宽度指定图像缩放比例，那么高度或宽度指定图像缩放比例120像素。在任何情况下，任何未填满的区域由透明表示。
+</div>
+</div></body></html> 

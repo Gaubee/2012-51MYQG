@@ -1,0 +1,291 @@
+<html>
+<head>
+  <title>反向Ajax，第2部分：WebSocket</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1205"/>
+<h1>反向Ajax，第2部分：WebSocket</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+反向Ajax，第2部分：WebSocket<br>
+原文:<a href="http://kb.cnblogs.com/page/112616/">http://kb.cnblogs.com/page/112616/</a><br><br>
+  英文原文：Reverse Ajax, Part 2: WebSockets<br>
+这一文章系列探讨了如何使用反向Ajax（Reverse Ajax）技术来开发事件驱动的web应用，第1部分内容介绍了实现反向Ajax通信的几种不同方式：轮询（polling）、捎带（piggyback）以及使用了长轮询（long-polling）和流（streaming）的Comet。在本文中，我们学习一种新的实现反向Ajax的技术：使用WebSocket，一个新的HTML5 API。WebSocket可由浏览器厂商来做本地化实现，或是通过把调用委托给隐藏的被称为FlashSocket的Flash组件这种桥接手段来实现。本文还讨论了反向Ajax技术带来的一些服务器端约束。<br><br>
+  前言<br><br>
+  时至今日，用户期待的是可通过web访问快速、动态的应用。这一文章系列展示了如何使用反向Ajax（Reverse Ajax）技术来开发事件驱动的web应用。该系列的第1部分介绍了反向Ajax、轮询（polling）、流（streaming）、Comet和长轮询（long polling）。你已经了解了Comet是如何使用HTTP长轮询的，这是可靠地实现反向Ajax的最好方式，因为现有的所有浏览器都提供支持。<br><br>
+  在本文中，我们将学习如何使用WebSocket来实现反向Ajax。代码例子被用来帮助说明WebSocket、FlashSocket、服务器端约束、请求作用域（request-scoped）服务以及暂停长生存期请求等，你可以下载本文中用到的这些源代码。<br><br>
+  前提条件<br><br>
+  理想情况下，要充分体会本文的话，你应该对JavaScrpit和Java有一定的了解。本文中创建的例子是使用Google Guice来构建的，这是一个使用Java编写的依赖注入框架。若要读懂文中所谈内容，你应该要熟悉诸如Guice、Spring或是Pico一类的依赖注入框架的概念。<br><br>
+  若要运行本文中的例子，你还需要最新版本的Maven和JDK（参见参考资料）。<br><br>
+  WebSocket<br><br>
+  在HTML5中出现的WebSocket是一种比Comet还要新的反向Ajax技术，WebSocket启用了双向的全双工通信信道，许多浏览器（Firefox、Google Chrome和Safari）都已对此做了支持。连接是通过一个被称为WebSocket握手的HTTP请求打开的，其用到了一些特殊的报头。连接会保持在活动状态，你可以使用JavaScript来写入和接收数据，就像是在使用一个原始的TCP套接口一样。<br><br>
+  WebSocket URL的起始输入是ws://或是wss://（在SSL上）。<br><br>
+  图1中的时间线说明了使用WebSocket的通信。一个带有特定报头的HTTP握手被发送到了服务器端，接着在服务器端或是客户端就可以通过JavaScript来使用某种套接口（socket）了，这一套接口可被用来通过事件句柄异步地接收数据。<br><br>
+  图1. 使用WebSocket的反向Ajax<br><br><br>
+  本文可下载的源代码中有一个WebSocket例子，在运行该例子时，你应该会看到类似清单1的输出。其说明了客户端的事件是如何发生的，以及如何会立即在客户端显示出来。当客户端发送一些数据时，服务器端回应客户端的发送行为。<br><br>
+  清单1. JavaScript中的WebSocket例子<br>
+[client] WebSocket connection opened<br>
+[server] 1 events<br>
+[event] ClientID =0<br>
+[server] 1 events<br>
+[event] At Fri Jun 1721:12:01 EDT 2011<br>
+[server] 1 events<br>
+[event] From 0 : qqq<br>
+[server] 1 events<br>
+[event] At Fri Jun 1721:12:05 EDT 2011<br>
+[server] 1 events<br>
+[event] From 0 : vv<br><br>
+  通常情况下，在JavaScript中你会如清单2所说明的那样来使用WebSocket，如果你的浏览器支持它的话。<br><br>
+  清单2. JavaScript客户端例子<br>
+var ws = new WebSocket('ws://127.0.0.1:8080/async');<br>
+ws.onopen = function() {<br>
+    // 连接被打开时调用<br>
+};<br>
+ws.onerror = function(e) {<br>
+    // 在出现错误时调用，例如在连接断掉时<br>
+};<br>
+ws.onclose = function() {<br>
+    // 在连接被关闭时调用<br>
+};<br>
+ws.onmessage = function(msg) {<br>
+    // 在服务器端向客户端发送消息时调用<br>
+    // msg.data包含了消息<br>
+};<br>
+// 这里是如何给服务器端发送一些数据<br>
+ws.send('some data');<br>
+// 关闭套接口<br>
+ws.close();<br><br>
+  发送和接收的数据可以是任意类型的，WebSocket可被看成是TCP套接口，因此这取决于客户端和服务器端知道要来回发送的数据是哪种类型的。这里的例子发送的是JSON串。<br><br>
+  在JavaScript WebSocket对象被创建后，如果在浏览器的控制台（或是Firebug）中仔细看一下HTTP请求的话，你应该会看到WebSocket特有的报头。清单3给出了一个例子。<br><br>
+  清单3. HTTP请求和相应报头示例<br>
+Request URL:ws://127.0.0.1:8080/async<br>
+Request Method:GET<br>
+Status Code:101 WebSocket Protocol Handshake<br><br>
+Request Headers<br>
+Connection:Upgrade<br>
+Host:127.0.0.1:8080<br>
+Origin:http://localhost:8080<br>
+Sec-WebSocket-Key1:1 &amp;1~ 33188Yd]r8dp W75q<br>
+Sec-WebSocket-Key2:17; 229 *043M 8<br>
+Upgrade:WebSocket<br>
+(Key3):B4:BB:20:37:45:3F:BC:C7<br><br>
+Response Headers<br>
+Connection:Upgrade<br>
+Sec-WebSocket-Location:ws://127.0.0.1:8080/async<br>
+Sec-WebSocket-Origin:http://localhost:8080<br>
+Upgrade:WebSocket<br>
+(Challenge Response):AC:23:A5:7E:5D:E5:04:6A:B5:F8:CC:E7:AB:6D:1A:39<br><br>
+  WebSocket握手使用所有的这些报头来验证并设置一个长生存期的连接，WebSocket的JavaScript对象还包含了两个有用的属性：<br><br>
+  ws.url：返回WebSocket服务器的URL<br>
+   ws.readyState：返回当前连接状态的值<br>
+   1. CONNECTING = 0<br>
+   2. OPEN = 1<br>
+   3. CLOSED = 2<br><br>
+  服务器端对WebSocket的处理要稍加复杂一些，现在还没有某个Java规范以一种标准的方式来支持WebSocket。要使用web容器（例如Tomcat或是Jetty）的WebSocket功能的话，你得把应用代码和容器特定的库紧密耦合在一起才能访问WebSocket的功能。<br><br>
+  示例代码的websocket文件夹中的例子使用的是Jetty的WebSocket API，因为我们使用的是Jetty容器。清单4 给出了WebSocket的处理程序。（本系列的第3部分会使用不同的后端WebSocket API。）<br><br>
+  清单4. Jetty容器的WebSocket处理程序<br>
+public final class ReverseAjaxServlet extends WebSocketServlet {<br>
+  @Override<br>
+  protected WebSocket doWebSocketConnect(HttpServletRequest request,String protocol) {<br>
+    return [...]<br>
+  }<br>
+}<br><br>
+  就Jetty来说，有几种处理WebSocket握手的方式，比较容易的一种方式是子类化Jetty的WebSocketServlet并实现doWebSocketConnect方法。该方法要求你返回Jetty的WebSocket接口的一个实例，你必须要实现该接口并返回代表了WebSocket连接的某种端点（endpoint）。清单5提供了一个例子。<br><br>
+  清单5. WebSocket实现示例<br>
+class Endpoint implements WebSocket {<br>
+Outbound outbound;<br>
+@Override<br>
+publicvoid onConnect(Outbound outbound) {<br>
+  this.outbound = outbound;<br>
+}<br>
+@Override<br>
+publicvoid onMessage(byte opcode, String data) {<br>
+  // 在接收到消息时调用<br>
+  // 你通常用到的就是这一方法<br>
+}<br>
+@Override<br>
+publicvoid onFragment(boolean more, byte opcode,byte[] data, int offset, int length) {<br>
+  // 在完成一段内容时，onMessage被调用<br>
+  // 通常不在这一方法中写入东西<br>
+}<br>
+@Override<br>
+publicvoid onMessage(byte opcode, byte[] data,int offset, int length) {<br>
+  onMessage(opcode, new String(data, offset, length));<br>
+}<br>
+@Override<br>
+publicvoid onDisconnect() {<br>
+  outbound =null;<br>
+}<br>
+}<br><br>
+  若要向客户端发送消息的话，你要向outbound中写入消息，如果清单6所示：<br><br>
+  清单6. 发送消息给客户端<br>
+if (outbound != null &amp;&amp; outbound.isOpen()) {<br>
+  outbound.sendMessage('Hello World !');<br>
+}<br><br>
+  要断开并关闭到客户端的WebSocket连接的话，使用outbound.disconnect()。<br><br>
+  WebSocket是一种实现无延迟双向通信的非常强大的方法，Firefox、Google Chrome、Opera和其他的现代浏览器都支持这种做法。根据jWebSocket网站的说法：<br><br>
+  1. Chrome从4.0.249版本开始包含本地化的WebSocket。<br>
+   2. Safari 5.x包含了本地化的WebSocket。<br>
+   3. Firefox 3.7a6和4.0b1+包含了本地化的WebSocket。<br>
+   4. Opera从10.7.9.67开始包含了本地化的WebSocket。<br><br>
+  欲了解更多关于jWebSocket方面的内容，请查阅参考资料。<br><br>
+  优点<br><br>
+  WebSocket功能强大、双向、低延迟，且易于处理错误，其不会像Comet长轮询那样有许多的连接，也没有Comet流所具有的一些缺点。它的API也很容易使用，无需另外的层就可以直接使用，而Comet则需要一个很好的库来处理重连接、超时、Ajax请求、确认以及选择不同的传输（Ajax长轮询和jsonp轮询）。<br><br>
+  缺点<br><br>
+  WebSocket的缺点有这些：<br><br>
+  1. 是一个来自HTML5的新规范，还没有被所有的浏览器支持。<br><br>
+  2. 没有请求作用域（request scope），因为WebSocket是一个TCP套接口而不是一个HTTP请求，有作用域的请求服务，比如说Hibernate的SessionInViewFilter，就不太容易使用。Hibernate是一个持久性框架，其在HTTP请求的外围提供了一个过滤器。在请求开始时，其在请求线程中设定了一个上下文（包括事务和JDBC连接）边界；在请求结束时，过滤器销毁这一上下文。<br><br>
+  FlashSocket<br><br>
+  对于不支持WebSocket的浏览器来说，有些库能够回退到FlashSocket（经由Flash的套接口）上。这些库通常会提供同样的官方WebSocket API，但他们是通过把调用委托给一个包含在网站中的隐藏的Flash组件来实现的。<br><br>
+  优点<br><br>
+  FlashSocket透明地提供了WebSocket的功能，即使是在不支持HTML5 WebSocket的浏览器上也是如此。<br><br>
+  缺点<br><br>
+  FlashSocket有着下面的这些缺点：<br><br>
+  1. 其需要安装Flash插件（通常情况下，所有浏览器都会有该插件）。<br><br>
+  2. 其要求防火墙的843端口是打开的，这样Flash组件才能发出HTTP请求来检索包含了域授权的策略文件。如果843端口是不可到达的话，则库应该有回退动作或是给出一个错误，所有的这些处理都需要一些时间（最多3秒，这取决于库），而这会降低网站的速度。<br><br>
+  3. 如果客户端处在某个代理服务器的后面的话，到端口843的连接可能会被拒绝。<br><br>
+  WebSocketJS项目提供了一种桥接方式，其要求一个至少是10版本的Flash来为Firefox 3、Inernet Explorer 8和Internet Explorer 9提供WebSocket支持。<br><br>
+  建议<br><br>
+  相比于Comet，WebSocket带来了更多的好处。在日常开发中，客户端支持的WebSocket速度更快，且产生较少的请求（从而消耗更少的带宽）。不过，由于并非所有的浏览器都支持WebSocket，因此，对于Reverse Ajax库来说，最好的选择就是能够检测对WebSocket的支持，并且如果不支持WebSocket的话，还能够回退到Comet（长轮询）上。<br><br>
+  由于这两种技术需要从所有浏览器中获得最好的做法并保持兼容性，因此我的建议是使用一个客户端的JavaScript库，该库在这些技术之上提供一个抽象层。本系列的第3和第4部分内容会探讨一些库，第5部分则是说明它们的应用。在服务器端，正如下一节内容讨论的那样，事情则会稍加复杂一些。<br><br>
+  服务器端的反向Ajax约束<br><br>
+  现在你对客户端可用的反向Ajax解决方案已经有了一个概观，让我们再来看看服务器端的反向Ajax解决方案。到目前为止，例子使用的都还主要是客户端的JavaScript代码。在服务器端，要接受反向Ajax连接的话，相比你所熟悉的短HTTP请求，某些技术需要特定的功能来处理长生存期的连接。为了得到更好的伸缩性，应该要使用一种新的线程模型，该模型需要Java中的某个特定API来暂停请求。还有，就WebSocket来说，你必须要正确地管理应用中用到的服务的作用域。<br><br>
+  线程和非阻塞I/O<br><br>
+  通常情况下，web服务器会把一个线程或是一个进程与每个传入的HTTP连接关联起来。这一连接可以是持久的（保持活动），这样多个请求就可以通过这同一个连接进行了。在本文的例子中，Apache web服务器可以配置成mpm_fork或是mpm_worker模式来改变这一行为。Java web服务器（应用服务器也包括在内——这是同一回事）通常会为每个传入的连接使用单独的一个线程。<br><br>
+  产生一个新的线程会带来内存的消耗和资源的浪费，因为其并不保证产生的线程会被用到。连接可能会建立起来，但是没有来自客户端或是服务器端的数据在发送。不管这一线程是否被用到，其都会消耗用于调度和上下文切换的内存和CPU资源。而且，在使用线程模式来配置服务器时，你通常需要配置一个线程池（设定处理传入连接的线程的最大数目）。如果该值配置不当，值太小的话，你最终就会遭遇线程饥饿问题；请求就会一直处于等待状态直到有线程可用来处理它们，在达到最大并发连接时，响应时间就会下降。另一方面，配置一个高值则可会导致内存不足的异常，产生过多线程会消耗尽JVM的所有可用的堆，导致服务器崩溃。<br><br>
+  Java最近引入一个新的I/O API，其被称为非阻塞式的I/O。这一API使用一个选择器来避免每次有新的HTTP连接在服务器端建立时都要绑定一个线程的做法，当有数据到来时，就会有一个事件被接收，接着某个线程就被分配来处理该请求。因此，这种做法被称为每个请求一个线程（thread-per-request）模式。其允许web服务器，比如说WebSphere和Jetty等，使用固定数量的线程来容纳并处理越来越多的用户连接。在相同硬件配置的情况下，在这一模式下运行的web服务器的伸缩性要比运行在每个连接一个线程（thread-per-connection）模型下的好得多。<br><br>
+  在Philip McCarthy（Comet and Reverse Ajax的作者）的博客中，关于这两种线程模式的可伸缩性有一个很有意思的衡量基准（参见参考资料中的链接）。在图2中，你会发现同样的模式：在有太多连接时，线程模式会停止工作。<br><br>
+  图2. 线程模式的衡量基准<br><br><br>
+  每个连接一个线程模式（图2中的Threads）通常会有一个更好的响应时间，因为所有的线程都已启动、准备好且是等待中，但在连接的数目过高时，其会停止提供服务。在每个请求一个线程模式（图2中的Continuations）中，线程被用来为到达的请求提供服务，连接则是通过一个NIO选择器来处理。响应时间可能会较慢一些，但线程会回收再用，因此该方案在大容量连接方面有着更好的伸缩性。<br><br>
+  想要了解线程在幕后是如何工作的话，可以把一个LEGO™积木块想象成是选择器，每次传入的连接到达这一LEGO积木块时，其由一个管脚来标识。LEGO积木块/选择器有着与连接数一样多的管脚（一样多的键）。那么，只需要一个线程来等待新事件的发生，然后在这些管脚上遍历就可以了。当有事情发生时，选择器线程从发生的事件中检索出键值，然后就可以使用一个线程来为传入的请求提供服务。<br><br>
+  “Rox Java NIO Tutorial”这一教程有很好的使用Java中的NIO的例子（参见参考资料）。<br><br>
+  有请求作用域的服务<br><br>
+  许多框架都提供了服务或是过滤器（filter）来处理到达servlet的web请求，例如，某个过滤器会：<br><br>
+  1. 把JDBC连接绑定到某个请求线程上，这样整个请求就只用到一个连接。<br><br>
+  2. 在请求结束时提交所做的改变。<br><br>
+  另一个例子是Google Guice（一个依赖注入库）的Guice Servlet扩展。类似于Spring，Guice可把服务绑定在请求的作用域内，一个实例至多只会为每个新请求创建一次（参阅参考资料获得更多信息）。<br><br>
+  通常的做法包括了使用用户id来把从储存库中检索出来的用户对象缓存在请求中，用户id则是取自集群化的HTTP会话。在Google Guice中，你可能会有类似清单7中给出的代码。<br><br>
+  清单7. 请求作用域的绑定<br>
+@Provides<br>
+@RequestScoped<br>
+Member member(AuthManager authManager,<br>
+MemberRepository memberRepository) {<br>
+  return memberRepository.findById(authManager.getCurrentUserId());<br>
+}<br><br>
+  当某个member被注入到类中时，Guice会尝试这从请求中获取该对象，如果没有找到的话，它就会执行储存库调用并把结果放在请求中。<br><br>
+  请求作用域可与除了WebSocket之外的其他任何的反向Ajax解决方案一起使用，任何其他的依赖于HTTP请求的解决方案，无论是短的还是长的生存期的都可以，每个请求都会通过servlet分发系统，过滤器都会被执行。在完成一个暂停的（长生存其）HTTP请求时，你会在这一系列的后继部分中了解到还有另一种做法可让请求再次通过过滤器链。<br><br>
+  对于WebSocket来说，数据直接到达onMessage回调函数上，就像是在TCP套接口中的情况那样。不存在任何的HTTP请求送达这一数据，故也不存在获取或是存放作用域对象的请求上下文。因此在onMessage回调中使用需要作用域对象的服务就会失败。可下载源代码中的guice-and-websocket例子说明了如何绕过这一限制，以便仍然可在onMessage回调中使用请求作用域对象。当你运行这一例子，并在网页上点击每个按钮来测试一个Ajax调用（有请求作用域的）、一个WebSocket调用和一个使用了模拟请求作用域的WebSocket调用时，你会得到图3所示的输出。<br><br>
+  图3. 使用了请求作用域服务的WebSocket处理程序<br><br><br>
+  在使用下面任一种技术时，你可能都会遇到这些问题：<br><br>
+  1. Spring<br><br>
+  2. Hibernate<br><br>
+  3. 任何其他需要请求作用域或是每一请求模型的框架，比如说OpenSessionInViewFilter。<br><br>
+  4. 任何在过滤器的内部使用ThreadLocal这一设施来指定变量的作用域为请求线程并在以后访问这些变量的系统。<br><br>
+  Guice有一个优雅的解决方案，如清单8所示：<br><br>
+  清单8. 在WebSocket的onMessage回调中模拟一个请求作用域<br>
+// 在调用doWebSocketMethod时<br>
+// 保存到请求的引用<br>
+HttpServletRequest request = [...]<br>
+Map, Object&gt; bindings =new HashMap, Object&gt;();<br>
+// 我有一个服务需要一个请求来获取会话<br>
+// 因此我提供一个请求，但你可以提供任何其他<br>
+// 可能需要的绑定<br>
+bindings.put(Key.get(HttpServletRequest.class), request);<br>
+ServletScopes.scopeRequest(new Callable() {<br>
+  @Override<br>
+  public Object call() throws Exception {<br>
+  // 调用你的储存库或是任何用到作用域对象的服务<br>
+    outbound.sendMessage([...]);<br>
+    return null;<br>
+  }<br>
+}, bindings).call();<br><br>
+  暂停长生存期请求<br><br>
+  若使用Comet的话，还有另一障碍存在，那就是服务器端如何在不影响性能的情况下暂停一个长生存期请求，然后在服务器端事件到来时尽可能快地恢复并完成请求呢？<br><br>
+  很显然，你不能简单地让请求和响应停在那里，这会引发线程饥饿和高内存消耗。暂停非阻塞式的I/O中的一个长生存期请求，在Java中这需要一个特有的API。Servlet 3.0规范提供了这样的一个API（参见本系列的第1部分内容）。清单9给出了一个例子。<br><br>
+  清单9. 使用Servlet 3.0来定义一个异步的servlet<br>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br><br>
+&lt;web-app version=&quot;3.0&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;<br>
+xmlns:j2ee=&quot;http://java.sun.com/xml/ns/javaee&quot;<br>
+xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;<br>
+xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml<br>
+/ns/j2ee/web-app_3.0.xsd&quot;&gt;<br><br>
+&lt;servlet&gt;<br>
+&lt;servlet-name&gt;events&lt;/servlet-name&gt;<br>
+&lt;servlet-class&gt;ReverseAjaxServlet&lt;/servlet-class&gt;<br>
+&lt;async-supported&gt;true&lt;/async-supported&gt;<br>
+&lt;/servlet&gt;<br><br>
+&lt;servlet-mapping&gt;<br>
+&lt;servlet-name&gt;events&lt;/servlet-name&gt;<br>
+&lt;url-pattern&gt;/ajax&lt;/url-pattern&gt;<br>
+&lt;/servlet-mapping&gt;<br><br>
+&lt;/web-app&gt;<br><br>
+  在定义了一个异步的servlet之后，你就可以使用Servlet 3.0 API来挂起和恢复一个请求，如清单10所示：<br><br>
+  清单10. 挂起和恢复一个请求<br>
+AsyncContext asyncContext = req.startAsync();<br>
+// 把asyncContext的引用保存在某处<br><br>
+// 然后在需要的时候，在另一个线程中你可以恢复并完成<br>
+HttpServletResponse req =<br>
+(HttpServletResponse) asyncContext.getResponse();<br>
+req.getWriter().write(&quot;data&quot;);<br>
+req.setContentType([...]);<br>
+asyncContext.complete();<br><br>
+  在Servlet 3.0之前，每个容器都有着且现在仍有着自己的机制。Jetty的延续（continuation）就是一个很有名的例子；Java中的许多反向Ajax库都依赖于Jetty的continuation。其并非什么精彩绝伦的做法，也不需要你的应用运行在Jetty容器上。该API的聪明之处在于其能够检测出你正在运行的容器，如果是运行在另一个容器上，比如说Tomcat或是Grizzly，那么如果Servlet 3.0 API可用的话，就回退到Servlet 3.0 API上。这对于Comet来说没有问题，但如果你想要利用WebSocket的优势的话，目前别无选择，只能使用容器特有的功能。<br><br>
+  Servlet 3.0规范还没有发布，但许多容器都已经实现了这一API，因为这也是实施反向Ajax的一种标准做法。<br><br>
+  结束语<br><br>
+  WebSocket尽管存在一些不足之处，但却是一个功能非常强大的反向Ajax解决方案。其目前还未在所有浏览器上实现，且如果没有反向Ajax库的帮助的话，在Java服务器端并不容易使用。因为你使用的不是标准的请求-响应风格，所有你不能依赖过滤器链的作用域执行。Comet和WebSocket需要服务器端的容器特定功能，因此在使用新出的容器时，你需要注意一下，它可能没有做这方面的扩充。<br><br>
+  请继续关注这一系列的第3部分，该部分内容将探讨用于Comet和WebSocket的不同的服务器端API，你还可了解到Atomsphere，这是一个反向Ajax框架。<br><br>
+  下载<br><br>
+  描述        名称         大小   下载方法<br><br>
+  文章的源代码   reverse_ajaxpt2_source.zip 14KB   HTTP<br><br>
+  参考资料<br><br>
+  1. “Start using HTML5 WebSockets today”（Nettuts+）：重温在PHP中如何运行一个WebSocket服务器，并考虑如何构建一个客户端来通过WebSocket协议发送和接收消息。<br><br>
+  2. “The WebSocket API”（W3C, July 2011）：这一规范定义的API使得网页能够使用WebSocket协议来和远程主机进行双向通信。<br><br>
+  3. jWebSocket支持的浏览器：了解jWebSocket和Flash套接口桥所支持浏览器的各方面信息。<br><br>
+  4. 了解更多关于Servlet 3.0对异步处理的支持方面的内容。<br><br>
+  5. Philip McCarthy的博客上的文章Comet &amp; Java: Threaded Vs Nonblocking I/O中有着更多的内容。<br><br>
+  6. The Rox Java NIO Tutorial这一教程收集了作者使用Java NIO库的一些经验，以及几十条的诀窍、技巧、建议和充斥着互联网的告诫做法。<br><br>
+  7. 在维基百科上了解这些内容：<br><br>
+  7.1 Ajax<br>
+   7.2 Reverse Ajax<br>
+   7.3 Comet<br>
+   7.4 WebSockets<br><br>
+  8. “Exploring Reverse AJAX”（Google Maps .Net Control博客，2006年8月）：获得一些关于反向Ajax技术的介绍说明。<br><br>
+  9. “Cross-domain communications with JSONP, Part 1: Combine JSONP and jQuery to quickly build powerful mashups”（developerWorks, February 2009）：了解如何把不起眼的跨域调用技术（JSONP）和一个灵活的JavaScript库（JQuery）结合在一起，以令人惊讶的速度构建出一些功能强大的聚合应用。<br><br>
+  10. “Cross-Origin Resource Sharing (CORS)”规范（W3C, July 2010）：了解更多关于这一机制的内容，该机制允许XHR执行跨域请求。<br><br>
+  11. “Build Ajax applications with Ext JS”（developerWorks, July 2008）：对大大增强了JavaScript开发的这一框架有一个大概的了解。<br><br>
+  12. “Compare JavaScript frameworks”（developerWorks, February 2010）：对极大地增强了JavaScript开发的那些框架有一个整体的了解。<br><br>
+  13. “Mastering Ajax, Part 2: Make asynchronous requests with JavaScript and Ajax”（developerWorks, January 2006）：学习如何使用Ajax和XMLHttpRequest对象来创建一种永不会让用户等待服务器响应的请求/响应模型。<br><br>
+  14. “Create Ajax applications for the mobile Web”（developerWorks, March 2010）：了解如何使用Ajax构建跨浏览器的智能手机Web应用。<br><br>
+  15. “Where and when to use Ajax in your applications”（developerWorks, February 2008）：了解如何使用Ajax来改进网站，同时避免糟糕的用户体验。<br><br>
+  16. “Improve the performance of Web 2.0 applications“（developerWorks, December 2009）：探讨不同的浏览器端缓存机制。<br><br>
+  17. “Introducing JSON”（JSON.org）：获得对JSON语法的一个入门介绍。<br><br>
+  18. developerWorks Web development zone：获得各种谈论基于Web的解决方案的文章。<br><br>
+  19. developerWorks podcasts：收听各种与软件开发者进行的有趣的访谈和讨论。<br><br>
+  20. developerWorks technical events and webcasts：随时关注developerWorks的技术事件和webcast的进展。<br><br>
+  获取产品和技术<br><br>
+  1. WebSocketJS（WebSocket Flash Bridge）：获取这一由Flash支持的HTML5 WebSocket实现。<br><br>
+  2. Google Guice：获取Google Guice，一个Java 5及以上版本的轻量级的依赖注入框架。<br><br>
+  3. Jetty：获取Jetty，一个web服务器和javax.servlet容器，外带对WebSocket的支持。<br><br>
+  4. Apache Maven：获取Maven，一个软件项目管理和包容工具。<br><br>
+  5. Java Development Kit, Version 6：获得Java平台标准版（Java Platform, Standard Edition，Java SE），该平台允许你在台式机和服务器上，以及在当今要求苛刻的嵌入式环境上开发和部署Java应用。<br><br>
+  6. 免费试用IBM软件，下载使用版，登录在线试用，在沙箱环境中使用产品，或是通过云来访问，有超过100种IBM产品试用版选择。<br><br>
+  讨论<br><br>
+  1. 现在就创建你的developerWorks个人资料，并设置一个关于Reverse Ajax的观看列表。与developerWorks社区建立联系并保持联系。<br><br>
+  2. 找到其他在web开发方面感兴趣的developerWorks成员。<br><br>
+  3. 分享你的知识：加入一个关注web专题的developerWorks组。<br><br>
+  4. Roland Barcia在他的博客中谈论Web 2.0和中间件。<br><br>
+  5. 关注developerWork成员的shared bookmarks on web topics。<br><br>
+  6. 快速获得答案：访问Web 2.0 Apps论坛。<br><br>
+  7. 快速获得答案：访问Ajax论坛。
+</div>
+</div></body></html> 

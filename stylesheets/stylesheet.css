@@ -360,6 +360,48 @@ Full-Width Styles
   background: url(../images/sprite_download.png) no-repeat top right;
 }
 
+/*******************************************************************************
+#My self
+*******************************************************************************/
+#tags {
+  position: absolute;
+  width: 210px;
+  z-index: 10;
+  bottom: -40px;
+  right: 0;
+  height: 70px;
+}
+.tag_1 {
+  display: block;
+  float: right;
+  width: 90px;
+  height:70px;
+  text-indent: -5000px;
+  overflow: hidden;
+  background: url(../images/tags.png) no-repeat bottom left;
+}
+
+.tag_2 {
+  display: block;
+  float: right;
+  width: 90px;
+  height:70px;
+  text-indent: -5000px;
+  overflow: hidden;
+  background: url(../images/tags.png) no-repeat bottom right;
+  margin-left: 10px;
+}
+
+.tag_1:hover {
+  background: url(../images/tags.png) no-repeat top left;
+}
+
+.tag_2:hover {
+  background: url(../images/tags.png) no-repeat top right;
+}
+/*******************************************************************************
+/My self
+*******************************************************************************/
 #main_content_wrap {
   background: #f2f2f2;
   border-top: 1px solid #111;

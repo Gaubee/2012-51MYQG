@@ -1,0 +1,156 @@
+<html>
+<head>
+  <title>文件上传的渐进式增强</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1389"/>
+<h1>文件上传的渐进式增强</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+文件上传的渐进式增强<br>
+原文地址:<a href="http://kb.cnblogs.com/page/153741/">http://kb.cnblogs.com/page/153741/</a><br><br>
+  文件上传是最古老的互联网操作之一。<br><br>
+  20多年了，它几乎没变，还是原来的样子：操作麻烦、缺乏交互、用户体验不佳。在这个新技术日新月异的时代，显得非常落伍。<br><br><br><br>
+  网页开发者们想了很多办法，试图提升文件上传的功能和操作体验，在各种 Javascript 库的基础上，开发了五花八门的插件。可是，由于不同浏览器之间的差异，缺乏统一接口，这些插件要么用起来很麻烦，要么不能普遍适用。<br><br>
+  HTML5提供了一系列新的浏览器 API，使得文件上传有可能出现革命性变化。英国程序员 Remy Sharp 总结了这些新的接口，本文在他的文章基础上，讨论如何采用 HTML5 的 API，对文件上传进行渐进式增强，实现以下功能：<br>
+iframe 上传<br>
+ajax 上传<br>
+进度条<br>
+文件预览<br>
+拖放上传<br><br>
+  为了对这些功能有一个感性认识，你可以先看看 Remy Sharp 提供的范例。<br><br>
+  虽然这些 API，还没有得到广泛部署，但它们是未来的潮流。有了它们，代码就可以写得非常优雅简洁，上面五个功能都能在 20 行以内实现。<br><br><br><br>
+  一、传统形式<br><br>
+  让我们从最基本的开始。<br><br>
+  文件上传的传统形式，是使用表单元素 file：<br>
+&lt;form action=&quot;upload.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot; &gt;<br>
+&lt;input type=&quot;file&quot; name=&quot;upload&quot; /&gt; &lt;br /&gt;<br>
+&lt;input type=&quot;submit&quot; value=&quot;Upload&quot; /&gt;<br>
+&lt;/form&gt;<br><br>
+  所有浏览器都支持上面的代码。它在 IE 浏览器中，显示如下：<br><br><br><br>
+  用户先选择文件，然后点击&quot;Upload&quot;按钮，文件开始上传。<br><br>
+  二、iframe 上传<br><br>
+  传统的表单上传，属于&quot;同步上传&quot;。也就是说，点击上传按钮后，网页&quot;锁死&quot;，用户只能等待上传结束，然后浏览器刷新，跳到表单的 action 属性指定的网址。<br><br>
+  有没有办法&quot;异步上传&quot;，在网页不重载的情况下，完成整个上传过程呢？<br><br>
+  在 HTML5 没有出现之前，只能使用 iframe 做到这一点。用户点击 submit 时，动态插入一个 iframe 元素（以下代码使用了 jQuery 函数库）。<br>
+var form = $(&quot;#upload-form&quot;);<br>
+form.on ('submit',function () {<br>
+  // 此处动态插入 iframe 元素<br>
+});<br><br>
+  插入 iframe 的代码如下：<br>
+var seed = Math.floor(Math.random() * 1000);<br>
+var id = &quot;uploader-frame-&quot; + seed;<br>
+var callback = &quot;uploader-cb-&quot; + seed;<br>
+var iframe = $('&lt;iframe id=&quot;'+id+'&quot; name=&quot;'+id+'&quot; style=&quot;display:none;&quot;&gt;');<br>
+var url = form.attr('action');<br>
+form.attr('target', id).append(iframe).attr('action', url + '?iframe=' + callback);<br><br>
+  最后一行，有两个地方值得注意。首先，它为表单添加 target 属性，指向动态插入的 iframe 窗口，这使得上传结束后，服务器将结果返回 iframe 窗口，所以当前页面就不会跳转了。其次，它在 action 属性指定的上传网址的后面，添加了一个参数，使得服务器知道回调函数的名称。这样就能将服务器返回的信息，从 iframe 窗口传到上层页面。<br><br>
+  服务器（upload.php）返回的信息，应该是如下形式：<br>
+&lt;script type=&quot;text/javascript&quot;&gt;<br>
+window.top.window['callback'](data);<br>
+&lt;/script&gt;<br><br>
+  然后，在当前网页定义回调函数：<br>
+window[callback] = function (data){<br>
+  console.log ('received callback:'， data);<br>
+  iframe.remove (); //removing iframe<br>
+  form.removeAttr ('target');<br>
+  form.attr ('action'， url);<br>
+  window[callback] = undefined; //removing callback<br>
+};<br><br>
+  三、ajax 上传<br><br>
+  HTML5 提出了 XMLHttpRequest 对象的第二版，从此 ajax 能够上传文件了。这是真正的&quot;异步上传&quot;，是将来的主流。上一节的 iframe 上传，可以用作老式浏览器的替代方案。<br><br>
+  ajax 上传代码，放在表单的 submit 事件回调函数中：<br>
+form.on ('submit',function () {<br>
+  // 此处进行 ajax 上传<br>
+});<br><br>
+  我们主要用的是 FormData 对象，它能够构建类似表单的键值对。<br>
+// 检查是否支持 FormData<br>
+if(window.FormData) {<br>
+  var formData = new FormData ();<br>
+  // 建立一个 upload 表单项，值为上传的文件<br>
+  formData.append ('upload'， document.getElementById('upload').files[0]);<br>
+  var xhr = new XMLHttpRequest ();<br>
+  xhr.open ('POST'， $(this).attr('action'));<br>
+  // 定义上传完成后的回调函数<br>
+  xhr.onload = function () {<br>
+    if (xhr.status === 200) {<br>
+      console.log ('上传成功');<br>
+    } else {<br>
+      console.log ('出错了');<br>
+    }<br>
+  };<br>
+  xhr.send (formData);<br>
+}<br><br>
+  四、进度条<br><br>
+  XMLHttpRequest 第二版还定义了一个 progress 事件，可以用来制作进度条。<br><br>
+  首先，在页面中放置一个 HTML 元素 progress。<br>
+&lt;progress min=&quot;0&quot; max=&quot;100&quot; value=&quot;0&quot;&gt;0&lt;/progress&gt;<br><br>
+  然后，定义 progress 事件的回调函数。<br>
+xhr.upload.onprogress = function (event) {<br>
+  if (event.lengthComputable) {<br>
+    var complete = (event.loaded / event.total * 100 0);<br>
+    var progress = document.getElementById ('uploadprogress');<br>
+    progress.value = progress.innerHTML = complete;<br>
+  }<br>
+};<br><br>
+  注意，progress 事件不是定义在 xhr，而是定义在 xhr.upload，因为这里需要区分下载和上传，下载也有一个 progress 事件。<br><br>
+  五、图片预览<br><br>
+  如果上传的是图片文件，利用 File API，我们可以做一个图片文件的预览。这里主要用到 FileReader 对象。<br>
+// 检查是否支持 FileReader 对象<br>
+if (typeof FileReader != 'undefined') {<br>
+  var acceptedTypes = {<br>
+    'image/png': true,<br>
+    'image/jpeg': true,<br>
+    'image/gif': true<br>
+  };<br>
+  if (acceptedTypes[document.getElementById ('upload') .files[0].type] === true) {<br>
+    var reader = new FileReader ();<br>
+    reader.onload = function (event) {<br>
+      var image = new Image ();<br>
+      image.src = event.target.result;<br>
+      image.width = 100;<br>
+      document.body.appendChild (image);<br>
+    };<br>
+    reader.readAsDataURL (document.getElementById ('upload') .files[0]);<br>
+  }<br>
+}<br><br>
+  六、拖放上传<br><br>
+  最后，利用 HTML5 的拖放功能，实现拖放上传。<br><br>
+  先在页面中放置一个容器，用来接收拖放的文件。<br>
+&lt;div&gt;&lt;/div&gt;<br><br>
+  对它设置样式：<br>
+#holder {<br>
+border: 10px dashed #ccc;<br>
+width: 300px;<br>
+min-height: 300px;<br>
+margin: 20px auto;<br>
+}<br>
+#holder.hover {<br>
+border: 10px dashed #0c0;<br>
+}<br><br>
+  拖放文件的代码，主要是定义 dragover、dragend 和 drop 这三个事件。<br>
+// 检查浏览器是否支持拖放上传。<br>
+if('draggable' in document.createElement ('span')){<br>
+  var holder = document.getElementById ('holder');<br>
+  holder.ondragover = function () { this.className = 'hover'; return false; };<br>
+  holder.ondragend = function () { this.className = ''; return false; };<br>
+  holder.ondrop = function (event) {<br>
+    event.preventDefault ();<br>
+    this.className = '';<br>
+    var files = event.dataTransfer.files;<br>
+    // do something with files<br>
+  };<br>
+}<br><br>
+  完成后的效果和总体代码，请看拖放上传 demo。
+</div>
+</div></body></html> 

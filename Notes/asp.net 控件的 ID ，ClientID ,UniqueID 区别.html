@@ -1,0 +1,133 @@
+<html>
+<head>
+  <title>asp.net 控件的 ID ，ClientID ,UniqueID 区别</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="927"/>
+<h1>asp.net 控件的 ID ，ClientID ,UniqueID 区别</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+asp.net 控件的 ID ，ClientID ,UniqueID 区别<br><br>
+对于每一个服务器控件System.Web.UI.Control 都具有 ID，UniqueID，ClientID 三个属性，那么这个三者到底有河关系，在客户端HTML中又是如何对应呈现的呢？<br><br><br>
+ID：获取或设置分配给服务器控件的编程标识符。<br>
+分配给控件的编程标识符。 （可写）<br><br>
+设置服务器控件上的此属性可提供对服务器控件的属性、事件和方法的编程访问。Web 开发人员可以通过在 ASP.NET 服务器控件的开始标记中声明 ID 属性来设置此属性。<br><br>
+如果没有为服务器控件指定该属性（以声明方式或编程方式），则可通过其父控件的 Controls 属性获取对该控件的引用。(见下)<br><br>
+注意<br>
+在此属性中包含空格将导致 ASP.NET 页分析器错误。<br><br>
+UniqueID：获取服务器控件的唯一的、以分层形式限定的标识符。（只读）<br>
+服务器控件的完全限定标识符。<br><br>
+此属性与 ID 属性不同，因为 UniqueID 属性包含服务器控件命名容器的标识符。处理页请求时自动生成此标识符。<br><br>
+此属性对于区分包含在其他重复的数据绑定服务器控件中的服务器控件尤其重要。重复控件包括 Repeater、DataList 和 DataGridWeb 服务器控件（或任何在数据绑定时创建的包含重复功能的自定义服务器控件），它们充当其子控件的命名容器。这意味着它为其子控件创建唯一的命名空间，以使它们的 ID 属性值不冲突。<br>
+例如，如果将 ASP.NETLabelWeb 服务器控件包含在 Repeater 服务器控件中，并给 Label 控件赋以 MyLabel 的 ID 属性值，给 Repeater 赋以 MyRepeater 的 ID 属性值。如果将 Repeater 数据绑定到具有三个项的 ArrayList 对象，则 Label 服务器控件的每个实例所产生的 UniqueID 属性是 MyRepeater:ctl0:MyLabel、MyRepeater:Ctl1:MyLabel 和 MyRepeater:Ctl2:MyLabel。<br><br>
+ClientID：获取由 ASP.NET 生成的服务器控件标识符。 （只读）<br>
+由 ASP.NET 生成的服务器控件标识符。<br><br>
+有时，不能为控件分配唯一的名称。例如，如果 Repeater 控件在它的某个模板中包含一个 Label 控件，则为 Repeater 控件中的各个项呈现该 Label 控件的一个实例。在呈现控件的多个实例时，为防止出现命名冲突，ASP.NET 为页上的各个服务器控件自动生成一个唯一的 ClientID 值。ClientID 值是通过连接控件的 ID 值和它的父控件的 UniqueID 值生成的。如果未指定控件的 ID 值，则使用自动生成的值。生成的 ID 的各个部分以下划线字符 (_) 分隔。<br><br>
+注意<br>
+除了用来分隔 ID 值的是下划线字符而不是 IdSeparator 属性指定的字符以外，为控件生成的 ClientID 值与 UniqueID 值相同。默认情况下，IdSeparator 属性设置为冒号字符 (:)。由于 ClientID 值不包含冒号字符，因此，它可以用于不支持包含冒号的 ID 的 ECMAScript。<br><br>
+ClientID 值经常用于以编程方式访问为客户端脚本中的控件呈现的 HTML 元素。有关详细信息，请参见 ASP.NET 网页中的客户端脚本。<br>
+总结：<br>
+ID，<br>
+这个肯定黑熟悉了，用于server端编程引用控件，没有对应的client值，即不呈现到html中<br><br>
+UniqueID，<br>
+asp.net引擎按控件树层次生成的分层形式限定的标志符，连接符默认为 $ （美元符号）【注：MSDN说默认为 : （冒号），实际是 $ ，可能文档有误吧】，此连接符在asp.net 2.0 中由属性 IdSeparator 指定，在client中呈现为html元素的name属性<br>
+此属性主要用来提交（PostBack）客户端数据，如Request.Form[someControl.UnqiueID]<br><br>
+ClientID，<br>
+由父控件的UnqiueID连接本身ID而成，但是连接符不一样，默认为   _ （下划线），此连接符在asp.net 2.0 中由属性 ClientIDSeparator 指定，在client中呈现为html元素的id属性，<br>
+此属性主要在客户端教本中使用，如 var o = document.getElementById('&lt;% = someControl.ClientID %&gt;');<br><br>
+关于 UniqueID的层次分隔符号，1.x 中为 :（冒号），而 2.0 已实现为 $（美元符），主要原因可能是 javascript 中标识符是允许 $，而不允许 : 的。（当你偷懒的时候，可以在 js 中直接使用表单元素的 name属性应用该表单元素，而不用 document.getElementsByName 或者 document.getElementById，不推荐:)<br>
+ASP.NET 使用的回发机制（简单版本）是通过一个原型为 __doPostBack(&lt;ControlUniqueID&gt;, &lt;CommandArgs&gt;) 的 javascript 函数<br>
+function __doPostBack(eventTarget, eventArgument) {<br>
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {<br>
+         theForm.__EVENTTARGET.value = eventTarget;<br>
+         theForm.__EVENTARGUMENT.value = eventArgument;<br>
+         theForm.submit();<br>
+     }<br>
+}<br><br><br>
+此函数的第一个参数 &lt;ControlUniqueID&gt; 对应引起页面回发控件的客户端 name 属性/服务端 UniqueID 属性，<br>
+当用户引发一个事件，如点击按钮，选择列表框的某一项，首先通过 _doPostBack 函数将此值存在隐藏域中，然后提交页面。<br><br>
+在服务器端，ASP.NET 引擎通过 HttpRequest.HttpMethod 确定请求是否为 post 方式，若是，则检索HttpRequest.Request.Form[&quot;__EVENTTARGET']， 获取引发回发的控件唯一标识符，并在页面控件集合层次中查找，若找到此控件，则将在适当阶段引发服务器端事件。<br><br><br><br>
+另补充控件变化规律如下:<br><br>
+控件名字发生变化是因为 INamingContainer这个接口。这个接口没有任何方法，仅只作为一个标记。ASP.NET维护控件name和id生成的规律是:<br>
+NamingContainer爷爷$NamingContainer爸爸$该控件的ID<br>
+id则一般将$换为&quot;_&quot;<br><br>
+你把控件直接放到form下，它头顶唯一一个NamingContainer是Page，但是这个是特殊的逻辑，不会生成__Page_控件名，所以就只剩控件名了，于是ID看起来没有变化。<br><br>
+当你把控件放到Repeater中时，Repeater自己被INamingContainer标记，同时，每一次循环，它会把模板内的控件重新生成一遍，同时生成一个RepeaterItem， 把这些根据模板生成的控件加入RepeaterItem的子控件。这个RepeaterItem也是一个NamingContainer. 于是控件中就会带有:<br><br>
+RepeaterID(Data)_RepeaterItemID(ctl + 号码)_控件ID. ----&gt;如:Repeater1_ctl00_Button1<br><br>
+不过非runat=server控件因为不由ASP.NET维护, 不会发生变化. UserControl.ascx由于其基类也是一个NamingContainer, 所以如果你把控件放入.ascx, 然后在页面上引用, 则前面又会多一层UserControl的ID.<br><br><br><br><br><br>
+通过controls集合访问服务器控件：<br><br>
+在VS2005中新建一个.aspx文件，打开HTML页会发现一个原先的声明从<br>
+&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0 Transitional//EN&quot; &gt;<br>
+变成了<br>
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;!<br>
+很早以前就称的HTML的接班人XHTML，现在MS终于要将它扶正了..<br>
+这样在写HTML代码时就要注意了,<br>
+如:<br>
+&lt;font&gt;<br>
+    &lt;div&gt;<br>
+    &lt;/font&gt;<br>
+    &lt;/div&gt;<br>
+是无法在Vs2005中的Design模式中正确显示的[很明显的错误，但在HTML可以正常显示].. ,XHTML的语法比HTML严格的<br><br>
+多<br>
+而关于XHTML和HTML的区别，如果不是非常明白<br>
+http://www.blueidea.com/tech/site/2004/1911.asp<br>
+这个文章可以参考一下<br><br><br><br>
+Form<br><br>
+Form新添加了几个功能比较有用的是<br>
+defaultbutton、defaultfocus关从字面的意思大家就可以理解了以前在ASP.NET中让人头痛的默认提交表单按钮和设<br><br>
+置焦点在ASP.NET 2.0已经提供了，不用象以前那样自己写javascript来控制了<br>
+关于焦点在也可以代码中通过   txtUserName.Focus();来设置了,看得出来ASP.NET2.0是设计是多么的细致。<br><br><br><br>
+Header<br>
+在代码中可能通过<br>
+this.Header.Metadata.Add(&quot;taye&quot;, &quot;value&quot;);<br>
+this.Header.Title = &quot;value&quot;;<br>
+this.Header.LinkedStyleSheets.Add(&quot;style.css&quot;);<br>
+来控制Title,Meta,Style等[好象LinkedStyleSheets只能是text/css???]<br>
+this.Header.StyleSheet.RegisterStyle()<br>
+方法将一个style内嵌到网页中去.<br><br>
+这样页面几乎所以部分都可以得到控制了<br>
+有些人也许会想那&lt;html&gt;和&lt;body&gt;呢<br><br>
+我们先来运行一下面这个代码.<br><br>
+   private void Page_Load(object sender, EventArgs e)<br>
+    {<br>
+        foreach (Control ctl in Page.Controls)<br>
+        {<br>
+            Response.Write(ctl.ToString() + &quot;&lt;BR/&gt;&quot;);<br><br>
+            LiteralControl lc = ctl as LiteralControl;<br><br>
+            if (lc != null)<br>
+            {<br>
+                Response.Write(lc.Text);<br>
+            }<br>
+        }<br><br>
+    }<br><br><br>
+你将会看到一个正常页的有如下五个控件<br>
+System.Web.UI.LiteralControl<br>
+System.Web.UI.HtmlControls.HtmlHead<br>
+System.Web.UI.LiteralControl<br>
+System.Web.UI.HtmlControls.HtmlForm<br>
+System.Web.UI.LiteralControl<br><br><br><br><br><br>
+而三个LiteralControl的控件的内容分别为<br><br>
+System.Web.UI.LiteralControl<br>
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;<br><br>
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; &gt;<br><br>
+System.Web.UI.LiteralControl<br>
+&lt;body&gt;<br>
+    <br>
+System.Web.UI.LiteralControl<br>
+&lt;/body&gt;<br>
+&lt;/html&gt;<br><br><br><br>
+所以如果你要对body或&lt;!DOCTYPE..&gt;或&lt;html&gt;进行控制那你就找到这相应的控件以后再进行相应的修改吧<br><br>
+只要对<br>
+LiteralControl.Text进行修改就可以.
+</div>
+</div></body></html> 

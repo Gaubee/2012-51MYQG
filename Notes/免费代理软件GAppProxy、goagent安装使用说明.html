@@ -1,0 +1,131 @@
+<html>
+<head>
+  <title>免费代理软件GAppProxy、goagent安装使用说明</title>
+  <basefont face="Tahoma" size="2" />
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="exporter-version" content="Evernote Windows/267864 (zh-CN); Windows/6.1.7601 Service Pack 1;"/>
+  <style>
+    body, td {
+      font-family: Tahoma;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name="1226"/>
+<h1>免费代理软件GAppProxy、goagent安装使用说明</h1>
+
+<div>
+<div style="word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;">
+免费代理软件GAppProxy、goagent安装使用说明<br>
+原文:<a href="http://1010527.com/gappproxy-goagent.html">http://1010527.com/gappproxy-goagent.html</a><br><br>
+如果你现在没有掌握任何翻墙技术，您可以通过百度，以“免费在线代理”为关键词，搜索出很多网上免费代理。<br><br>
+GAppProxy 是一个免费开源的HTTP Proxy代理上网软件，使用Python编写，运行于Google App Engine上，因此不需要我们搭建专门的服务器。GAppProxy 比较适合于个人使用，自己管理，自己使用，依托于Google的网络，代理上网比较稳定可靠，速度非常快。<br><br>
+这篇文章将详细介绍如何搭建安装GAppProxy ，以及如何通过GAppProxy 来代理上网。<br><br>
+因为GAppProxy基于Google App Engine，所以首先需要准备一个google账号（即gmail账号）。<br><br>
+一、申请GAE空间并创建新的的app_id：<br><br>
+1.打开浏览器，输入http://appengine.google.com/，输入gmail用户密码登入。<br><br><br>
+图：登录Google账户<br><br>
+2.点击“Create an Application”。<br><br><br>
+图：点击“Create an Application”<br><br>
+3.申请GAE需要用手机认证，输入自己的手机号，注意前面需要写+86。<br><br><br>
+图 ：填写手机号码<br><br>
+4.手机收到验证码后输入验证码，验证成功后GAE申请完成。<br><br><br>
+图：填写验证码<br><br>
+5.创建新application identity，比如这里我使用了gappproxy200，注意记下该application identity，后面还会再用到。<br><br><br>
+图：填写应用程序名称<br><br><br>
+图：创建成功<br><br>
+二、部署GAppProxy服务器：<br><br>
+1. 从GAppProxy项目下载页http://code.google.com/p/gappproxy/downloads/list 下载服务器源码包+自动部署工具，即uploader-2.0.0-win.zip（若不能下载单击这里）。<br><br>
+2.  解压下载文件，双击执行该目录下的uploader.exe，在AppID提示后输入刚才创建的app_id，然后分别按提示输入自己的gmail用户名和密码（注意，输入密码时不会有任何显示）。<br><br><br>
+3.等待直到出现如下图的“ready to…”字样，表示部署完成。<br><br><br>
+4.在浏览器中输入http://xxx.appspot.com/fetch.py ，注意将其中的xxx换成刚才创建的app_id，如果显示如下图，说明服务器已经生效，否则可以多刷新几次试试 ！<br><br><br>
+三、安装客户端：<br><br>
+1.从GAppProxy项目下载页http://code.google.com/p/gappproxy/downloads/list 下载windows客户端，即localproxy-2.0.0-win.zip（若不能下载单击这里）。<br><br>
+2.解压下载文件，用记事本打开并修改该目录下的proxy.conf文件，增加如下图的最后一行，特别注意红字部分改成刚才创建的app_id。<br><br><br>
+3.执行该目录下的proxy.exe，并设置浏览器代理，分别如下图：<br><br><br><br>
+4.至此代理设置全部完成，在浏览器中输入<br><br>
+=====================另一篇教程=======================<br><br>
+GAppProxy2.0 安装全攻略<br><br>
+GAppProxy是一个谷歌提供的，供用户自己管理、自己使用的代理服务器。其功能强大而稳定，安全可靠，是穿越GFW的极为理想的选择。它最大的缺点是安装设置十分麻烦，但按照本教程的步骤进行操作，用不了一顿饭的功夫，你就可以享受到GAppProxy的优质服务了！<br><br>
+如果安装过程中，你严格按照以下步骤执行了，但仍然遇到不可克服的困难，欢迎你发邮件到fangqianrj@Gmail.com求助。<br><br>
+第一步：你至少需要掌握一种翻墙技术。<br><br>
+如果你现在没有掌握任何翻墙技术，你可以试用如下方法：（如果你掌握了某种翻墙技巧，可以直接跳到第二步）<br><br>
+您可以通过百度，以“免费在线代理”为关键词，搜索出很多网上免费代理。<br><br>
+例如我刚才搜出了如下几个：<br><br>
+http://proxyie.cn/<br><br>
+http://web.proxycn.com/<br><br>
+http://www.coobai.com/<br><br>
+http://www.dailiav.com/<br><br>
+提供这种代理服务的网站很多，如果一个不行，多试几个。<br><br>
+打开这些网站主页，都会找到一个让你输入网址的地址栏，输入你要访问的墙外网站，然后回车就翻墙成功了。另外每个在线代理都会提供好几个代理服务器供选择，一个不行，你回到主页，找到选择代理服务器的选项，换个服务器再试一次。<br><br>
+第二步：如果你没有谷歌邮箱的话，你必须注册一个谷歌邮箱，注册地址在此：<br><br>
+mail.google.com需要说明的是，谷歌网站会不定时受到GFW的干扰，所以如果不能访问mail.google.com，你可以用第一步的方法翻墙注册。<br><br>
+另外，建议你保持使用Gmail的习惯。Gmail的优点在于：拥有Gmail可以享受google提供的一系列高质量服务；对于保护个人信息来说，Gmail也是最可靠的。<br><br>
+第三步：你需要下载一个软件包，下载软件包的地址在此：<br><br>
+http://desktop-meihua.googlecode.com/files/ziliao2.0.zip<br><br>
+也可以在这里下载<br><br>
+http://cid-d8f67142e6b01cc2.office.live.com/self.aspx/.Documents/ziliao2.0.zip<br><br>
+如果这两个链接都无法访问，那你可以用第一步中的方法翻墙下载。<br><br>
+第四步：你需要安装一个firefox浏览器，当然这一步并非必须的，但是强烈建议你安装一个。Firefox在墙内很容易下载，你用google或百度，以“firefox”为关键词就能找到很多下载链接，最好下载安装4.0以上版本。<br><br>
+好了，完成了这些步骤，现在有一个好消息和一个坏消息告诉你，好消息是：拥有这些东西，你就可以安装GAppProxy了；坏消息是：安装的过程很麻烦，你要有足够耐心才能完成，我写这个教程这么麻烦都不怕，你又怕什么呢？<br><br>
+第五步：你要向谷歌申请一个属于你自己的服务器的账号（当然，如果你已经有GAppProxy的账号，这一步可以省去）。<br><br>
+翻墙访问如下网址：<br><br>
+http://appengine.google.com<br><br>
+然后输入你的Gmail账号和密码，进入下一页后，点击“Create an Application”按钮。<br><br>
+进入下一页后，在Moblie Number 那个框中输入你的手机号，因为你是中国用户，所以前面要加中国区号+86,例如你的手机号是15880000000，那么你就应该输入+8615880000000，然后点击“send”按钮。稍等一会儿，你的手机就会收到从053240208954发来的一段7位验证码。<br><br>
+进入下一个网页会提示你输入验证码，填写手机受到的验证码点击“Send”，进入下一个网页。<br><br>
+这时你的账号已经申请成功，但你还要为你的服务器起一个名字（这个名字后面还要用到，记住它），建议你就使用你Gmail邮箱的账号，将其填入网页第一个方框中，然后点击旁边的“Check Availability”,如果你起的名字有效，就直接把网页往下拉，会看到一个”Create Application”的按钮，点击后，你的账号就设置完了！<br><br>
+第六步：将第三步中下载的压缩文件解压到一个你能记住的地方，最好不要放在C盘。然后将文件夹中localproxy-2.0.0-win 目录下的proxy.conf文件打开（可以直接打开，如果不行就用记事本），然后将内容全部清空，替换成如下内容：<br><br>
+# GAppProxy configuration<br><br>
+# listen_port<br><br>
+listen_port = 8000<br><br>
+# local_proxy<br><br>
+www.google.cn:80<br><br>
+# If local proxy needs authentication:<br><br>
+#local_proxy = user:passwd@host:port<br><br>
+# fetch server<br><br>
+#fetch_server = http://127.0.0.1:8080/fetch.py<br><br>
+#fetch_server = http://your-fetch-server.appspot.com/fetch.py<br><br>
+fetch_server = http://XXXXX.appspot.com/fetch.py<br><br>
+然后，把上面的XXXXX部分，替换成你第五步中给服务器起的名字，如你在第五步取的名字为gappproxy200，那么上文最后一行就应该是：<br><br>
+fetch_server = http:// gappproxy200 .appspot.com/fetch.py<br><br>
+然后保存，关掉记事本。<br><br>
+第七步：下面你要设置你自己的服务器，打开第六步解压后的件夹中的uploader-2.0.0-win目录，双击执行该目录下的uploader.exe，在AppID提示后输入第五步中给服务器起的名字，（下图中为gappproxy200）然后分别按提示输入自己的gmail用户名和密码（注意，输入密码时不会有任何显示）：<br><br><br>
+等待直到出现如下图的“ready to…”字样，表示部署完成。<br><br><br>
+在浏览器中输入http://XXXXX.appspot.com/fetch.py ，(同样，这里的XXXXX是第五步中给服务器起的名字，下图中为gappproxy200)，如果显示如下图，说明服务器已经生效，否则可以多刷新几次试试。<br><br><br>
+第八步：接下来要对你的网络进行设置，但是这种设置切换起来非常麻烦，所以这里不推荐，这里只介绍用firefox切换代理服务器的方法。<br><br>
+你在第四步中安装了firefox4.0，将下面地址拷贝到Firefox的地址栏中：<br><br>
+https://addons.mozilla.org/zh-CN/firefox/addon/foxyproxy-standard/contribute/roadblock/?src=addondetail&amp;version=2.22.6<br><br>
+这个网站经常都处于无法访问的状态，如果你访问不了，你可以等待一会儿重新访问，或者用第二步的方法翻墙访问。<br><br>
+访问成功后，点击网页中绿色的”Add to Firefox”，稍等一会儿就会跳出标题为“软件安装”的对话框，点击“立即安装”。安装成功后，关掉你所有的Firefox网页,然后重新打开（总之，安装过程中按照电脑给出的提示就可以了）<br><br>
+然后你Firfox网页的右下方就会多出这样一个东西：<br><br><br>
+双击FroxyProxy，然后按下图提示设置：<br><br><br>
+设置完毕后，右键点击Firefox右下角的FoxyProxy（见下图），然后按下图的操作，选择<br><br><br>
+然后右下角的FoxyProxy就变为：<br><br><br>
+恭喜你，就差最后一步，你就可以享受GAppProxy翻墙了！<br><br>
+第九步：还记得第六步中你把localproxy-2.0.0-win这个文件夹放到哪里了吗？打开它，然后运行文件GApp.exe,桌面右下角就会跳出一个对话框告诉你GAppProxy已经开启。<br><br>
+好了，你在Firefox 的对话框中输入：<br><br>
+http://www.geoiptool.com/<br><br>
+看看自己的地址在哪里？是不是USA？<br><br>
+第十步：以后如何使用GAppFoxyProxy？你每次要用firefox翻墙时，只要打开firefox，将FoxyProxy切换为：<br><br><br>
+然后运行localproxy-2.0.0-win目录下的GApp.exe,因此，为了方便，你最好把这个东西的快捷方式放在桌面上。如果你想停止GApp，就再运行一次GApp.exe。<br><br>
+第十一步:因为最近GAppProxy常受干扰，可以试一下比GApp更稳定的goagent，参考这篇日志《翻墙续篇，推荐比GApp更稳定的goagent》<br><br>
+==================进阶教程=================<br>
+最近GAppProxy常受干扰，推荐比GApp更稳定的goagent<br>
+GAppProxy安装见上篇日志：《最靠谱的翻墙，GAppProxy2.0 安装全攻略》<br>
+如果你已经掌握了GAppProxy，那么你只要做些简单的事情，就可以使用goagengt，而且两种方法可以相互切换，相互补充。<br>
+下面的步骤是假定你已经按照我昨日发布的GAppproxy安装教程安装，那么你只要做这些事情：登陆https://appengine.google.com/，输入你的邮箱、密码后，重新申请一个Appid(如果你已经在使<br>
+用GAppProxy，那么你一定已经有个Appid，你需要重新申请一个，每个人一共可以申请10个。下载GoAgent最新打包版 http://goo.gl/xFroC解压后修改server目录下app.yaml，把your_appid修改成你新申请的appid双击server目录下的uploader.bat(linux/mac用户请运行uploader.py),输入你新的appid和你的用户<br>
+名、密码，<br>
+上传服务端。如果上传失败，可以启用免费VPN代理后再上传。<br><br><br>
+把local目录下proxy.ini中的[gae]下的goagent.appspot.com改成&lt;你申请到的<br>
+appid&gt;.appspot.com<br><br>
+打开Firefox，双击右下方的FroxyProxy，新建一个代理服务器，IP为：127.0.0.1，端口为：8087（注意，是<br>
+8087，而GAppProxy是8000）<br><br>
+好了，现在你可以运行goagent.exe启动代理了，将Firefox的代理切换到新设置的那个，就可以享受goagent<br><br>
+详细说明的链接在此：http://code.google.com/p/goagent/<br><br>
+感谢 fanqiangsoft@gmail.com提供技术支持<br><br>
+=======================（完）=======================
+</div>
+</div></body></html> 
