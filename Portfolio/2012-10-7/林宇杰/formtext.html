@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>表单</title>
+<script language="JavaScript" type="text/javascript" src="js/001.js"></script>
+
+
+<link href="css/001.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body><center>
+<h1>留言页面</h1>
+<hr color="#FF0000" />
+<form action="index.html" method="post" enctype="multipart/form-data" name="form1" id="form1">
+  用户名
+  ：
+    <label>
+  <input name="user" type="text" id="user" />
+  </label>
+  a123456
+  <p>密码：    
+    <label></label>
+    <input name="mima" type="password" id="mima" />
+    123456
+  </p>
+  <p>性别
+    <label>
+    <input type="radio" name="radiobutton" value="女" />
+    </label>
+  女&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <label>
+  <input type="radio" name="radiobutton" value="男" />
+  </label>
+  男</p>
+  <p>爱好：&nbsp; 
+    <label>
+    <input type="checkbox" name="checkbox" value="电脑" />
+    </label>
+  电脑&nbsp;&nbsp; 
+  <label>
+  <input type="checkbox" name="checkbox2" value="篮球" />
+  </label>
+  篮球  </p>
+  <p>来自
+    <label>
+    <select name="select">
+      <option value="中国">中国</option>
+      <option value="美国">美国</option>
+      <option value="意大利">意大利</option>
+    </select>
+    </label>
+  </p>
+  <p>民族
+    <label></label>
+    <label>
+    <select name="minzu" size="3" id="minzu">
+      <option value="汉族">汉族</option>
+      <option value="满族">满族</option>
+      <option value="畲族">畲族</option>
+    </select>
+    </label>
+    </p>
+  <p>留言区：</p>
+  <p>
+    <label>
+    <textarea name="comtent" cols="35" rows="12" id="comtent"></textarea>
+    </label>
+    </p>
+  <p>附件：
+    <label>
+    <input type="file" name="file" />
+    </label>
+    </p>
+  <p>
+    <label>
+    <input type="reset" name="Submit" value="重置" />
+    </label>
+    <label>
+    &nbsp;&nbsp; 
+    <input type="button" name="Submit2" value="提交" onclick="denglu()"/>
+    </label>
+    <label></label>
+    </p>
+  <p><a href="index.html">返回首页</a><br />
+    <label></label>
+    <br />
+  </p>
+</form>
+功能未完善
+</center>
+</body>
+
+</html>

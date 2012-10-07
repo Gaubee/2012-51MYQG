@@ -1,0 +1,11 @@
+@charset "gb2312";
+.EASY {
+	font-family: "»ªÎÄÐÂÎº";
+	font-size: 24px;
+	font-style: italic;
+	line-height: normal;
+	font-weight: bold;
+	font-variant: normal;
+	text-decoration: underline;
+	color: #00F;
+}
