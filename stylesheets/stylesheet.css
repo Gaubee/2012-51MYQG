@@ -379,6 +379,7 @@ Full-Width Styles
   height:70px;
   overflow: hidden;
   background: url(../images/tags.png) no-repeat bottom left;
+  margin-left:10px;
 }
 
 .tag_2 {
