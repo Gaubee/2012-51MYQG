@@ -1,0 +1,47 @@
+1、javascript框架：
+<script language="javascript" type="text/javascript">
+//javascript代码
+</script>
+
+2、
+alert("");//弹出对话框
+
+3、
+prompt("请输入密码","");//弹出输入框
+
+4、JS中自定义函数的定义:
+
+function 函数名(){
+     //函数体
+}
+
+var x =document.表单名.文本框.value;//  把文本框内的值存在变量x中
+document.表单名.文本框.select();//把文本框里的内容全选
+
+逻辑运算符：&& 并且   ||或者    !取反
+
+if(结果为布尔类型的表达式){
+//表达式为真时执行的语句
+}else{
+//表达式为假时执行的语句
+}
+
+5、循环初始值
+
+改变循环初始值
+}
+
+for(){
+}
+事件：onfocus得到焦点   onblur失去焦点    onclick单击事件        onchange下拉菜单改变时
+
+提交表单名：document.form1.submit();
+
+根据ID获取元素：document.getElementById("lanmu1").style.color="#0000ff";、
+
+正则表达式：
+var str ="windows是非常优秀的系统，我喜欢windows！";
+var reg =/windows/gi;                 写在双斜线//之间，第二个斜线外有一个参数（g表示全局查找，i表示忽略大小写）
+var tmp = str.replace(reg,"Linux");
+alert(tmp);(替换)/var found=str.match(reg);
+alert(found);（查找）

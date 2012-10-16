@@ -1,0 +1,28 @@
+
+body {
+	background: url(../picture/5-120601094408-50.gif);
+}
+.STYLE1 {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+ a:hover{ 
+ color:red; 
+ } 
+
+ul {margin:0;}
+li {list-style:none;}
+
+div#top {background-color: #CCCCCC;clear:both;text-align:center;}
+div#container{width:1000px}
+div#header {background-color:#99bbbb;}
+div#menu {height:500px;width:500px;float:left;}
+div#content {height:500px;width:500px;float:left;}
+div#footer {background-color: #B50000;clear:both;text-align:center;}
+div#menu1 {height:166px;width:500px;float:left;}
+div#liuyan {height:400px;width:1000px;}
+div#content1 {height:700px;width:1000px;}
+div#footer1 {background-color: #CCCCCC;clear:both;text-align:center;}
+div#san{width:333px;height:333px;float:left;}
+div#dong{width:1000px;float:left;}

@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>栏目收放</title>
+<script language="javascript" type="text/javascript">
+function yc(){
+
+document.getElementById("lanmu").style.display="none";
+document.getElementById("img").innerHTML="<img src='image/button/button1.jpg' width='20' height='50' onclick='xs();'/>" 
+}
+function xs(){
+document.getElementById("lanmu").style.display="";
+document.getElementById("img").innerHTML="<img src='image/button/button2.jpg' width='20' height='50' onclick='yc();'/>" 
+}
+</script>
+</head>
+
+<body>
+<table width="730" height="442" border="1">
+  <tr>
+    <td id="lanmu"width="116"><div align="center">
+      <p>栏目一</p>
+      <p>栏目二</p>
+      <p>栏目三</p>
+      <p>栏目四</p>
+      <p>栏目五</p>
+      <p>栏目六</p>
+    </div></td>
+    <td width="10"><span id="img" ><img src="image/button/button2.jpg" width="20" height="50" onclick="yc()"/></span></td>
+    <td width="582"><div align="center">这里是内容。</div></td>
+  </tr>
+</table>
+</body>
+</html>

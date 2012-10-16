@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>事件测试</title>
+</head>
+
+<body>
+<form id="form1" name="form1" method="post" action="">
+   1 + 2 =
+   <input name="wenben1" type="text" id="wenben1" size="6" />
+   <input name="Submit" type="button" onclick="javascript:aaa()" value="确认" />
+</form>
+</body>
+</html>
+<script language="javascript" type="text/javascript">
+function aaa(){
+var x=document.form1.wenben1.value;
+if(x==3){alert("1+1="+x+"回答正确！");
+}
+else{alert("1+1="+x+"回答错误！");}
+
+}
+</script>

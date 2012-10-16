@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>css初步</title>
+
+<link href="css/css1.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript">
+function bianse(){
+document.getElementById("lanmu1").style.color="#0000ff";
+
+}
+function xiaoshi(){
+document.getElementById("lanmu3").style.display="none";
+
+}
+function chuxian(){
+document.getElementById("lanmu3").style.display="block";
+
+}
+</script>
+</head>
+
+<body>
+<p id="lanmu1" class="STYLE1">栏目一</p>
+<p class="STYLE1">栏目二</p>
+<form id="form1" name="form1" method="post" action="">
+  <input type="button" name="Submit" value="变色"  onclick="bianse()"/>
+  <input type="button" name="Submit2" value="消失" onclick="xiaoshi()"/>
+  <input type="button" name="Submit3" value="出现" onclick="chuxian()" />
+</form>
+<p id="lanmu3"class="STYLE1">栏目三</p>
+<p id="lanmu4" class="STYLE1">栏目四</p>
+<p class="STYLE1">栏目五 </p>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>列表菜单</title>
+</head>
+
+<body><form action="" method="get" name="form1" id="form1">
+  <select name="select" onchange="tiao()">
+    <option>请选择您要跳转的网页！</option>
+    <option value="http://www.soso.com">搜搜</option>
+    <option value="http://www.g.cn">谷歌</option>
+    <option value="http://www.taobao.com">淘宝</option>
+  </select>
+  </form>
+</body>
+</html>
+<script language="javascript" type="text/javascript">
+function tiao(){
+var x=document.form1.select.value;
+document.form1.action=x;
+document.form1.submit();
+}
+
+</script>
