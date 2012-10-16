@@ -34,7 +34,7 @@ $(function ($) {
             $(tagsa[i]).animate({ marginRight: '-96px' }, 200); // (96 * (j + 1) + 'px') 因相对移动，后面的元素也发生了移动，即使没有给改变数值
             $(this).animate({ marginRight: (-96 * (i + 1) + 'px') }, 200 * i);
             $(this).addClass("TODO").off();
-            github.getList($(this).attr("href").replace("#", ""), ".html");
+            github.getList($(this).attr("href").replace("#", ""),null, ".html");
             setTimeout(function () {
                 $("#tags a").attr('style', '').find('h2').attr('style', '');
                 var TODO = $('.TODO').addClass("tagvisiting").removeClass("tag TODO");

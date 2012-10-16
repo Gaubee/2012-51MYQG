@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="HTML CSS" />
+    <meta name="description" content="51MYQG" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../../stylesheets/stylesheet.css" />
+    <script src="../../javascripts/lib/JQuery_1.7.2.js" type="text/javascript"></script>
+    <script src="../../javascripts/lib/JQ.extend/jquery.scrollpath.js" type="text/javascript"></script>
+    <script src="../../javascripts/lib/JQ.extend/jquery.easing.js" type="text/javascript"></script>
+    <link href="CSS/html+css.css" rel="stylesheet" type="text/css" />
+    <!--<script src="JS/html+css.js" type="text/javascript"></script>-->
+    <title>第一讲【HTML+CSS】</title>
+</head>
+<body>
+		<nav>
+			<ul>
+				<li><a href="#start">1</a></li>
+				<li><a href="#description">2</a></li>
+				<li><a href="#syntax">3</a></li>
+				<li><a href="#scrollbar">4</a></li>
+				<li><a href="#rotations">5</a></li>
+				<li><a href="#rotations-rotated">6</a></li>
+				<li><a href="#source">7</a></li>
+				<li><a href="#follow">8</a></li>
+			</ul>
+		</nav>
+		<div class="settings">
+			<a href="" class="show-path">Show Path</a>
+		</div>
+		<div class="wrapper">
+			<div class="demo">
+				<h1>jQuery Scroll Path</h1>
+				<span class="arrow">&darr;</span> A Quick Demo <span class="arrow">&darr;</span>
+			</div>
+			
+			<div class="description">
+				<span class="big">It's a plugin for defining custom scroll paths.</span>
+			</div>
+
+			<div class="syntax">
+				<span class="big">It uses canvas flavored syntax to draw lines and arcs.</span>
+			</div>
+
+			<div class="scrollbar">
+				<span class="big">It comes with a custom scrollbar.</span>
+			</div>
+
+			<div class="rotations">
+				<span class="big">It also does rotations</span>
+				<span class="upside-down big">in <a href="http://caniuse.com/#feat=transforms2d">supported</a> browsers.</span>
+			</div>
+
+			<div class="source">
+				<span class="big">It's available with documentation on <a href="https://github.com/JoelBesada/scrollpath">GitHub</a>.<span>
+			</div>
+
+			<div class="follow">
+				<span class="big">Feel free to <a href="https://twitter.com/JoelBesada">follow me</a> on Twitter. You can also be <span class="count">a kind person and</span> <a href="https://twitter.com/intent/tweet?original_referer=https%3A%2F%2Ftwitter.com%2Fabout%2Fresources%2Fbuttons&source=tweetbutton&text=jQuery%20Scroll%20Path%20Plugin&url=http%3A%2F%2Fjoelb.me%2Fscrollpath%2F&via=JoelBesada" class="tweet">tweet</a> this.</span>
+			</div>
+		</div>
+        <!--   <div class="wrapper">
+        <div class="HC-1">
+            <div class="main-1">
+                <h1>
+                    &lt; / &gt;</h1>
+            </div>
+            <div class="main-2">
+                <h1>
+                    ——⿻—————</h1>
+            </div>
+            <div class="main-3">
+                <h1>
+                    CSS</h1>
+            </div>
+            <div class="transform-left htmlTag">
+                <ul>
+                    <li>table-tbody-thead-th-td-tr-tfoot</li>
+                    <li>textarea</li>
+                    <li>!DOCTYPE</li>
+                    <li>ul-ol-li</li>
+                    <li>div</li>
+                    <li>map</li>
+                    <li>code</li>
+                    <li>span</li>
+                    <li>strong</li>
+                    <li>style</li>
+                    <li>p</li>
+                    <li>title</li>
+                    <li>em-strong-dfn-code-samp-kbd-var-cite</li>
+                    <li>h1 - h6</li>
+                    <li>hr</li>
+                    <li>form-input</li>
+                    <li>frameset-frame</li>
+                    <li>object-param</li>
+                    <li>fieldset-legend</li>
+                    <li>font</li>
+                    <li>a-b-big-em</li>
+                    <li>body</li>
+                    <li>br</li>
+                    <li>center</li>
+                    <li>cite</li>
+                    <li>head-link-meta</li>
+                    <li>optgroup</li>
+                    <li>pre</li>
+                    <li>q</li>
+                    <li>iframe-noframes</li>
+                    <li>img</li>
+                    <li>label</li>
+                    <li>script-noscript</li>
+                    <li>select-option</li>
+                    <li>small</li>
+                </ul>
+            </div>
+            <div class="transform-right cssStyle">
+                <ul>
+                    <li>background-attachment</li>
+                    <li>background-color</li>
+                    <li>background-image</li>
+                    <li>background-position</li>
+                    <li>background-repeat</li>
+                    <li>border-color</li>
+                    <li>border-style</li>
+                    <li>border-width</li>
+                    <li>outline</li>
+                    <li>outline-color</li>
+                    <li>outline-style</li>
+                    <li>outline-width</li>
+                    <li>color</li>
+                    <li>direction</li>
+                    <li>letter-spacing</li>
+                    <li>line-height</li>
+                    <li>text-align</li>
+                    <li>text-decoration</li>
+                    <li>text-indent</li>
+                    <li>text-shadow</li>
+                    <li>text-transform</li>
+                    <li>unicode-bidi</li>
+                    <li>white-space</li>
+                    <li>word-spacing</li>
+                    <li>font</li>
+                    <li>font-family</li>
+                    <li>font-size</li>
+                    <li>font-size-adjust</li>
+                    <li>font-stretch</li>
+                    <li>font-style</li>
+                    <li>font-variant</li>
+                    <li>font-weight</li>
+                    <li>margin</li>
+                    <li>margin-bottom</li>
+                    <li>margin-left</li>
+                    <li>margin-right</li>
+                    <li>margin-top</li>
+                    <li>padding</li>
+                    <li>list-style</li>
+                    <li>list-style-image</li>
+                    <li>list-style-position</li>
+                    <li>list-style-type</li>
+                    <li>marker-offset</li>
+                    <li>content</li>
+                    <li>counter-increment</li>
+                    <li>counter-reset</li>
+                    <li>quotes</li>
+                    <li>height</li>
+                    <li>max-height</li>
+                    <li>max-width</li>
+                    <li>min-height</li>
+                    <li>min-width</li>
+                    <li>width</li>
+                    <li>bottom</li>
+                    <li>clear</li>
+                    <li>clip</li>
+                    <li>cursor</li>
+                    <li>display</li>
+                    <li>float</li>
+                    <li>left</li>
+                    <li>overflow</li>
+                    <li>position</li>
+                    <li>right</li>
+                    <li>top</li>
+                    <li>vertical-align</li>
+                    <li>visibility</li>
+                    <li>z-index</li>
+                    <li>orphans</li>
+                    <li>page-break-after</li>
+                    <li>page-break-before</li>
+                    <li>page-break-inside</li>
+                    <li>widows</li>
+                    <li>border-collapse</li>
+                    <li>border-spacing</li>
+                    <li>caption-side</li>
+                    <li>empty-cells</li>
+                    <li>table-layout</li>
+                    <li>:active</li>
+                    <li>:focus</li>
+                    <li>:hover</li>
+                    <li>:link</li>
+                    <li>:visited</li>
+                    <li>:first-child</li>
+                    <li>:lang</li>
+                    <li>:first-letter</li>
+                    <li>:first-line</li>
+                    <li>:before</li>
+                    <li>:after</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="HC-2">
+        <div class="line-1">
+        <h1>╮</h1>
+        </div>
+        <div class=" transform-right line-2">
+        <h1>—</h1>
+        </div>
+        </div>
+    </div>  -->
+</body>
+</html>

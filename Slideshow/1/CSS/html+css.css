@@ -1,0 +1,353 @@
+.sp-scroll-bar
+{
+    position: fixed;
+    z-index: 9999;
+    right: 0;
+    top: 5%;
+    width: 10px;
+    height: 90%;
+    border-radius: 5px;
+}
+
+.sp-scroll-bar:hover
+{
+    background: white;
+    background: rgba(255,255,255, 0.1);
+}
+
+.sp-scroll-bar .sp-scroll-handle
+{
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    border-radius: inherit;
+    background: gray;
+    background: rgba(0,0,0,0.7);
+}
+
+.sp-scroll-bar .sp-scroll-handle:hover
+{
+    background: black;
+}
+/*******************/
+/* === CSS RESET === */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video
+{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section
+{
+    display: block;
+}
+body
+{
+    line-height: 1;
+}
+ol, ul
+{
+    list-style: none;
+}
+blockquote, q
+{
+    quotes: none;
+}
+blockquote:before, blockquote:after, q:before, q:after
+{
+    content: '';
+    content: none;
+}
+table
+{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/* === End of CSS RESET === */
+
+body
+{
+    background: url(../IMG/classy_fabric.png);
+    color: white;
+    font-size: 20px;
+    height: 600px;
+    width: 800px;
+    /*overflow: hidden;*/
+    font-family: "Terminal Dosis" , sans-serif;
+    text-shadow: 1px 1px 0 transparent, 2px 2px 0 #101010;
+}
+h1
+{
+    font-size: 75px;
+    font-weight: bold;
+    line-height: 1.5em;
+    text-shadow: 2px 2px 0 transparent, 4px 4px 0 #101010;
+}
+
+a, a:visited
+{
+    color: white;
+    text-decoration: none;
+    border-bottom: 2px dotted;
+    transition: color 0.2s;
+}
+
+a:hover
+{
+    color: #AAA;
+}
+
+a:active
+{
+    color: lightblue;
+}
+
+.big
+{
+    display: block;
+    font-size: 45px;
+    font-weight: bold;
+    line-height: 1.3em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 0 transparent, 4px 4px 0 #101010;
+}
+
+.wrapper div
+{
+    position: absolute;
+}
+
+.settings, nav
+{
+    position: fixed;
+    z-index: 9999999;
+    bottom: 0;
+    background: rgba(10,10,10, 0.5);
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 20px;
+}
+
+.settings
+{
+    right: 0;
+    padding: 10px 20px;
+    border-radius: 10px 0 0 0;
+}
+
+.settings a
+{
+    border: none;
+}
+
+nav
+{
+    left: 0;
+    border-radius: 0 10px 0 0;
+}
+
+nav li
+{
+    float: left;
+}
+
+nav a
+{
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border: none;
+    text-align: center;
+    transition: 0.25s;
+}
+
+nav li:last-child a
+{
+    border-radius: 0 10px 0 0;
+}
+
+nav a:hover
+{
+    background: rgba(15,15,15, 0.5);
+}
+
+.sp-canvas
+{
+    display: none;
+}
+
+.arrow
+{
+    position: relative;
+    display: inline-block;
+}
+
+.demo
+{
+    width: 800px;
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+/*
+.demo .arrow {
+	font-size: 20px;
+	animation: point-down 0.5s alternate infinite;
+}
+
+.description {
+	top: 740px;
+	left: 180px;
+	width: 440px;
+}
+
+.syntax {
+	top: 1510px;
+	left: 430px;
+	width: 400px;
+}
+
+.scrollbar {
+	top: 1540px;
+	left: 1600px;
+	width: 400px;
+}
+
+.rotations {
+	left: 2185px;
+	top: 660px;
+	width: 460px;
+	transform: rotate(-90deg) translateY(2.5em);
+}
+
+.rotations .upside-down {
+	font-size: 42px;
+	text-align: right;
+	transform: rotate(180deg) translateY(3em);
+}
+
+.source {
+	left: 2200px;
+	top: -800px;
+	width: 400px;
+	transform: rotate(90deg) translateX(50px);
+}
+
+.follow {
+	width: 475px;
+	left: 1100px;
+	top: -950px;
+	transform: rotate(90deg) translateX(50px);
+}
+
+.follow .big {
+	font-size: 40px;
+}
+*/
+.highlight
+{
+    animation: highlight 0.2s alternate 6;
+}
+
+.transform-left
+{
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+.transform-right
+{
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+.transform-top
+{
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+/**************    ||   ************/
+/************** Content ************/
+/**************    ||   ************/
+
+.wrapper div h1
+{
+    font-size: 240px;
+    text-shadow: 1px 1px 0 #5B990E, 2px 2px 0 #4B6900, 14px 14px 0 #101010;
+    color: #8BC900;
+    line-height: 340px;
+}
+.HC-1
+{
+}
+.HC-1 .main-1
+{
+    top: 120px;
+    left: 70px;
+    width: 720px;
+    font-size: 48px;
+}
+.HC-1 .main-2
+{
+    top: 240px;
+    left: 40px;
+    width: 2000px;
+    font-size: 48px;
+}
+.HC-1 .main-3
+{
+    top: 440px;
+    left: 780px;
+    width: 400px;
+    font-size: 48px;
+}
+
+.HC-1 div ul li
+{
+    font-size: 12px;
+    color: #4B6900;
+    line-height: 14px;
+}
+.HC-1 .htmlTag
+{
+    text-shadow: 1px -1px 0 #5B990E, 3px -3px 0 #101010;
+    top: 340px;
+    left: 133px;
+    width: 300px;
+    text-align: left;
+}
+.HC-1 .cssStyle
+{
+    text-shadow: -1px -1px 0 #5B990E, 3px 3px 0 #101010;
+    top: -280px;
+    left: 1283px;
+    width: 200px;
+    text-align: left;
+}
+/*****************************/
+.HC-2 .line-1
+{
+    top: 289px;
+    left: 1950px;
+    width: 600px;
+}
+.HC-2 .line-1 h1
+{
+    font-size: 780px;
+}
+.HC-2 .line-2
+{
+    top: 770px;
+    left: 2198px;
+    width: 240px;
+}
+.HC-2 .line-2 h1
+{
+    text-shadow: -1px 1px 0 #5B990E, -2px 2px 0 #4B6900, -14px 14px 0 #101010;
+}
+
+

@@ -16,30 +16,36 @@ var GH = window.GH = function () {
                 var length = list.length;
                 var er = [0, 0, 0];
                 for (var i = 0; i < length; i++) {
-                    var pathString = list[i].path;
-                    if (pathString.split("\/").length > 2) {
-                        //                        console.log('Too long');
-                        er[0]++;
-                        continue;
-                    }
-                    if (Nece) {
-                        if (Nece != "") {
-//                            console.log('No .html');
-                            if (pathString.search(Nece) == -1) {
-                                er[1]++;
+                    try {
+
+                        var pathString = list[i].path.replace("\"","");
+                        if (pathString.split("\/").length > 2) {
+                            //                        console.log('Too long');
+                            er[0]++;
+                            continue;
+                        }
+                        if (Nece) {
+                            if (Nece != "") {
+                                //                            console.log('No .html');
+                                if (pathString.search(Nece) == -1) {
+                                    er[1]++;
+                                    continue;
+                                }
+                            }
+                        }
+                        if (Suffix) {
+                            if (pathString.substr(-Suffix.length) != Suffix) {
+                                console.log(pathString);
+                                er[2]++;
                                 continue;
                             }
                         }
+                        html += "<li><a href=" + pathString + ">" + pathString + "</a></li>"
+                    } catch (e) {
+                        console.log(e + "\npathString:" + pathString);
                     }
-                    if (Suffix) {
-                        if (pathString.substr(-Suffix.length) != Suffix) {
-                            er[2]++;
-                            continue;
-                        }
-                    }
-                    html += "<li><a href=" + pathString + ">" + pathString + "</a></li>"
                 }
-                console.log(er[0] + "."+er[1]+"."+er[2])
+                console.log(er[0] + "." + er[1] + "." + er[2])
                 html += "</ul>";
                 $("#md").html(html);
             });
