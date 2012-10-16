@@ -42,6 +42,8 @@ function init() {
     .arc(W(4.08), H(6), W(0.42), 0, Math.PI / 2, false, { name: "to-css-float" })
     .lineTo(W(3), H(6.78), { name: "css-float-start" })
     .lineTo(W(2.4), H(6.78), { name: "css-float-end" })
+    .lineTo(W(1.8), H(6.78), { name: "css-box-start" })
+    .lineTo(W(1), H(6.78), { name: "css-box-end" })
     ;
 
     /*
