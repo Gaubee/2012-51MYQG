@@ -1,8 +1,8 @@
-//·â×°GitHub.jsµÄAPI×ª»¯³ÉHTML
+//ï¿½ï¿½×°GitHub.jsï¿½ï¿½API×ªï¿½ï¿½ï¿½ï¿½HTML
 var GH = window.GH = function () {
     var _ = new Github({
-        username: "gaubeebangeel@gmail.com",
-        password: "gaubee546528",
+        username: "",
+        password: "******",
         auth: "basic"
     });
     var repo = _.getRepo("Gaubee", "2012-51MYQG");
