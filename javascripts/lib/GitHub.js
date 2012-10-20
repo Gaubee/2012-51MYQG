@@ -1,4 +1,4 @@
-// Github.js 0.7.0
+ï»¿// Github.js 0.7.0
 // (c) 2012 Michael Aufreiter, Development Seed
 // Github.js is freely distributable under the MIT license.
 // For all details and documentation:
@@ -204,7 +204,7 @@
         });
       };
 
-      // ´«ÈëÂ·¾¶£¬·µ»ØÂ·¾¶ÏÂµÄËùÓĞÎÄ¼şÓëÎÄ¼ş¼Ğ
+      // ä¼ å…¥è·¯å¾„ï¼Œè¿”å›è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶ä¸æ–‡ä»¶å¤¹
       // -------
 
       this.getList=function(branch, path, cb) {

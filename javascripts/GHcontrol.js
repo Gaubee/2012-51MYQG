@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 //��װGitHub.js��APIת����HTML
+=======
+﻿//封装GitHub.js的API转化成HTML
+>>>>>>> Ajax Framework Update
 var GH = window.GH = function () {
     var _ = new Github({
         username: "",
@@ -9,6 +13,17 @@ var GH = window.GH = function () {
     var branch = 'gh-pages';
 
     this.Repository = function () {
+        this.contents = function (PATH) {
+            repo.contents(PATH, function () {
+                console.log("get contents")
+            });
+        }
+
+        this.read = function (PATH) {
+            repo.read(branch, PATH, function () {
+                console.log("read");
+            });
+        }
         this.getList = function (PATH, Nece, Suffix) {
             repo.getList(branch, PATH, function (err, list) {
                 console.log(list)
@@ -18,7 +33,7 @@ var GH = window.GH = function () {
                 for (var i = 0; i < length; i++) {
                     try {
 
-                        var pathString = list[i].path.replace("\"","");
+                        var pathString = list[i].path.replace("\"", "");
                         if (pathString.split("\/").length > 2) {
                             //                        console.log('Too long');
                             er[0]++;
@@ -58,6 +73,11 @@ var GH = window.GH = function () {
         this.read = function (PATH) {
             repo.read(branch, PATH, function (err, data) {
                 console.log(data);
+            });
+        }
+        this.getSha = function (PATH) {
+            repo.getSha(branch, PATH, function (err, sha) {
+                console.log(sha);
             });
         }
     } .call(this);
