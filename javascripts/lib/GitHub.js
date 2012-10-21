@@ -195,6 +195,7 @@
 
       this.getSha = function(branch, path, cb) {
         // Just use head if path is empty
+      console.info("ining");
         if (path === "") return that.getRef("heads/"+branch, cb);
         that.getTree(branch+"?recursive=true", function(err, tree) {
           var file = _.select(tree, function(file) {
