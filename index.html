@@ -1,90 +1,129 @@
 ﻿<!DOCTYPE html>
 <html>
-
-  <head>
+<head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="2012-51myqg : 闽江学院勤工助学指导中心网络部构建，用于维护开放数据、问题讨论与下载资料" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
+    <!--<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">-->
+    <!--<link href="stylesheets/metro-bootstrap.css" rel="stylesheet" type="text/css" />-->
+    <link href="stylesheets/modern.css" rel="stylesheet" type="text/css" />
+    <link href="stylesheets/modern-responsive.css" rel="stylesheet" type="text/css" />
+    <script src="javascripts/lib/JQuery_1.7.2.js" type="text/javascript"></script>
+    <script src="javascripts/lib/showdown.js" type="text/javascript"></script>
+    <script src="javascripts/lib/JQ.extend/jquery.easing.js" type="text/javascript"></script>
+    <!-- -->
+    <script src="javascripts/Parsefile.js" type="text/javascript"></script>
+    <script src="javascripts/main_pro.js" type="text/javascript"></script>
     <title>2012-51myqg</title>
-  </head>
-
-  <body>
-
+</head>
+<body>
     <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/Gaubee/2012-51MYQG">View on GitHub</a>
-
-          <h1 id="project_title">2012-51myqg</h1>
-          <h2 id="project_tagline">闽江学院勤工助学指导中心网络部构建</br>用于维护开放数据、问题讨论与下载资料</h2>
-
-<!--
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/Gaubee/2012-51MYQG/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/Gaubee/2012-51MYQG/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-            -->
-            <section id="tags">
-              <a class="tag_1" href="Notes/index.html"><h2>笔记</h2></a>
-              <a class="tag_2" href="Portfolio/index.html"><h2>展示</h2></a>
-            </section>
-        </header>
+    <h1>
+        <b>2012-51myqg</b>
+    </h1>
+    <br />
+    <h3>
+        闽江学院勤工助学指导中心网络部构建用于维护开放数据、问题讨论与下载资料</h3>
+        <h6 class="place-right fg-color-grayDark">Version 2.1.0</h6>
+    <div id="tags" class="horizontal-menu">
+        <ul class="place-left">
+            <li><a class="tag tagvisiting" href="#">首页</a> </li>
+            <li data-role="dropdown" class="sub-menu"><a>笔记</a>
+                <ul class="dropdown-menu" id="NotesTags">
+                    <li><a class="tag" href="#Notes" onclick="NotesTagsAjax('Notes','All',[])">All</a></li>
+                </ul>
+            </li>
+            <li><a class="tag" href="#Portfolio">展示</a></li>
+            <!--<li><a class="tag" href="#">相册</a></li>-->
+            <li><a class="tag" href="#Slideshow">幻灯片</a></li>
+            <li></li>
+        </ul>
+        <ul class="place-right">
+            <li data-role="dropdown" class="sub-menu"><i class="icon-thumbnail-view span1" style="margin-top: 6px;
+                display: inline-block;"></i>
+                <ul class="dropdown-menu place-right">
+                    <li><a title="Contact me">联系我</a><ol>
+                        <li><a title="Gmail&GTalk">Gaubeebangeel@gmail.com</a></li><li><a title="已绑定于QQ帐号">Gaubee@126.com</a></li></ol>
+                    </li>
+                    <!--  <li><a>SubItem</a></li>-->
+                </ul>
+            </li>
+        </ul>
     </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>2012-51MYQG</h1>
-
-<p>闽江学院勤工助学指导中心网络部构建，用于维护开放数据、问题讨论与下载资料</p>
-
-<ul>
-<li>该站点的<a href="https://github.com/Gaubee/2012-51MYQG/wiki">Wiki</a>将在后期用于分类资料与简单文档。</li>
-<li>有讨论价值的问题则在<a href="https://github.com/Gaubee/2012-51MYQG/issues">Issues</a>中提出。
-<em>（参与者应该拥有GitHub账户，并建议绑定能随时将信息推送到手机的Google mail账户）</em>
-</li>
-<li>下载资料将提供在本站的<a href="https://github.com/Gaubee/2012-51MYQG/downloads">Download</a>中，或者在提供文本外链。</li>
-<li>本站点的<a href="">GitHub Page</a>前期将用于网络部学习作品的展示。</li>
-</ul><h1>2012网络部干事学习计划</h1>
-
-<p><a href="https://docs.google.com/document/d/1UjH0PbG8y1GR-mevPPxHXoAmwD76S1mFTq40efi9qSc/edit">Google可编辑文档</a>
-<em>要修改的什么东西直接在后面加上去就好，注明修改人的姓名和修改时间</em></p>
-
-<pre><code>EG:要修改的什么东西直接在后面加上去就好，注明修改人的姓名和修改时间
-*** 15:05 2012/10/6
-</code></pre>
-
-<h1>第9届网络部公示栏</h1>
-
-<ul>
-<li>牛腩视频教程系列集合 :<a href="http://pan.baidu.com/share/link?shareid=69304&uk=2567048257">百度网盘</a></li>
-<li>第九届的干部通讯录在<a href="https://github.com/Gaubee/Gaubee/downloads">github.com/Gaubee/Gaubee/downloads</a>中可以找到各种格式的通讯录</li>
-<li>注重培养学习效率与技巧</li>
-</ul>
-<h1>
-<a href="#%E7%BD%91%E7%BB%9C%E8%B5%84%E6%BA%90" class="anchor" name="网络资源"><span class="mini-icon mini-icon-link"></span></a>网络资源</h1>
-     <ul>
-<li><a href="http://www.w3cfuns.com">前端开发网(W3Cfuns.com)</a></li>
-<li><a href="http://www.68ps.com/">PS联盟--Photoshop专业教程网</a></li>
-<li><a href="http://kb.cnblogs.com/">知识库_博客园</a></li>
-</ul>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">2012-51myqg maintained by <a href="https://github.com/Gaubee">Gaubee</a></p>
-        <!--
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-        -->
-      </footer>
-    </div>
-
-    
-
-  </body>
+    <!--MAIN CONTENT-->
+    <div id="main">
+        <div class="span9 place-left">
+            <div id="md" style="border-right: 1px solid #d2d2d2; border-top: 1px solid #ffc40d;padding-right: 10px;"
+                class="span5 place-right bg-color-white">
+            </div>
+            <div id="ms" style="border-right: 1px solid #d2d2d2; border-top: 1px solid #0a5ac2;
+                padding: 10px 0px 10px 10px;" class="span3 place-left bg-color-white">
+                <!--//////-->
+                <div class="tile bg-color-greenDark">
+                    <div class="tile-content">
+                        <h2>
+                            Metor UI</h2>
+                    </div>
+                </div>
+                <!--//////-->
+                <div class="tile double bg-color-pink">
+                    <div class="tile-content">
+                        <h2>
+                            Metor UIMetor UIMetor UIMetor UIMetor UI</h2>
+                        <div class="brand">
+                            <div class="badge alert">
+                                asdasdasdas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--//////-->
+                <div class="tile">
+                    <div class="tile-content icon">
+                        <img src="images/tags.png" />
+                    </div>
+                </div>
+                <!--//////-->
+                <div class="tile bg-color-greenDark">
+                    <div class="tile-content image">
+                        <img src="images/tags.png" />
+                    </div>
+                </div>
+                <!--//////-->
+                <div class="tile">
+                    <div class="brand">
+                        <div class="icon">
+                            <img src="images/tags.png" />
+                        </div>
+                    </div>
+                </div>
+                <!--//////-->
+                <div class="tile double">
+                    <div class="tile-content images-set">
+                        <img src="images/blacktocat.png" />
+                        <img src="images/sprite_download.png" />
+                        <img src="images/blacktocat.png" />
+                        <img src="images/bg_hr.png" />
+                        <img src="images/tags.png" />
+                    </div>
+                    <div class="brand">
+                        <span class="name">Photos</span>
+                    </div>
+                </div>
+                <!--//////-->
+            </div>
+        </div>
+        <div id="tl" class="place-right span5  bg-color-white" style="border-top:1px solid #b91d47;">
+        </div>
+        <div id="footer_wrap" class="span10 place-left">
+            <footer class="inner"> 
+                    <p class="copyright"><h3 style="display:inline;">2012-51myqg</h3>
+                     <h6 style="display:inline;">Maintained by <a href="https://github.com/Gaubee">Gaubee</a></h6></p>    </footer>
+        </div>
+    </div><!--
+    <script src="javascripts/lib/Metro_UI/dropdown.js" type="text/javascript"></script>
+    <script src="javascripts/lib/Metro_UI/accordion.js" type="text/javascript"></script>
+    <script src="javascripts/lib/Metro_UI/buttonset.js" type="text/javascript"></script>
+    <script src="javascripts/lib/Metro_UI/pagecontrol.js" type="text/javascript"></script>-->
+</body>
 </html>
