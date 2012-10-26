@@ -316,7 +316,6 @@ var initPhoto = function () {
     }
 //    console.log(html)
     $("#md").append(html);
-    setTile();
     $("#md").fadeIn(800);
     $("#tl").fadeOut(1000);
 };
