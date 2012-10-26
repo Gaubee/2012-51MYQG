@@ -34,9 +34,11 @@
         Filetree.Notes = forEachFile(Filetree.file, function (i, item) { return item["path"].search("Notes") == 0; });
         Filetree.Portfolio = forEachFile(Filetree.file, function (i, item) { return item["path"].search("Portfolio") == 0; });
         Filetree.Slideshow = forEachFile(Filetree.file, function (i, item) { return item["path"].search("Slideshow") == 0; });
+        Filetree.Photo = forEachFile(Filetree.file, function (i, item) { return item["path"].search("Photo") == 0; });
         Filetree.NotesFolids = forEachFile(Filetree.folder, function (i, item) { return item["path"].search("Notes") == 0 });
         Filetree.PortfolioFolids = forEachFile(Filetree.folder, function (i, item) { return item["path"].search("Portfolio") == 0; });
         Filetree.SlideshowFolids = forEachFile(Filetree.folder, function (i, item) { return item["path"].search("Slideshow") == 0; });
+        Filetree.PhotoFolids = forEachFile(Filetree.folder, function (i, item) { return item["path"].search("Photo") == 0; });
     } catch (e) {
         console.error(e);
     }
@@ -69,8 +71,8 @@
                 return data;
             }
             this.getFile = function (path, level) {
-                
-var level = level ? (level + path.split("\/").length) : 0;
+
+                var level = level ? (level + path.split("\/").length) : 0;
                 var items = this.file;
                 var length = items.length;
                 var data = {}, newItems = [];

@@ -59,7 +59,7 @@ $(function () {
         var Tiel_S = $("#ms .tile:not(.double)"), Tile_D = $("#ms .tile").filter(".double");
         Tiel_S.animate({ width: (WT_W + "px"), height: (WT_W + "px") }, 1000, "easeOutCubic").children(".tile-content").animate({ width: (WT_W + "px"), height: (WT_W + "px") }, 600, "easeOutCubic");
         Tile_D.animate({ width: (WT + "px"), height: (WT_W + "px") }, 1000, "easeOutCubic").children(".tile-content").animate({ width: (WT + "px"), height: (WT_W + "px") }, 600, "easeOutCubic");
-    }; setTile();
+    };
 
     window.onresize = function () {
         setTile();
@@ -134,6 +134,42 @@ $(function () {
                 }
                 $("#NotesTags").append(html);
             }; initNotesTags();
+            //初始化照片墙 
+            initPhotos_ms = function () {
+                $("#ms").fadeOut(800);
+                var Proportion
+                    , Photolength = FileData.Photo.length
+                    , PhotoFolidslength = FileData.PhotoFolids.length
+                    , html = '';
+                Proportion = Photolength / (PhotoFolidslength + Photolength);
+                var length = 5 + parseInt(10 * Math.random());
+                for (var i = 0; i < length; i++) {
+                    if (Math.random() > Proportion) {//文件夹，图片集
+//                        console.log(html)
+                        html += '<div style=\"background-color:#' + RanAllColor() + '\" class="tile double"><div class="tile-content images-set">';
+                        var ranFolid = FileData.PhotoFolids[parseInt(Math.random() * PhotoFolidslength)];
+                        var ranFolidItems = FileData.getFile(ranFolid["path"], 0).File;
+                        var ranFolidItemsLength = ranFolidItems.length;
+                        for (var j = 0; j < 5; j++) {
+                            var ranFolidItem = ranFolidItems[parseInt(Math.random() * ranFolidItemsLength)];
+                            html += '<img alt=\"' + ranFolidItem["name"] + '\" src=\"' + ranFolidItem["path"] + '\" />';
+                        }
+                        html += '</div><div class="brand"><span class="name">' + ranFolid["name"] + '</span></div></div>';
+                    } else {//文件，单图片展
+                        html += '<div style=\"background-color:#'+RanAllColor()+'\" class="tile"><div class="tile-content image">';
+                        var ranFile = FileData.Photo[parseInt(Math.random() * Photolength)];
+                        var name = ranFile["name"];
+                        name = name.substr(0, name.length - name.split(".")[name.split(".").length - 1].length - 1);
+                        html += '<img alt=\"' + ranFile["name"] + '\" src=\"' + ranFile["path"] + '\" /><div class="brand"><span class="name">' + name + '</span></div>';
+                        html += ' </div> </div>';
+                    }
+                }
+//                console.log(html)
+                $("#ms").html(html);
+                setTile();
+                $("#ms").fadeIn(1200);
+            }; initPhotos_ms();
+
         }
     });
 
@@ -172,6 +208,7 @@ var initNotes = function () {//Notes_Type
 /****************Init_Portfolio*************/
 /******************************************/
 var initPortfolio = function () {//Portfolio_Date
+    $("#md").fadeOut(400);
     var item = "";
     var info = "";
     $.each(FileData.PortfolioFolids, function (key, val) {
@@ -199,10 +236,11 @@ var initPortfolio = function () {//Portfolio_Date
         }
     });
     $("#Portfolio_Date").html(item); //.accordion({ header: "header",fillSpace: true });
+    $("#md").fadeIn(800);
     $("#tl").fadeOut(1000);
 };
 /******************************************/
-/****************Init_Slideshow*************/
+/****************Fn__RanColor**************/
 /******************************************/
 function RanColor() {
     return parseInt(Math.random() * 16 + 240).toString(16) + parseInt(Math.random() * 16 + 240).toString(16) + parseInt(Math.random() * 16 + 240).toString(16);
@@ -213,7 +251,11 @@ function RanAllColor() {
 function RandarkColor() {
     return parseInt(Math.random() * 128).toString(16) + parseInt(Math.random() * 128).toString(16) + parseInt(Math.random() * 128).toString(16);
 }
+/******************************************/
+/****************Init_Slideshow*************/
+/******************************************/
 var initSlideshow = function () {//Slideshow_Item
+    $("#md").fadeOut(400);
     var item = "";
     var info = "";
     $.each(FileData.SlideshowFolids, function (key, val) {
@@ -237,12 +279,52 @@ var initSlideshow = function () {//Slideshow_Item
     $("#Slideshow_Item").html(item); //.tabs();
     $("#Slideshow_Item .slideshow-item-item").mouseover(function () { var color = "#" + RanColor(); console.log(color); $(this).css({ "backgroundColor": color }); }).mouseout(function () { $(this).css({ "backgroundColor": ("#" + RanColor()) }); });
 
+    $("#md").fadeIn(800);
     $("#tl").fadeOut(1000);
 }
+/******************************************/
+/****************Init_Photo*************/
+/******************************************/
+var initPhoto = function () {
+    $("#md").fadeOut(400);
+    var Proportion
+                    , Photolength = FileData.Photo.length
+                    , PhotoFolidslength = FileData.PhotoFolids.length
+                    , html = '';
+    Proportion = Photolength / (PhotoFolidslength + Photolength);
+    var length = 20 + parseInt(30 * Math.random());
+    for (var i = 0; i < length; i++) {
+        if (Math.random() > Proportion) {//文件夹，图片集
+//            console.log(html)
+            html += '<div style=\"background-color:#' + RanAllColor() + '\" class="tile double"><div class="tile-content images-set">';
+            var ranFolid = FileData.PhotoFolids[parseInt(Math.random() * PhotoFolidslength)];
+            var ranFolidItems = FileData.getFile(ranFolid["path"], 0).File;
+            var ranFolidItemsLength = ranFolidItems.length;
+            for (var j = 0; j < 5; j++) {
+                var ranFolidItem = ranFolidItems[parseInt(Math.random() * ranFolidItemsLength)];
+                html += '<img alt=\"' + ranFolidItem["name"] + '\" src=\"' + ranFolidItem["path"] + '\" />';
+            }
+            html += '</div><div class="brand"><span class="name">' + ranFolid["name"] + '</span></div></div>';
+        } else {//文件，单图片展
+            html += '<div style=\"background-color:#' + RanAllColor() + '\" class="tile"><div class="tile-content image">';
+            var ranFile = FileData.Photo[parseInt(Math.random() * Photolength)];
+            var name = ranFile["name"];
+            name = name.substr(0, name.length - name.split(".")[name.split(".").length - 1].length - 1);
+            html += '<img alt=\"' + ranFile["name"] + '\" src=\"' + ranFile["path"] + '\" /><div class="brand"><span class="name">' + name + '</span></div>';
+            html += ' </div> </div>';
+        }
+    }
+//    console.log(html)
+    $("#md").append(html);
+    setTile();
+    $("#md").fadeIn(800);
+    $("#tl").fadeOut(1000);
+};
 /******************************************/
 /****************Init_FileList*************/
 /******************************************/
 var Init_FileList = function (path, IsAdd, head) {//列表形式显示用于Notes模块,IsAdd配置是否追加（不添加头部）
+    $("#md").fadeOut(400);
     if (!FileData.getFile[path]) {
         var fileList = FileData.getFile(path, 1);
         console.log("生产缓存");
@@ -276,7 +358,9 @@ var Init_FileList = function (path, IsAdd, head) {//列表形式显示用于Note
     } else {
         $("#tl").append(md);
     }
-    $("#tl").fadeIn(2600);
+    $("#md").fadeIn(800);
+
+    $("#tl").fadeIn(1200);
 
     $.each($("#tl a"), function (key, val) {
         val.innerHTML = subStr(val.title, parseInt($("#tl").css("width")) / 10);
@@ -326,28 +410,6 @@ var Init_FileBlock = function (path, IsAdd, head) {//块形式显示用于作品
         val.innerHTML = subStr(val.title, parseInt($("#tl").css("width")) / 10);
     });
 }
-//////
-function cut_str(str, maxlen) {
-    var char_length = 0;
-    var sub_len = 0, length = str.length, log = '';
-    for (var i = 0; i < length; i++) {
-        var son_str = str.charAt(i);
-        //如果是汉字，长度大于2，其他任何字符（包括￥等特殊字符，长度均为1）另外：根据需求规则，限制n个字，本方法里面，一个字（汉字）的长度=2个字符的长度，可根据需要改动
-        encodeURI(son_str).length > 8 ? char_length += 1 : char_length += 0.5;
-        log += son_str + " : " + encodeURI(son_str).length + "；\t";
-        //如果长度大于给定的n个字，就进行截取
-        if (char_length >= maxlen) {
-            console.log(log);
-            var sub_len = char_length == maxlen ? i + 1 : i;
-            var tmp = str.substr(0, sub_len);
-            return tmp + "...";
-            break;
-        }
-    }
-    console.log(log);
-    return str;
-}
-//////
 
 /**
 * @param {string} str 要截取的字符串
@@ -386,33 +448,3 @@ var subStr = function (str, size) {
     }
     return str;
 };
-//////
-var ellipsis = function (element) {
-    var limitWidth = element.clientWidth;
-    var ellipsisText = '…';
-    var temp = element.cloneNode(true);
-    temp.id = 'checkTextLengthNode';
-    temp.className = 'check-text-length-node';
-    element.parentNode.appendChild(temp);
-    var realWidth = temp.clientWidth;
-    if (realWidth <= limitWidth) {
-        return;
-    }
-    temp.innerHTML = ellipsisText;
-    var elliWidth = temp.clientWidth;
-
-    var str = element.innerHTML;
-    str = str.replace(/\s+/g, ' ');
-    var s, totalWidth = 0;
-    for (var i = 0, len = str.length; i < len; i++) {
-        s = str.charAt(i);
-        temp.innerHTML = (s === ' ' ? '&nbsp;' : s);
-        totalWidth += temp.clientWidth;
-        if (totalWidth + elliWidth > limitWidth) {
-            str = str.substr(0, i);
-            break;
-        }
-    }
-    element.innerHTML = str + ellipsisText;
-    temp.parentNode.removeChild(temp);
-}
