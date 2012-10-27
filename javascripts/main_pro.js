@@ -208,7 +208,7 @@ var initNotes = function () {//Notes_Type
 /****************Init_Portfolio*************/
 /******************************************/
 var initPortfolio = function () {//Portfolio_Date
-    $("#md").fadeOut(400);
+    $("#md").fadeOut(100);
     var item = "";
     var info = "";
     $.each(FileData.PortfolioFolids, function (key, val) {
@@ -236,7 +236,7 @@ var initPortfolio = function () {//Portfolio_Date
         }
     });
     $("#Portfolio_Date").html(item); //.accordion({ header: "header",fillSpace: true });
-    $("#md").fadeIn(800);
+    $("#md").fadeIn(200);
     $("#tl").fadeOut(1000);
 };
 /******************************************/
@@ -255,7 +255,7 @@ function RandarkColor() {
 /****************Init_Slideshow*************/
 /******************************************/
 var initSlideshow = function () {//Slideshow_Item
-    $("#md").fadeOut(400);
+    $("#md").fadeOut(100);
     var item = "";
     var info = "";
     $.each(FileData.SlideshowFolids, function (key, val) {
@@ -279,14 +279,14 @@ var initSlideshow = function () {//Slideshow_Item
     $("#Slideshow_Item").html(item); //.tabs();
     $("#Slideshow_Item .slideshow-item-item").mouseover(function () { var color = "#" + RanColor(); console.log(color); $(this).css({ "backgroundColor": color }); }).mouseout(function () { $(this).css({ "backgroundColor": ("#" + RanColor()) }); });
 
-    $("#md").fadeIn(800);
+    $("#md").fadeIn(200);
     $("#tl").fadeOut(1000);
 }
 /******************************************/
 /****************Init_Photo*************/
 /******************************************/
 var initPhoto = function () {
-    $("#md").fadeOut(400);
+    $("#md").fadeOut(100);
     var Proportion
                     , Photolength = FileData.Photo.length
                     , PhotoFolidslength = FileData.PhotoFolids.length
@@ -316,14 +316,14 @@ var initPhoto = function () {
     }
 //    console.log(html)
     $("#md").append(html);
-    $("#md").fadeIn(800);
+    $("#md").fadeIn(200);
     $("#tl").fadeOut(1000);
 };
 /******************************************/
 /****************Init_FileList*************/
 /******************************************/
 var Init_FileList = function (path, IsAdd, head) {//列表形式显示用于Notes模块,IsAdd配置是否追加（不添加头部）
-    $("#md").fadeOut(400);
+    $("#md").fadeOut(100);
     if (!FileData.getFile[path]) {
         var fileList = FileData.getFile(path, 1);
         console.log("生产缓存");
@@ -357,7 +357,7 @@ var Init_FileList = function (path, IsAdd, head) {//列表形式显示用于Note
     } else {
         $("#tl").append(md);
     }
-    $("#md").fadeIn(800);
+    $("#md").fadeIn(200);
 
     $("#tl").fadeIn(1200);
 
