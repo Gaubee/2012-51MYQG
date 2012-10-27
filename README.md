@@ -7,7 +7,7 @@
 * 有讨论价值的问题则在[Issues](https://github.com/Gaubee/2012-51MYQG/issues)中提出。
 _（参与者应该拥有GitHub账户，并建议绑定能随时将信息推送到手机的Google mail账户）_
 * 下载资料将提供在本站的[Download](https://github.com/Gaubee/2012-51MYQG/downloads)中，或者在提供文本外链。
-* 本站点的[GitHub Page](http://gaubee.github.com/2012-51MYQG/) 目前用于网络部学习作品的展示与学习笔记共享。目前网站新构架(v2.1.0)正在测试中。
+* 本站点的[GitHub Page](http://gaubee.github.com/2012-51MYQG/) 目前用于网络部学习作品的展示与学习笔记共享。目前网站新构架(v2.1.1)正在测试中。
 
 # 2012网络部干事学习计划
 
