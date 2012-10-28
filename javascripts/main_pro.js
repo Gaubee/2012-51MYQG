@@ -392,7 +392,7 @@ var Init_FileBlock = function (path, IsAdd, head) {//块形式显示用于作品
     for (var i = 0; i < length; i++) {
         var file = files[i]; // <span></span>
        // var parentPath = file.path.replace(("\/" + file.name), "");
-      var parentPath = file.path.substr(0,(file.path.length-file.name.length+1));
+      var parentPath = file.path.substr(0,(file.path.length-file.name.length-1));
 
         window.clickHead[i] = "<i onclick=\"Init_FileBlock(\'" + parentPath + "\',null,null,\'" + parentPath + "\');\" style=\'margin-top:10px;\' class=\'icon-swap-left place-left\'></i><h2>" + file.name + "</h2>";
         md += " <div onclick=\"Init_FileList(\'" + file.path + "\',null,clickHead[" + i + "])\" style=\'background-color:#" + RandarkColor() + "\' class=\"tile" + (Math.random() > 0.5 ? " double" : "") + "\"> <div class=\"brand\"><span class=\"name\" title=\'" + file.name + "\' href=\'" + file.path + "\'>" + file.name + "</span></div><div id=\'" + file.path + "\'></div></div>";
